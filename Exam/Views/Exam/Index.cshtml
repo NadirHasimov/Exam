@@ -1,0 +1,219 @@
+﻿@using Exam.Models
+@model List<QuestionViewModel>
+@{
+    Layout = null;
+}
+<html>
+<head>
+    <title>@ViewBag.Title</title>
+
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    @*<link href="~/Scripts/theme/jquery-ui/jquery-ui.css" rel="stylesheet" />*@
+
+    <link href="~/Content/theme/font-icons/entypo/css/entypo.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="~/assets/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css">
+    <link rel="stylesheet" href="~/assets/css/font-icons/entypo/css/entypo.css">
+    <link rel="stylesheet" href="~/http://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic">
+    <link rel="stylesheet" href="~/assets/css/bootstrap.css">
+    <link rel="stylesheet" href="~/assets/css/neon-core.css">
+    <link rel="stylesheet" href="~/assets/css/neon-theme.css">
+    <link rel="stylesheet" href="~/assets/css/neon-forms.css">
+    <link rel="stylesheet" href="~/assets/css/custom.css">
+    <link rel="stylesheet" href="~/assets/css/skins/white.css">
+    <link href="~/Content/custom/css/examIndex.css" rel="stylesheet" />
+
+    <link href="~/Content/Theme/css/dataTables.jqueryui.css" rel="stylesheet" />
+
+    <link href="~/Content/custom/css/common.css" rel="stylesheet" />
+
+    <script src="~/Scripts/theme/jquery-1.11.3.min.js"></script>
+
+    <script src="~/Scripts/theme/jquery.validate.min.js"></script>
+    <script src="~/Scripts/theme/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Scripts/theme/jquery-ui/jquery-ui.min.js"></script>
+</head>
+<body>
+    <input id="tblState" type="hidden" value="0" />
+    <input id="TicketId" name="TicketId" type="hidden" value="@Model.Select(row=>row.TicketId).FirstOrDefault()" />
+    <div class="row pull-right">
+        @*<button class="btn" id="stop">Stop timer</button>
+            <button class="btn" id="start">Start timer</button>
+            <button class="btn" id="show">Show timer</button>
+            <button class="btn" id="hide">Hide timer</button>*@
+        <span id="timer" style="font-size:xx-large; margin-right:20px;">@Model.FirstOrDefault().Time</span>
+    </div>
+    <a href="#" class="btn btn-info icon btn-icon icon-left" onclick="$('#quesList').appendTo('body').modal('show')" style="margin-right:10px;" id="viewList">
+        <i class="entypo-list"></i>
+        Questions list
+    </a>
+    <div class="modal fade" id="quesList">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        x
+                    </button>
+                    <h3> List of questions</h3>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-bordered table-striped table-hover list">
+                        <tbody>
+                            @{
+                                int c = 0, d = 1;
+                                foreach (var item in Model)
+                                {
+                                    c++;
+                                    if (c == 5)
+                                    {
+                                        <tr>
+                                            <td>@d -</td>
+                                        </tr>
+                                        d++;
+                                        c = 0;
+                                    }
+                                }
+                            }
+                        </tbody>
+                    </table>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <table class="" id="question">
+        <thead>
+            <tr>
+                <td></td>
+            </tr>
+        </thead>
+        <tbody>
+
+            @{
+                int counter = 0, i = 0;
+                string ticketDetailId = "";
+                foreach (var item in Model)
+                {
+                    counter++;
+                    if (i == 0)
+                    {
+                        ticketDetailId = item.TicketDetailId.ToString();
+                    }
+                    i++;
+                    <tr>
+                        <td style="padding-top: 0px; padding-bottom: 0px;">
+                            @if (counter == 1)
+                            {
+                                <div class="row">
+                                    <div class="" id="" style="font-size:x-large; font-weight:bold;">
+                                        @*<input type="hidden" value="@item.OrderNumber" name="order" />*@ <label class="order">@item.OrderNumber</label>.  @item.QuestionText
+                                    </div>
+                                    <br />
+                                    @if (!String.IsNullOrEmpty(item.QuestionImageUrl))
+                                    {
+                                        <a href="@item.QuestionImageUrl.ToString()" target="_blank">
+                                            <img src="@item.QuestionImageUrl" alt="" width="100px" height="100px" class="qp" id="qi" style="margin-left:30px;" />
+                                        </a>
+                                    }
+                                    <input name="TicketDetailId" type="hidden" value="@item.TicketDetailId" />
+                                </div>
+                                <hr />
+                            }
+                            <div class="row">
+                                <label><input type="radio" name="variant" value="@item.Variant" />  <label style="font-weight:bold">@item.Variant)</label>    @item.AnswerText </label>
+                                @if (!String.IsNullOrEmpty(item.AnswerImageUrl))
+                                {
+                                    <br />
+                                    <a href="@item.AnswerImageUrl" target="_blank">
+                                        <img src="@item.AnswerImageUrl" alt="" width="100px" height="100px" id="qi" class="ap" style="margin-left:30px;" />
+                                    </a>
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                    counter = counter == 5 ? 0 : counter;
+                }
+            }
+        </tbody>
+    </table>
+    @*<input id="" type="button" />*@
+    <a href="#" class="btn btn-success icon btn-icon icon-left" onclick="$('#modal').appendTo('body').modal('show')" style="margin-right:10px;" id="">
+        <i class="entypo-check"></i>
+        Finish exam
+    </a>
+    @* Modal for confirm *@
+    <div class="modal fade custom-width" id="modal">
+        <div class="modal-dialog" style="width:30%">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        x
+                    </button>
+                    <h3 class="modal-title">Are you sure?</h3>
+                </div>
+                <div class="modal-body">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" id="confirm" class="btn btn-success" data-dismiss="modal">Finish</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @* Modal for exam result *@
+    <div class="modal fade custom-width" data-backdrop="static" data-keyboard="false" id="resultModal">
+        <div class="modal-dialog" style="width:40%">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Exam result</h3>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-bordered" id="tbl_result">
+                        <thead>
+                            <tr>
+                                <th>True answers</th>
+                                <th>False answers</th>
+                                <th>Blanked answers</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr></tr>
+                        </tbody>
+                    </table>
+                    <button type="button" id="ok" class="btn btn-success">Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade custom-width" id="pic">
+        <div class="modal-dialog" style="width:40%">
+            <div class="modal-content">
+                <img src="#" alt="" id="picture" />
+            </div>
+        </div>
+    </div>
+
+
+    <script src="~/assets/js/gsap/main-gsap.js"></script>
+    <script src="~/assets/js/jquery-ui/js/jquery-ui-1.10.3.minimal.min.js"></script>
+    <script src="~/assets/js/bootstrap.js"></script>
+    <script src="~/assets/js/joinable.js"></script>
+    <script src="~/assets/js/resizeable.js"></script>
+    <script src="~/assets/js/neon-api.js"></script>
+    <script src="~/assets/js/neon-chat.js"></script>
+    <script src="~/assets/js/neon-custom.js"></script>
+    <script src="~/assets/js/neon-demo.js"></script>
+    <script src="~/Scripts/theme/jquery.cookie.js"></script>
+    <script src="~/Scripts/theme/jquery.dataTables.min.js"></script>
+    @*<script src="~/assets/js/jquery.dataTables.min.js"></script>*@
+    <script src="~/Scripts/theme/dataTables.jqueryui.js"></script>
+    <script src="~/Scripts/custom/examIndex.js"></script>
+
+    <script src="~/Scripts/custom/common.js"></script>
+
+    <script src="~/Scripts/theme/toastr.js"></script>
+    <script src="~/Scripts/theme/TweenMax.min.js"></script>
+
+</body>
+</html>

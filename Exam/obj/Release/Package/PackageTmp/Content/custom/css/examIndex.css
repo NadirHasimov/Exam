@@ -1,0 +1,25 @@
+﻿body {
+    padding: 40px;
+}
+
+#timer {
+    font-size: xx-large;
+    margin-right: 20px;
+    border: 1px;
+    color: white;
+    background-color: black;
+    border-radius: 5px;
+}
+
+.color {
+    color: black !important;
+}
+
+.last-minute {
+    background-color: red !important;
+    color: white !important;
+    padding: 5px !important;
+    font-size: 50px;
+}
+
+

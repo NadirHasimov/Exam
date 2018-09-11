@@ -1,0 +1,449 @@
+﻿@using Exam.Models
+@model  CandidateViewModel
+
+@section Styles{
+    <link rel="stylesheet" href="~/assets/js/daterangepicker/daterangepicker-bs3.css" />
+    <link rel="stylesheet" href="~/assets/js/select2/select2-bootstrap.css" />
+    <link rel="stylesheet" href="~/assets/js/select2/select2.css" />
+    <link href="~/Content/Theme/css/dataTables.jqueryui.css" rel="stylesheet" />
+    <link href="~/Content/custom/css/candidateIndex.css" rel="stylesheet" />
+}
+
+<!-- Bottom Scripts -->
+@section Scripts{
+    <script src="~/assets/js/jquery.bootstrap.wizard.min.js"></script>
+    <script src="~/assets/js/jquery.validate.min.js"></script>
+    <script src="~/assets/js/jquery.inputmask.bundle.min.js"></script>
+    <script src="~/assets/js/bootstrap-timepicker.min.js"></script>
+    <script src="~/assets/js/bootstrap-datepicker.js"></script>
+    <script src="~/assets/js/daterangepicker/moment.min.js"></script>
+    <script src="~/assets/js/daterangepicker/daterangepicker.js"></script>
+    <script src="~/assets/js/select2/select2.min.js"></script>
+
+    <script src="~/Scripts/theme/jquery.dataTables.min.js"></script>
+    @*<script src="~/assets/js/jquery.dataTables.min.js"></script>*@
+    <script src="~/Scripts/theme/dataTables.jqueryui.js"></script>
+    <script src="~/Scripts/custom/candidateIndex.js"></script>
+}
+
+<hr />
+<h2>Candidate</h2>
+<br />
+
+<hr />
+<br />
+<div class="row">
+    @using (Html.BeginForm("Index", "Candidate", FormMethod.Get))
+    {
+        <input id="dt_range" type="text" name="dt_range" value="" hidden />
+        <button type="submit" class="btn btn-default pull-left btn-icon" id="filterDate"> <i class="entypo-search"></i>Filter Date</button>
+        <div class="col-md-4 pull-left">
+            <div class="daterange daterange-inline" data-format="MMMM D, YYYY" data-start-date="March 13, 2018" data-end-date="March 27, 2018">
+                <i class="entypo-calendar"></i>
+                <span>March 13, 2018-March 27, 2018</span>
+            </div>
+        </div>
+    }
+    <a href="#" class="btn btn-danger icon btn-icon icon-left pull-right" style="" id="btn_disable">
+        <i class="entypo-block"></i>
+        Disable
+    </a>
+    <a href="#" class="btn btn-success icon btn-icon icon-left pull-right" style="margin-right:10px;" id="btn_approve">
+        <i class="entypo-check"></i>
+        Approve
+    </a>
+    <a href="javascript:;" id="mdl_btn" style="margin-right:10px;" onclick="$('#modal').appendTo('body').modal('show')" class="btn btn-info icon btn-icon icon-left pull-right">
+        <i class="entypo-list-add"></i>
+        Create ticket
+    </a>
+</div>
+<div class="modal fade custom-width" id="modal">
+    <div class="modal-dialog" style="width:75%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    x
+                </button>
+                <h3 class="modal-title">Create candidate and ticket</h3>
+            </div>
+            <div class="modal-body">
+                <form id="rootwizard" class="form-wizard validate">
+
+                    <div class="steps-progress">
+                        <div class="progress-indicator"></div>
+                    </div>
+
+                    <ul class="w">
+                        <li class="active">
+                            <a href="#tab1" data-toggle="tab" id="href1"><span><i class="entypo-search" style="font-size:large"></i></span><p style="margin-left:6%">Axtarış</p></a>
+                        </li>
+                        <li class="">
+                            <a href="#tab2" data-toggle="tab"><span><i class="entypo-user" style="font-size:large"></i></span><p style="margin-left:7%">Şəxsi məlumatlar</p></a>
+                        </li>
+                        <li class="">
+                            <a href="#tab3" data-toggle="tab"><span><i class="entypo-calendar" style="font-size:large"></i></span><p style="margin-left:6%">İmtahan məlumatları</p></a>
+                        </li>
+                        <li class="">
+                            <a href="#tab4" data-toggle="tab"><span><i class="entypo-floppy" style="font-size:large"></i></span><p style="margin-left:6%">Yadda saxla</p></a>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content">
+
+                        <div class="tab-pane active" id="tab1">
+                            @*<div class="row">
+                                    <div class="col-md-4">
+                                        <input type="text" name="FinCode" class="form-control" />
+                                    </div>
+                                    <div class="col-md-3">
+                                        <a href="#" class="btn btn-blue icon">
+                                            <i class="entypo-search"></i>
+                                        </a>
+                                    </div>
+                                </div>*@
+                            <div class="form-group">
+                                <div class="fin input-group col-md-4 col-centered">
+                                    <div class="input-group-addon">
+                                        <i class="entypo-search"></i>
+                                    </div>
+                                    <input type="text" class="form-control" value="6666666" name="finCode" id="finCode" data-validate="required,minlength[7],maxlength[7]" data-message-minlength="Minlength 7" data-message-maxlength="Maxlength 7" placeholder="FIN kod" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="tab2">
+                            <input type="text" name="ID" id="ID" hidden />
+                            <div class="row align-center">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="control-label" for="FinCode">FIN code</label>
+                                        <input class="form-control" name="FinCode" id="FinCode" data-validate="required" />
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="control-label" for="FirstName">Name</label>
+                                        <input class="form-control" name="FirstName" id="FirstName" data-validate="required" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="control-label" for="LastName">Surname</label>
+                                        <input class="form-control" name="LastName" id="LastName" data-validate="required" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="control-label" for="MiddleName">Middle name</label>
+                                        <input class="form-control" name="MiddleName" id="MiddleName" data-validate="required" />
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row align-center">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="control-label" for="Birthdate">Birthdate</label>
+                                        <div class="input-group">
+                                            <input type="text" id="Birthdate" name="Birthdate" class="form-control datepicker" data-format="dd/mm/yyyy" data-validate="required">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="control-label" for="Mail">Mail</label>
+                                        <input class="form-control" type="email" name="Mail" id="Mail" data-validate="required" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="control-label" for="Mobile">Mobile</label>
+                                        <input class="form-control" type="tel" name="Mobile" id="Mobile" data-validate="required" />
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <div class="row align-center">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label" for="ProfessionId">Profession</label>
+                                        <select id="ProfessionId" name="ProfessionId" class="profession" data-validate="">
+                                            @foreach (var candidate in Exam.DALC.CandidateDALC.GetProfessions())
+                                            {
+                                                <option value="@candidate.Item1"> @candidate.Item2</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="control-label" for="Gender">Gender</label>
+                                        <br />
+                                        <label style="margin-right:2%;"><input type="radio" name="Gender" class="" id="Gender0" value="0" /> Male</label>
+                                        <label><input type="radio" name="Gender" id="Gender1" class="" value="1" /> Female</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="control-label" for="FamilyStatus">Family status</label>
+                                        <select name="test" class="form-control" id="FamilyStatusId">
+                                            <option value="1">Married</option>
+                                            <option value="2" selected>Single</option>
+                                            <option value="3">Divorced</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="tab-pane" id="tab3">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class="col-md-6 col-centered">
+                                            <label class="control-label" for="profession">Profession</label>
+                                            <select id="profession" name="profession" class="profession" data-validate="required">
+                                                @foreach (var candidate in Exam.DALC.CandidateDALC.GetProfessions())
+                                                {
+                                                    <option value="@candidate.Item1"> @candidate.Item2</option>
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3 center-picker">
+                                        <div class="form-group">
+                                            <label class="control-label" for="Date">Date</label>
+                                            <div class="input-group">
+                                                <input type="text" id="Date" name="Date" class="form-control datepicker" data-format="dd/mm/yyyy" data-validate="required">
+                                                <div class="input-group-addon">
+                                                    <a href="#"><i class="entypo-calendar"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label" for="clock">Clock</label>
+                                            <div class="input-group">
+                                                <input type="text" id="clock" name="clock" class="form-control timepicker" data-template="dropdown" data-validate="required" data-format="" data-show-seconds="true" data-default-time="11:25 AM" data-show-meridian="true" data-minute-step="5" data-second-step="5">
+                                                <div class="input-group-addon">
+                                                    <a href="#"><i class="entypo-clock"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="tab4">
+                            <div class="row align-center">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="control-label" for="FinCodeClone">FIN code</label>
+                                        <input class="form-control" name="FinCodeClone" id="FinCodeClone" data-validate="required" />
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="control-label" for="FirstNameClone">Name</label>
+                                        <input class="form-control" name="FirstNameClone" id="FirstNameClone" data-validate="required" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="control-label" for="LastNameClone">Surname</label>
+                                        <input class="form-control" name="LastNameClone" id="LastNameClone" data-validate="required" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="control-label" for="MiddleNameClone">Middle name</label>
+                                        <input class="form-control" name="MiddleNameClone" id="MiddleNameClone" data-validate="required" />
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row align-center">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="control-label" for="BirthdateClone">Birthdate</label>
+                                        <div class="input-group">
+                                            <input type="text" id="BirthdateClone" name="BirthdateClone" class="form-control datepicker" data-format="dd/mm/yyyy" data-validate="required">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="control-label" for="MailClone">Mail</label>
+                                        <input class="form-control" type="email" name="MailClone" id="MailClone" data-validate="required" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="control-label" for="MobileClone">Mobile</label>
+                                        <input class="form-control" type="tel" name="MobileClone" id="MobileClone" data-validate="required" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="control-label" for="ProfessionIdClone">Profession</label>
+                                        <select id="ProfessionIdClone" name="ProfessionIdClone" class="profession" data-validate="">
+                                            @foreach (var candidate in Exam.DALC.CandidateDALC.GetProfessions())
+                                            {
+                                                <option value="@candidate.Item1"> @candidate.Item2</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row align-center">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="control-label" for="GenderClone">Gender</label>
+                                        <br />
+                                        <label style="margin-right:2%;"><input type="radio" name="GenderClone" class="" id="GenderClone0" value="0" /> Male</label>
+                                        <label><input type="radio" name="GenderClone" id="GenderClone1" class="" value="1" /> Female</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="control-label" for="FamilyStatusClone">Family status</label>
+                                        <select name="FamilyStatusClone" class="form-control" id="FamilyStatusIdClone">
+                                            <option value="1">Married</option>
+                                            <option value="2" selected>Single</option>
+                                            <option value="3">Divorced</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="row align-center">
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <label class="control-label" for="professionClone">Exam profession</label>
+                                        <select id="professionClone" name="professionClone" class="profession" data-validate="required">
+                                            @foreach (var candidate in Exam.DALC.CandidateDALC.GetProfessions())
+                                            {
+                                                <option value="@candidate.Item1"> @candidate.Item2</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row align-center">
+                                @*<div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label"></label>
+                                            <a href="#" data-dismiss="modal" class="btn btn-default" id="" style="margin-top:10px; font-size:small">
+                                                Cancel
+                                            </a>
+                                        </div>
+                                    </div>*@
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="control-label" for="DateClone">Date</label>
+                                        <div class="input-group">
+                                            <input type="text" id="DateClone" name="DateClone" class="form-control  datepicker" data-format="dd/mm/yyyy" data-validate="required">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="control-label" for="clockClone">Clock</label>
+                                        <div class="input-group">
+                                            <input type="text" id="clockClone" name="clockClone" class="form-control timepicker" data-template="dropdown" data-validate="required" data-show-seconds="true" data-default-time="11:25 AM" data-show-meridian="true" data-minute-step="5" data-second-step="5">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6" style="margin-top:20px;">
+                                    <div class="form-group">
+                                        <a href="#" data-dismiss="modal" class="btn btn-default pull-right icon btn-icon icon-left" id="" style="font-size:small;margin-left: 10px;">
+                                            <i class="entypo-cancel"></i>
+                                            Cancel
+                                        </a>
+                                        <a href="#" class="btn btn-success icon btn-icon icon-left pull-right" id="saveCandidate" style="font-size:small;">
+                                            <i class="entypo-floppy" style="font-size:medium;"></i>
+                                            Save
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <ul class="pager wizard">
+                            <li class="previous">
+                                <a href="#" id="prevBtn"><i class="entypo-left-open"></i> Previous</a>
+                            </li>
+
+                            <li class="next">
+                                <a href="#" id="nextBtn">Next <i class="entypo-right-open"></i></a>
+                            </li>
+                        </ul>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="table-container">
+    <table id="tbl_ticket" class="table bordered hover stripe">
+        <thead>
+            <tr>
+                <th><input type="checkbox" name="chkAll" id="chkAll" /></th>
+                <th>FIN code</th>
+                <th>Name</th>
+                <th>Surname</th>
+                <th>Middle name</th>
+                <th>Profession</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var candidate in Model.Candidates)
+            {
+                <tr>
+                    <td><input name="ids[]" class="chk" type="checkbox" value="@candidate.ID" /></td>
+                    <td>@candidate.FinCode</td>
+                    <td>@candidate.FirstName</td>
+                    <td>@candidate.LastName</td>
+                    <td>@candidate.MiddleName</td>
+                    <td>@candidate.Profession</td>
+                    <td>@candidate.ExamDate.ToShortDateString()</td>
+                    <td>@candidate.ExamTime.ToString()</td>
+                    <td>
+                        @if (candidate.Status.Equals("0"))
+                        {
+                            <i class="entypo-clock" style="font-size:large; color:cornflowerblue;"></i>
+                        }
+                        else if (candidate.Status.Equals("1"))
+                        {
+                            <i class="entypo-check" style="font-size:large;color:#50b54f"></i>
+                        }
+                        else
+                        {
+                            <i class="entypo-block" style="font-size:large; color:#e15252"></i>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+
+<link rel="stylesheet" href="~/assets/js/selectboxit/jquery.selectBoxIt.css">
+

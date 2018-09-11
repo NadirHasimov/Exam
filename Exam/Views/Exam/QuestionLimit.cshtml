@@ -1,0 +1,20 @@
+﻿@section Styles{
+    <link href="~/Content/Selectize/css/selectize.css" rel="stylesheet" />
+}
+@section Scripts{
+    <script src="~/Content/Selectize/js/standalone/selectize.js"></script>
+    <script src="~/Scripts/custom/questionLimit.js"></script>
+}
+
+
+<div class="selectbox-container">
+    <div class="col-md-12" id="1">
+        <select id="select1" class="select">
+            <option></option>
+            @foreach (var item in (List<Tuple<int, string>>)ViewBag.Parents)
+            {
+                <option value="@item.Item1">@item.Item2</option>
+            }
+        </select>
+    </div>
+</div>

@@ -1,0 +1,60 @@
+﻿body {
+    position: relative;
+}
+
+    body.loaded {
+        -webkit-perspective: none;
+        -moz-perspective: none;
+        perspective: none;
+    }
+
+    /*Styles for modal*/
+    body.modal-open {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        overflow: hidden;
+    }
+/* Styles for validation helpers */
+.field-validation-error {
+    color: #f00;
+    font-size: 11px;
+    margin-top: 5px;
+    display: inline-block;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+.input-validation-error {
+    border: 1px solid #f00 !important;
+}
+
+.validation-summary-errors {
+    font-weight: bold;
+    color: #f00;
+}
+
+.validation-summary-valid {
+    display: none;
+}
+
+textarea {
+    resize: none;
+}
+
+.marg {
+    margin-top: 15px;
+}
+
+.stop-scrolling {
+    height: 100%;
+    overflow: hidden;
+}
+
+.input-validation-error {
+    border-color: red;
+}
