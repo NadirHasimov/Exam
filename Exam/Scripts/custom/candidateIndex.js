@@ -37,9 +37,9 @@ $(document).ready(function () {
     });
     //----add class listener
     saveCandidate();
-    //CreateDataTable();
     ApproveTickets();
     CreateDataTable();
+    CreateEventHandler();
     FilterDate();
     window.location.url = '';
 });
@@ -56,7 +56,7 @@ var candidateData = {
     ProfessionId: "",
     Gender: "",
     FamilyStatus: ""
-}
+};
 
 var candidateModel = {
     ID: "",
@@ -74,7 +74,7 @@ var candidateModel = {
     Mail: "",
     Mobile: "",
     Profession: ""
-}
+};
 function getUserData() {
     var counter = 0,
         finFocusIn = '',
@@ -166,7 +166,7 @@ Date.prototype.toShortFormat = function () {
     var month_index = month < 10 ? '0' + month : month;
     var year = this.getFullYear();
     return "" + day + "/" + month_index + "/" + year;
-}
+};
 
 function saveCandidate() {
     $('#saveCandidate').click(function () {
@@ -178,7 +178,7 @@ function saveCandidate() {
             data: { viewModel: data },
             success: function (response) {
                 if (response.result) {
-                    table.row.add([
+                        table.row.add([
                         '<input name="ids[]" class="chk" type="checkbox" value="' + response.ID + '" />',
                         data.FinCode,
                         data.FirstName,
@@ -187,7 +187,7 @@ function saveCandidate() {
                         data.Profession,
                         data.ExamDate,
                         data.ExamTime,
-                        'Təsdiqlənmədi',
+                        'Təsdiqlənmədi'
                     ]).draw();
                     $('#tab2 input:not(:radio)').val('');
                     $('#finCode').val('');
@@ -222,31 +222,85 @@ function getData() {
     return candidateModel;
 }
 function CreateDataTable() {
-    table = $('#tbl_ticket').DataTable({
-        //"aLengthMenu": [[6], [6]]
+    var responsiveHelper;
+    var breakpointDefinition = {
+        tablet: 1024,
+        phone: 480
+    };
+    var tableContainer;
+
+    jQuery(document).ready(function ($) {
+        tableContainer = $("#tbl_ticket");
+
+        table = tableContainer.DataTable({
+            //"sDom": "tip",
+
+            "bStateSave": true,
+            //"iDisplayLength": 8,
+            "sPaginationType": "bootstrap",
+            "aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+
+            //"bColumns": [
+            //    {"width": "2%" },
+            //    {"width": "10%" },
+            //    {"width": "10%" },
+            //    {"width": "10%" },
+            //    {"width": "10%" },
+            //    {"width": "10%" },
+            //    {"width": "10%" },
+            //    {"width": "5%" },
+            //    {"width": "3%" }
+            //],
+
+            "aoColumns": [
+                {
+                    "bSortable": false,
+                    "bWidth": "10%"
+                },
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                { "bSortable": false }
+            ],
+            //Responsive Settings
+            bAutoWidth: false,
+            fnPreDrawCallback: function () {
+                // Initialize the responsive datatables helper once.
+                if (!responsiveHelper) {
+                    responsiveHelper = new ResponsiveDatatablesHelper(tableContainer, breakpointDefinition);
+                }
+            },
+            fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+                responsiveHelper.createExpandIcon(nRow);
+            },
+            fnDrawCallback: function (oSettings) {
+                responsiveHelper.respond();
+            }
+        });
+        table.columnFilter({
+            "sPlaceHolder": "head:after"
+        });
+        $(".dataTables_wrapper select").select2({
+            minimumResultsForSearch: -1
+        });
+
+        $(".dataTables_wrapper select").select2({
+            minimumResultsForSearch: -1
+        });
+        $('.search_init').addClass('form-control');
+        $('.text_filter').first().remove();
+        $('.text_filter').last().remove();
     });
+
     $('#srch').change(function () {
         console.log($(this).val());
         table.page(parseInt($(this).val())).draw('page');
     });
 }
-//function CreateDataTable() {
-//    $('#tbl_ticket thead tr:nth-child(1) th').each(function () {
-//        var title = $(this).text();
-//        $(this).html('<input type="search" class="form-control srch" placeholder="' + title + '" aria-controls="document-table" />');
-//    });
-//    tickets = $('#tbl_ticket').dataTable({});
-//    tickets.api().columns().every(function () {
-//        var that = this;
-//        $('input.srch', this.footer()).on('keyup change', function () {
-//            if (that.search() !== this.value) {
-//                that
-//                    .search(this.value)
-//                    .draw();
-//            }
-//        });
-//    });
-//}
 function ApproveTickets() {
     $('#btn_approve,#btn_disable').click(function (e) {
         e.preventDefault();
@@ -282,5 +336,32 @@ function FilterDate() {
     $('.daterange span').on('change', function () {
         $('#dt_range').val($('.daterange span').text());
         console.log($('#dt_range').val());
+    });
+}
+
+function CreateEventHandler() {
+
+    $('#chkAll').click(function () {
+        $('input.chk:checkbox').prop('checked', this.checked);
+        if ($('input.chk:checkbox').prop('checked')) {
+            $('#tbl_ticket tr').addClass('highlight');
+        } else
+            $('#tbl_ticket tr').removeClass('highlight');
+    });
+
+    $(document).on('change', 'input.chk:checkbox', function () {
+        console.log(666);
+        if ($(this).is(":checked")) {
+            $(this).closest('tr').addClass("highlight");
+        } else {
+            $(this).closest('tr').removeClass("highlight");
+        }
+    });
+
+    $('#tbl_ticket').on('click', '.tr', function (event) {
+        console.log(222);
+        if (event.target.type !== 'checkbox') {
+            $(':checkbox', this).trigger('click');
+        }
     });
 }

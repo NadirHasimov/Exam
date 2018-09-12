@@ -90,9 +90,9 @@ namespace Exam.DALC
                     string message = "", ID = "";
                     bool result = false;
                     var reader = cmd.ExecuteReader();
-                    if (reader.Read())
+                    if (reader.HasRows)
                     {
-                        if (reader.HasRows)
+                        if (reader.Read())
                         {
                             message = reader["message"].ToString();
                             result = String.Equals("Ok", message);
