@@ -62,6 +62,10 @@ namespace Exam.Models
 
         public int HdnUpdateStatus { get; set; }
 
+        public string Creator { get; set; }
+
+        public string CreateDate { get; set; }
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             if (String.IsNullOrEmpty(QuestionText) && QuestionImage == null)

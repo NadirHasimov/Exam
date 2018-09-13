@@ -38,17 +38,20 @@
 <body>
     <input id="tblState" type="hidden" value="0" />
     <input id="TicketId" name="TicketId" type="hidden" value="@Model.Select(row=>row.TicketId).FirstOrDefault()" />
-    <div class="row pull-right">
-        @*<button class="btn" id="stop">Stop timer</button>
-            <button class="btn" id="start">Start timer</button>
-            <button class="btn" id="show">Show timer</button>
-            <button class="btn" id="hide">Hide timer</button>*@
-        <span id="timer" style="font-size:xx-large; margin-right:20px;">@Model.FirstOrDefault().Time</span>
+    <div style="text-align:center">
+        <a href="#" class="btn btn-info icon btn-icon icon-left" onclick="$('#quesList').appendTo('body').modal('show')" style="font-size:x-large;width:307px;margin-left:67px;" id="viewList">
+            <i class="entypo-list" style="font-size:x-large"></i>
+            Questions list
+        </a>
+        <div class="row pull-right">
+            @*<button class="btn" id="stop">Stop timer</button>
+                <button class="btn" id="start">Start timer</button>
+                <button class="btn" id="show">Show timer</button>
+                <button class="btn" id="hide">Hide timer</button>*@
+            <span id="timer" style="font-size:xx-large; margin-right:20px;">@Model.FirstOrDefault().Time</span>
+        </div>
     </div>
-    <a href="#" class="btn btn-info icon btn-icon icon-left" onclick="$('#quesList').appendTo('body').modal('show')" style="margin-right:10px;" id="viewList">
-        <i class="entypo-list"></i>
-        Questions list
-    </a>
+
     <div class="modal fade" id="quesList">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -103,11 +106,11 @@
                         ticketDetailId = item.TicketDetailId.ToString();
                     }
                     i++;
-                    <tr>
+                    <tr style="text-align:center;">
                         <td style="padding-top: 0px; padding-bottom: 0px;">
                             @if (counter == 1)
                             {
-                                <div class="row">
+                                <div class="row" style="">
                                     <div class="" id="" style="font-size:x-large; font-weight:bold;">
                                         @*<input type="hidden" value="@item.OrderNumber" name="order" />*@ <label class="order">@item.OrderNumber</label>.  @item.QuestionText
                                     </div>
@@ -122,7 +125,7 @@
                                 </div>
                                 <hr />
                             }
-                            <div class="row">
+                            <div class="row" style="">
                                 <label><input type="radio" name="variant" value="@item.Variant" />  <label style="font-weight:bold">@item.Variant)</label>    @item.AnswerText </label>
                                 @if (!String.IsNullOrEmpty(item.AnswerImageUrl))
                                 {
@@ -140,10 +143,13 @@
         </tbody>
     </table>
     @*<input id="" type="button" />*@
-    <a href="#" class="btn btn-success icon btn-icon icon-left" onclick="$('#modal').appendTo('body').modal('show')" style="margin-right:10px;" id="">
-        <i class="entypo-check"></i>
-        Finish exam
-    </a>
+
+    <div class="" style="text-align:center;margin-top:10px;">
+        <a href="#" class="btn btn-success icon btn-icon icon-left hidden" onclick="$('#modal').appendTo('body').modal('show')" style="font-size:xx-large;width:308px;" id="f_exam">
+            <i class="entypo-check" style="font-size:xx-large"></i>
+            Finish exam
+        </a>
+    </div>
     @* Modal for confirm *@
     <div class="modal fade custom-width" id="modal">
         <div class="modal-dialog" style="width:30%">

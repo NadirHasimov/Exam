@@ -42,6 +42,7 @@ $(document).ready(function () {
     CreateEventHandler();
     FilterDate();
     window.location.url = '';
+    displayOperationResult();
 });
 
 var candidateData = {
@@ -178,17 +179,27 @@ function saveCandidate() {
             data: { viewModel: data },
             success: function (response) {
                 if (response.result) {
-                        table.row.add([
-                        '<input name="ids[]" class="chk" type="checkbox" value="' + response.ID + '" />',
-                        data.FinCode,
-                        data.FirstName,
-                        data.LastName,
-                        data.MiddleName,
-                        data.Profession,
-                        data.ExamDate,
-                        data.ExamTime,
-                        'Təsdiqlənmədi'
-                    ]).draw();
+                    //table.row.add([
+                    //'<input name="ids[]" class="chk" type="checkbox" value="' + response.ID + '" />',
+                    //data.FinCode,
+                    //data.FirstName,
+                    //data.LastName,
+                    //data.MiddleName,
+                    //data.Profession,
+                    //data.ExamDate,
+                    //data.ExamTime,
+                    //'Təsdiqlənmədi'
+                    //]).draw();
+                    jQuery('#tbl_ticket').dataTable().fnAddData(['<input name="ids[]" class="chk" type="checkbox" value="' + response.ID + '" />',
+                    data.FinCode,
+                    data.FirstName,
+                    data.LastName,
+                    data.MiddleName,
+                    data.Profession,
+                    data.ExamDate,
+                    data.ExamTime,
+                        'Təsdiqlənmədi']);
+
                     $('#tab2 input:not(:radio)').val('');
                     $('#finCode').val('');
                     $('#href1').click();
@@ -236,22 +247,8 @@ function CreateDataTable() {
             //"sDom": "tip",
 
             "bStateSave": true,
-            //"iDisplayLength": 8,
             "sPaginationType": "bootstrap",
             "aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-
-            //"bColumns": [
-            //    {"width": "2%" },
-            //    {"width": "10%" },
-            //    {"width": "10%" },
-            //    {"width": "10%" },
-            //    {"width": "10%" },
-            //    {"width": "10%" },
-            //    {"width": "10%" },
-            //    {"width": "5%" },
-            //    {"width": "3%" }
-            //],
-
             "aoColumns": [
                 {
                     "bSortable": false,
@@ -291,7 +288,7 @@ function CreateDataTable() {
         $(".dataTables_wrapper select").select2({
             minimumResultsForSearch: -1
         });
-        $('.search_init').addClass('form-control');
+        $('.text_filter').addClass('form-control');
         $('.text_filter').first().remove();
         $('.text_filter').last().remove();
     });
@@ -325,7 +322,12 @@ function ApproveTickets() {
             data: JSON.stringify({ ids: ids, type: $(this).text().trim() === 'Disable' ? '2' : '1' }),
             contentType: 'application/json',
             success: function (response) {
-                location.reload();
+                if (response) {
+                    window.location.replace('/Candidate/Index#success');
+                    location.reload();
+                } else {
+                    showErrorNotification('Error occured.');
+                }
             }
         });
     });
@@ -350,7 +352,6 @@ function CreateEventHandler() {
     });
 
     $(document).on('change', 'input.chk:checkbox', function () {
-        console.log(666);
         if ($(this).is(":checked")) {
             $(this).closest('tr').addClass("highlight");
         } else {
@@ -358,10 +359,20 @@ function CreateEventHandler() {
         }
     });
 
-    $('#tbl_ticket').on('click', '.tr', function (event) {
-        console.log(222);
+    $('#tbl_ticket').on('click', 'tbody tr', function (event) {
         if (event.target.type !== 'checkbox') {
             $(':checkbox', this).trigger('click');
         }
     });
+}
+
+function displayOperationResult() {
+    result = window.location.hash;
+    if (result === '#success') {
+        showSuccessNotification('Operation successfully executed.');
+    }
+    else if (result === '#error') {
+        showErrorNotification('Error occured. Try again.');
+    }
+    window.location.hash = '';
 }

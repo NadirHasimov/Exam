@@ -130,11 +130,13 @@ namespace Exam.DALC
         {
             public const string getCategories = @"SELECT ID,NAME,PARENT_ID FROM CATEGORY WHERE ACTIVE=1";
 
-            public const string getQuestions = @"SELECT q.ID,c.NAME SUB,c1.NAME PARENT,q.ACTIVE FROM QUESTION q
+            public const string getQuestions = @"SELECT q.ID,c.NAME SUB,c1.NAME PARENT,q.ACTIVE, REPLACE(u.USERNAME,'@ady.az','') USERNAME,q.CREATE_DATE FROM QUESTION q
                                                  INNER JOIN CATEGORY c
                                                  ON q.SUB_CATEGORY_ID=c.ID
                                                  INNER JOIN CATEGORY c1
-                                                 ON c1.ID=c.PARENT_ID";
+                                                 ON c1.ID=c.PARENT_ID
+												 INNER JOIN [USER] u
+												 ON q.USER_ID=u.ID";
 
             public const string getQuestion = @"SELECT q.ID,q.ACTIVE, q.SUB_CATEGORY_ID,c.PARENT_ID,q.QUES_TEXT,q.QUES_IMAGE_URL,a.ANSWER_TEXT,
                                                 a.ANSWER_IMAGE,a.QUES_VARIANT,a.TRUE_ANSWER 

@@ -22,4 +22,62 @@
     font-size: 50px;
 }
 
+.dataTables_wrapper .dataTables_info.dataTables_paginate,
+.dataTables_wrapper .dataTables_paginate.dataTables_paginate {
+    text-align: center !important;
+    float: none !important;
+}
 
+.dataTables_wrapper .dataTables_info,
+.dataTables_wrapper .dataTables_paginate {
+    border: none !important;
+    border-radius: 0px !important;
+    background: transparent !important;
+    height: 50px;
+    color: black !important;
+}
+
+.dataTables_wrapper .dataTables_info,
+.dataTables_wrapper .dataTables_paginate {
+    padding: 10px 0px;
+}
+
+.dataTables_wrapper .dataTables_paginate {
+    margin: 0px;
+}
+
+    .dataTables_wrapper .dataTables_paginate .fg-button {
+        background: #f0f0f1 !important;
+        border: none !important;
+        margin: 0px;
+        font-weight: normal;
+        font-size: 12px;
+        border-radius: 0px;
+        padding: 8px 10px;
+    }
+
+    .dataTables_wrapper .dataTables_paginate > .fg-button:first-child {
+        border-top-left-radius: 3px;
+        border-bottom-left-radius: 3px;
+        border-right: 1px solid #ebebeb !important;
+    }
+
+    .dataTables_wrapper .dataTables_paginate > .fg-button:last-child {
+        border-top-right-radius: 3px;
+        border-bottom-right-radius: 3px;
+        border-left: 1px solid #ebebeb !important;
+    }
+
+    .dataTables_wrapper .dataTables_paginate .fg-button.ui-state-disabled {
+        opacity: unset !important;
+        cursor: not-allowed !important;
+    }
+
+    .dataTables_wrapper .dataTables_paginate span .fg-button.ui-state-disabled {
+        cursor: default !important;
+        color: red !important;
+    }
+.col-centered {
+    margin: 0 auto;
+    float: none;
+}

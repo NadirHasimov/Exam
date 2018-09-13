@@ -8,6 +8,10 @@
     @*<link href="~/Content/Theme/css/dataTables.jqueryui.css" rel="stylesheet" />*@
     <link href="~/Content/custom/css/candidateIndex.css" rel="stylesheet" />
     <style>
+        .modalCenter {
+            top: 50% !important;
+            transform: translateY(-50%) !important;
+        }
     </style>
 }
 
@@ -60,7 +64,7 @@
     </a>
 </div>
 <div class="modal fade custom-width" id="modal">
-    <div class="modal-dialog" style="width:75%">
+    <div class="modal-dialog modalCenter" style="width:75%">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">
@@ -399,7 +403,7 @@
     </div>
 </div>
 <div class="table-container">
-    <table id="tbl_ticket" width="100%" class="table table-hover table-bordered datatable">
+    <table id="tbl_ticket" class="table table-hover table-bordered datatable">
         <thead>
             <tr>
                 <th></th>
@@ -413,7 +417,7 @@
                 <th>Status</th>
             </tr>
             <tr>
-                <th width="2%"><input type="checkbox" name="chkAll" id="chkAll" /></th>
+                <th><input type="checkbox" name="chkAll" id="chkAll" /></th>
                 <th>FIN code</th>
                 <th>Name</th>
                 <th>Surname</th>

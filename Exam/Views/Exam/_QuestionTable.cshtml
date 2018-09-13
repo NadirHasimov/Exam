@@ -1,18 +1,22 @@
 ﻿<table class="table table-hover table-bordered datatable" id="question-table">
     <thead>
-        <tr>
+        <tr class="head">
             <th></th>
             <th>ID</th>
             <th>Parent</th>
             <th>Subcategory</th>
+            <th>Creator</th>
+            <th>Create date</th>
             <th>Status</th>
             <th>Action</th>
         </tr>
-        <tr>
+        <tr class="head">
             <th><input id="chkAll" type="checkbox" /></th>
             <th>ID</th>
             <th>Parent</th>
             <th>Subcategory</th>
+            <th>Creator</th>
+            <th>Create date</th>
             <th>Status</th>
             <th>Action</th>
         </tr>
@@ -28,6 +32,8 @@
                 <td>@item.ID</td>
                 <td>@item.Parent</td>
                 <td>@item.Sub</td>
+                <td>@item.Creator</td>
+                <td>@item.CreateDate</td>
                 <td>
                     @if (item.Status.Equals(0))
                     {

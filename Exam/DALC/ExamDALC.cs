@@ -89,7 +89,9 @@ namespace Exam.DALC
                                 ID = int.Parse(reader["ID"].ToString()),
                                 Parent = reader["PARENT"].ToString(),
                                 Sub = reader["Sub"].ToString(),
-                                Status = Boolean.Parse(reader["ACTIVE"].ToString()) ? 1 : 0
+                                Status = Boolean.Parse(reader["ACTIVE"].ToString()) ? 1 : 0,
+                                Creator = reader["USERNAME"].ToString(),
+                                CreateDate = DateTime.Parse(reader["CREATE_DATE"].ToString()).ToString("dd/mm/yyyy")
                             });
                         }
                     }

@@ -60,7 +60,9 @@ function CreateDataTable() {
                     "bSortable": false,
                     "sWidth": "3%"
                 },
-                { "sWidth": "6%" },
+                { "sWidth": "5%" },
+                null,
+                null,
                 null,
                 null,
                 { "bSortable": false },
@@ -94,10 +96,10 @@ function CreateDataTable() {
         $(".dataTables_wrapper select").select2({
             minimumResultsForSearch: -1
         });
-        $('.search_init').addClass('form-control');
+        $('.text_filter').addClass('form-control');
         $('.text_filter').first().remove();
         $('.text_filter').last().remove();
-        $('.text_filter').eq(3).remove();
+        $('.text_filter').eq(5).remove();
     });
 }
 
@@ -254,7 +256,7 @@ function Edit() {
             url: $(this).attr('href'),
             success: function (response) {
                 console.log(response);
-                $('input:not(:radio)').val('');
+                $('#insert-ques input:not(:radio)').val('');
                 $.each(response.question, function (i, w) {
                     if (w.IsCorrectAnswer) {
                         correctVariant = w.Variant;
@@ -330,6 +332,8 @@ function displayOperationResult() {
     }
     else if (result === '#successE') {
         showSuccessNotification('Question edited.');
+    } else if (result === 'success') {
+        showSuccessNotification('Operation successfully executed.');
     }
     else if (result === '#error') {
         showErrorNotification('Error occured. Try again.');

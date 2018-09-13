@@ -48,5 +48,9 @@ namespace Exam.DomainModels
         public string Sub { get; set; }
 
         public int Status { get; set; }
+
+        public string Creator { get; set; }
+
+        public string CreateDate { get; set; }
     }
 }

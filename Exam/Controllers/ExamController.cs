@@ -23,7 +23,7 @@ namespace Exam.Controllers
                 return View("SignIn", "Home");
             }
             var questions = TicketDALC.GetCandQuestions(User.Identity.Name).Select(row => MapToQuestionViewModel(row)).ToList();
-            TicketDALC.UpdateTicketFinish(questions.FirstOrDefault().TicketId);
+            //TicketDALC.UpdateTicketFinish(questions.FirstOrDefault().TicketId);
             if (questions.Count == 0)
             {
                 FormsAuthentication.SignOut();
@@ -249,7 +249,9 @@ namespace Exam.Controllers
                 AnswerTextC = domainModel.AnswerTextC,
                 AnswerTextD = domainModel.AnswerTextD,
                 AnswerTextE = domainModel.AnswerTextE,
-                Status = domainModel.Status
+                Status = domainModel.Status,
+                CreateDate = domainModel.CreateDate,
+                Creator = domainModel.Creator
             };
         }
 
