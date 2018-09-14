@@ -52,8 +52,15 @@ function CreateDataTable() {
         tableContainer = $("#question-table");
 
         dataTable = tableContainer.DataTable({
-            "bStateSave": true,
+            "dom": 'Bfrtip',
+            buttons: [
+                'copyHtml5',
+                'excelHtml5',
+                'csvHtml5',
+                'pdfHtml5'
+            ],
             "sPaginationType": "bootstrap",
+            
             "aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
             "aoColumns": [
                 {

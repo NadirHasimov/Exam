@@ -2,6 +2,7 @@
 $(document).ready(function () {
     GetSubCategories();
     CreateDataTable();
+    CreateEventHandler();
     Preview();
     View();
     ApproveQuestions();
@@ -40,38 +41,73 @@ function GetSubCategories() {
 }
 
 function CreateDataTable() {
-    dataTable = $('#question-table').DataTable({
-        //columnDefs: [{
-        //    orderable: false,
-        //    className: 'select-checkbox',
-        //    targets: 0
-        //}],
-        //select: {
-        //    style: 'os',
-        //    selector: 'td:first-child'
-        //},
-        //order: [
-        //    [1, 'asc']
-        //]
+    var responsiveHelper;
+    var breakpointDefinition = {
+        tablet: 1024,
+        phone: 480
+    };
+    var tableContainer;
+
+    jQuery(document).ready(function ($) {
+        tableContainer = $("#question-table");
+
+        dataTable = tableContainer.DataTable({
+            "dom": 'Bfrtip',
+            buttons: [
+                'copyHtml5',
+                'excelHtml5',
+                'csvHtml5',
+                'pdfHtml5'
+            ],
+            "sPaginationType": "bootstrap",
+            
+            "aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+            "aoColumns": [
+                {
+                    "bSortable": false,
+                    "sWidth": "3%"
+                },
+                { "sWidth": "5%" },
+                null,
+                null,
+                null,
+                null,
+                { "bSortable": false },
+                {
+                    "bSortable": false,
+                    "sWidth": "13%"
+                }
+            ],
+            //Responsive Settings
+            bAutoWidth: false,
+            fnPreDrawCallback: function () {
+                // Initialize the responsive datatables helper once.
+                if (!responsiveHelper) {
+                    responsiveHelper = new ResponsiveDatatablesHelper(tableContainer, breakpointDefinition);
+                }
+            },
+            fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+                responsiveHelper.createExpandIcon(nRow);
+            },
+            fnDrawCallback: function (oSettings) {
+                responsiveHelper.respond();
+            }
+        });
+        dataTable.columnFilter({
+            "sPlaceHolder": "head:after"
+        });
+        $(".dataTables_wrapper select").select2({
+            minimumResultsForSearch: -1
+        });
+
+        $(".dataTables_wrapper select").select2({
+            minimumResultsForSearch: -1
+        });
+        $('.text_filter').addClass('form-control');
+        $('.text_filter').first().remove();
+        $('.text_filter').last().remove();
+        $('.text_filter').eq(5).remove();
     });
-    //dataTable.on("click", "th.select-checkbox", function () {
-    //    if ($("th.select-checkbox").hasClass("selected")) {
-    //        dataTable.rows().deselect();
-    //        $("th.select-checkbox").removeClass("selected");
-    //    } else {
-    //        dataTable.rows().select();
-    //        $("th.select-checkbox").addClass("selected");
-    //    }
-    //}).on("select deselect", function () {
-    //    ("Some selection or deselection going on")
-    //    if (dataTable.rows({
-    //        selected: true
-    //    }).count() !== dataTable.rows().count()) {
-    //        $("th.select-checkbox").removeClass("selected");
-    //    } else {
-    //        $("th.select-checkbox").addClass("selected");
-    //    }
-    //});
 }
 
 function Preview() {
@@ -127,7 +163,7 @@ function readURL(input, id) {
         var reader = new FileReader();
         reader.onload = function (e) {
             $('#' + id).attr('src', e.target.result);
-        }
+        };
         reader.readAsDataURL(input.files[0]);
     }
 }
@@ -227,7 +263,7 @@ function Edit() {
             url: $(this).attr('href'),
             success: function (response) {
                 console.log(response);
-                $('input:not(:radio)').val('');
+                $('#insert-ques input:not(:radio)').val('');
                 $.each(response.question, function (i, w) {
                     if (w.IsCorrectAnswer) {
                         correctVariant = w.Variant;
@@ -303,6 +339,8 @@ function displayOperationResult() {
     }
     else if (result === '#successE') {
         showSuccessNotification('Question edited.');
+    } else if (result === 'success') {
+        showSuccessNotification('Operation successfully executed.');
     }
     else if (result === '#error') {
         showErrorNotification('Error occured. Try again.');
@@ -453,5 +491,30 @@ function ValidateQuestions() {
                 }
             });
         });
+    });
+}
+
+function CreateEventHandler() {
+
+    $('#chkAll').click(function () {
+        $('input.chk:checkbox').prop('checked', this.checked);
+        if ($('input.chk:checkbox').prop('checked')) {
+            $('#question-table tr').addClass('highlight');
+        } else
+            $('#question-table tr').removeClass('highlight');
+    });
+
+    $(document).on('change', 'input.chk:checkbox', function () {
+        if ($(this).is(":checked")) {
+            $(this).closest('tr').addClass("highlight");
+        } else {
+            $(this).closest('tr').removeClass("highlight");
+        }
+    });
+
+    $('#question-table').on('click', '.tr', function (event) {
+        if (event.target.type !== 'checkbox') {
+            $(':checkbox', this).trigger('click');
+        }
     });
 }

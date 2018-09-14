@@ -76,3 +76,15 @@ hr{
     margin-top:5px;
     margin-bottom:10px;
 }
+
+.table-container .col-xs-1, .table-container .col-sm-1, .table-container .col-md-1, .table-container .col-lg-1, .table-container .col-xs-2, .table-container .col-sm-2, .table-container .col-md-2, .table-container .col-lg-2, .table-container .col-xs-3, .table-container .col-sm-3,
+.table-container .col-md-3, .table-container .col-lg-3, .table-container .col-xs-4, .table-container .col-sm-4, .table-container .col-md-4, .table-container .col-lg-4, .table-container .col-xs-5, .table-container .col-sm-5, .table-container .col-md-5, .table-container .col-lg-5,
+.table-container .col-xs-6, .table-container .col-sm-6, .table-container .col-md-6, .table-container .col-lg-6, .table-container .col-xs-7, .table-container .col-sm-7, .table-container .col-md-7, .table-container .col-lg-7, .table-container .col-xs-8, .table-container .col-sm-8,
+.table-container .col-md-8, .table-container .col-lg-8, .table-container .col-xs-9, .table-container .col-sm-9, .table-container .col-md-9, .table-container .col-lg-9, .table-container .col-xs-10, .table-container .col-sm-10, .table-container .col-md-10, .table-container .col-lg-10,
+.table-container .col-xs-11, .table-container .col-sm-11, .table-container .col-md-11, .table-container .col-lg-11, .table-container .col-xs-12, .table-container .col-sm-12, .table-container .col-md-12, .table-container .col-lg-12 {
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+}
+.table-container{
+    margin-top:20px;
+}

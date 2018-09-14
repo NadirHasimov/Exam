@@ -29,7 +29,7 @@
 
     <link href="~/Content/custom/css/common.css" rel="stylesheet" />
 
-    <script src="~/Scripts/theme/jquery-1.11.3.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
 
     <script src="~/Scripts/theme/jquery.validate.min.js"></script>
     <script src="~/Scripts/theme/jquery.validate.unobtrusive.min.js"></script>
@@ -43,6 +43,12 @@
             <i class="entypo-list" style="font-size:x-large"></i>
             Questions list
         </a>
+        <div style="bottom:20px;right:10px;position:fixed;">
+            <a class="btn btn-blue btn btn-icon  icon-left feedback" style="font-size:x-large;width:200px;">
+                <i class="entypo-comment" style="font-size:x-large"></i>
+                Feedback
+            </a>
+        </div>
         <div class="row pull-right">
             @*<button class="btn" id="stop">Stop timer</button>
                 <button class="btn" id="start">Start timer</button>
@@ -112,7 +118,7 @@
                             {
                                 <div class="row" style="">
                                     <div class="" id="" style="font-size:x-large; font-weight:bold;">
-                                        @*<input type="hidden" value="@item.OrderNumber" name="order" />*@ <label class="order">@item.OrderNumber</label>.  @item.QuestionText
+                                        <label class="order">@item.OrderNumber</label>.  @item.QuestionText
                                     </div>
                                     <br />
                                     @if (!String.IsNullOrEmpty(item.QuestionImageUrl))
@@ -199,7 +205,31 @@
             </div>
         </div>
     </div>
-
+    <div class="modal fade custom-width" id="feedback_modal">
+        <div class="modal-dialog" style="width:36%;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        x
+                    </button>
+                    <h3 class="modal-title">Feedback</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <textarea class="form-control autogrow" name="text" rows="3" style="height:70px;" data-validate="required"> </textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div style="text-align:center;">
+                        <button type="button" id="feedback_ok" class="btn btn-success">Send</button>
+                        <button type="button" class="btn btn-secondary" style="margin-left:50px;" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="~/assets/js/gsap/main-gsap.js"></script>
     <script src="~/assets/js/jquery-ui/js/jquery-ui-1.10.3.minimal.min.js"></script>

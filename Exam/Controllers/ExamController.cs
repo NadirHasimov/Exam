@@ -109,6 +109,11 @@ namespace Exam.Controllers
             return new RedirectResult(Url.Action("Insert", "Exam") + message);
         }
 
+        [HttpPost]
+        public JsonResult Feedback(string text, int id) => Json(ExamDALC.Feedback(text, id), JsonRequestBehavior.AllowGet);
+
+        public JsonResult GetFeedback(int id) => Json(ExamDALC.GetFeedback(id), JsonRequestBehavior.AllowGet);
+
         public ActionResult QuestionLimit()
         {
             ViewBag.Parents = ExamDALC.GetProfs();
@@ -131,6 +136,11 @@ namespace Exam.Controllers
             return Json(new { profs = profs, JsonRequestBehavior.AllowGet });
         }
 
+        [HttpPost]
+        public JsonResult AddQuesLimit(int count, int limit, array[] array)
+        {
+            return Json(true, JsonRequestBehavior.AllowGet);
+        }
         [AuthorizeController]
         public ActionResult GetQuestion(int id)
         {

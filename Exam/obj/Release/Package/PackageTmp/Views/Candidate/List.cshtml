@@ -4,19 +4,16 @@
     ViewBag.Title = "List";
 }
 
-@section Scripts{
-    <script src="~/Scripts/theme/jquery.dataTables.min.js"></script>
-    @*<script src="~/assets/js/jquery.dataTables.min.js"></script>*@
-    <script src="~/Scripts/theme/dataTables.jqueryui.js"></script>
-    <script>
-        $('#cand_list').DataTable();
-    </script>
-}
-@section Styles{
-    <link href="~/Content/Theme/css/dataTables.jqueryui.css" rel="stylesheet" />
-}
-<table class="table table-bordered table-striped " id="cand_list">
+
+<table class="table table-bordered datatable" id="cand_list">
     <thead>
+        <tr>
+            <th>FIN code</th>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Middle name</th>
+            <th>Birthdate</th>
+        </tr>
         <tr>
             <th>FIN code</th>
             <th>Name</th>
@@ -38,3 +35,50 @@
         }
     </tbody>
 </table>
+<hr />
+
+<script type="text/javascript">
+    var responsiveHelper;
+    var breakpointDefinition = {
+        tablet: 1024,
+        phone: 480
+    };
+    var tableContainer;
+
+    jQuery(document).ready(function ($) {
+        tableContainer = $("#cand_list");
+
+        table = tableContainer.dataTable({
+            "sPaginationType": "bootstrap",
+            "aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+            "bStateSave": true,
+
+
+            // Responsive Settings
+            bAutoWidth: false,
+            fnPreDrawCallback: function () {
+                // Initialize the responsive datatables helper once.
+                if (!responsiveHelper) {
+                    responsiveHelper = new ResponsiveDatatablesHelper(tableContainer, breakpointDefinition);
+                }
+            },
+            fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+                responsiveHelper.createExpandIcon(nRow);
+            },
+            fnDrawCallback: function (oSettings) {
+                responsiveHelper.respond();
+            }
+        });
+        table.columnFilter({
+            "sPlaceHolder": "head:after"
+        });
+        $(".dataTables_wrapper select").select2({
+            minimumResultsForSearch: -1
+        });
+
+        $(".dataTables_wrapper select").select2({
+            minimumResultsForSearch: -1
+        });
+        $('.search_init').addClass('form-control');
+    });
+</script>

@@ -153,6 +153,9 @@ namespace Exam.DALC
 
             public const string getProfsByParent = @"SELECT ID,NAME FROM DEPARTMENT WHERE PARENT_ID=@parent_id and ACTIVE=1";
 
+            public const string feedback = @"UPDATE TICKET_DETAIL SET FEED_BACK=@text WHERE ID=@id";
+
+            public const string getFeedback = @"SELECT FEED_BACK FROM TICKET_DETAIL WHERE ID=@id";
 
         }
     }

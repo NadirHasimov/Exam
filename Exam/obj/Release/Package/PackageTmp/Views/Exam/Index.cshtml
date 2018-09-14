@@ -29,7 +29,7 @@
 
     <link href="~/Content/custom/css/common.css" rel="stylesheet" />
 
-    <script src="~/Scripts/theme/jquery-1.11.3.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
 
     <script src="~/Scripts/theme/jquery.validate.min.js"></script>
     <script src="~/Scripts/theme/jquery.validate.unobtrusive.min.js"></script>
@@ -38,17 +38,26 @@
 <body>
     <input id="tblState" type="hidden" value="0" />
     <input id="TicketId" name="TicketId" type="hidden" value="@Model.Select(row=>row.TicketId).FirstOrDefault()" />
-    <div class="row pull-right">
-        @*<button class="btn" id="stop">Stop timer</button>
-            <button class="btn" id="start">Start timer</button>
-            <button class="btn" id="show">Show timer</button>
-            <button class="btn" id="hide">Hide timer</button>*@
-        <span id="timer" style="font-size:xx-large; margin-right:20px;">@Model.FirstOrDefault().Time</span>
+    <div style="text-align:center">
+        <a href="#" class="btn btn-info icon btn-icon icon-left" onclick="$('#quesList').appendTo('body').modal('show')" style="font-size:x-large;width:307px;margin-left:67px;" id="viewList">
+            <i class="entypo-list" style="font-size:x-large"></i>
+            Questions list
+        </a>
+        <div style="bottom:20px;right:10px;position:fixed;">
+            <a class="btn btn-blue btn btn-icon  icon-left feedback" style="font-size:x-large;width:200px;">
+                <i class="entypo-comment" style="font-size:x-large"></i>
+                Feedback
+            </a>
+        </div>
+        <div class="row pull-right">
+            @*<button class="btn" id="stop">Stop timer</button>
+                <button class="btn" id="start">Start timer</button>
+                <button class="btn" id="show">Show timer</button>
+                <button class="btn" id="hide">Hide timer</button>*@
+            <span id="timer" style="font-size:xx-large; margin-right:20px;">@Model.FirstOrDefault().Time</span>
+        </div>
     </div>
-    <a href="#" class="btn btn-info icon btn-icon icon-left" onclick="$('#quesList').appendTo('body').modal('show')" style="margin-right:10px;" id="viewList">
-        <i class="entypo-list"></i>
-        Questions list
-    </a>
+
     <div class="modal fade" id="quesList">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -103,13 +112,13 @@
                         ticketDetailId = item.TicketDetailId.ToString();
                     }
                     i++;
-                    <tr>
+                    <tr style="text-align:center;">
                         <td style="padding-top: 0px; padding-bottom: 0px;">
                             @if (counter == 1)
                             {
-                                <div class="row">
+                                <div class="row" style="">
                                     <div class="" id="" style="font-size:x-large; font-weight:bold;">
-                                        @*<input type="hidden" value="@item.OrderNumber" name="order" />*@ <label class="order">@item.OrderNumber</label>.  @item.QuestionText
+                                        <label class="order">@item.OrderNumber</label>.  @item.QuestionText
                                     </div>
                                     <br />
                                     @if (!String.IsNullOrEmpty(item.QuestionImageUrl))
@@ -122,7 +131,7 @@
                                 </div>
                                 <hr />
                             }
-                            <div class="row">
+                            <div class="row" style="">
                                 <label><input type="radio" name="variant" value="@item.Variant" />  <label style="font-weight:bold">@item.Variant)</label>    @item.AnswerText </label>
                                 @if (!String.IsNullOrEmpty(item.AnswerImageUrl))
                                 {
@@ -140,10 +149,13 @@
         </tbody>
     </table>
     @*<input id="" type="button" />*@
-    <a href="#" class="btn btn-success icon btn-icon icon-left" onclick="$('#modal').appendTo('body').modal('show')" style="margin-right:10px;" id="">
-        <i class="entypo-check"></i>
-        Finish exam
-    </a>
+
+    <div class="" style="text-align:center;margin-top:10px;">
+        <a href="#" class="btn btn-success icon btn-icon icon-left hidden" onclick="$('#modal').appendTo('body').modal('show')" style="font-size:xx-large;width:308px;" id="f_exam">
+            <i class="entypo-check" style="font-size:xx-large"></i>
+            Finish exam
+        </a>
+    </div>
     @* Modal for confirm *@
     <div class="modal fade custom-width" id="modal">
         <div class="modal-dialog" style="width:30%">
@@ -193,7 +205,31 @@
             </div>
         </div>
     </div>
-
+    <div class="modal fade custom-width" id="feedback_modal">
+        <div class="modal-dialog" style="width:36%;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        x
+                    </button>
+                    <h3 class="modal-title">Feedback</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <textarea class="form-control autogrow" name="text" rows="3" style="height:70px;" data-validate="required"> </textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div style="text-align:center;">
+                        <button type="button" id="feedback_ok" class="btn btn-success">Send</button>
+                        <button type="button" class="btn btn-secondary" style="margin-left:50px;" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="~/assets/js/gsap/main-gsap.js"></script>
     <script src="~/assets/js/jquery-ui/js/jquery-ui-1.10.3.minimal.min.js"></script>

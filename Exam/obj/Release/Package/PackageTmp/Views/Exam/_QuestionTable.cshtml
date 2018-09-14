@@ -1,10 +1,22 @@
-﻿<table class="table table-bordered" id="question-table">
+﻿<table class="table table-hover table-bordered datatable" id="question-table">
     <thead>
-        <tr>
+        <tr class="head">
+            <th></th>
+            <th>ID</th>
+            <th>Parent</th>
+            <th>Subcategory</th>
+            <th>Creator</th>
+            <th>Create date</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+        <tr class="head">
             <th><input id="chkAll" type="checkbox" /></th>
             <th>ID</th>
             <th>Parent</th>
             <th>Subcategory</th>
+            <th>Creator</th>
+            <th>Create date</th>
             <th>Status</th>
             <th>Action</th>
         </tr>
@@ -15,16 +27,22 @@
             string status1 = "", status2 = "";
             status1 = item.Status == 1 ? "selected" : "";
             status2 = item.Status == 0 ? "selected" : "";
-            <tr>
-                <td><input name="ques_chk[]" type="checkbox" value="@item.ID" /></td>
+            <tr class="tr">
+                <td><input name="ques_chk[]" type="checkbox" class="chk" value="@item.ID" /></td>
                 <td>@item.ID</td>
                 <td>@item.Parent</td>
                 <td>@item.Sub</td>
+                <td>@item.Creator</td>
+                <td>@item.CreateDate</td>
                 <td>
-                    <select class="form-control" name="status">
-                        <option value="1" @status1>Active</option>
-                        <option value="0" @status2>Passive</option>
-                    </select>
+                    @if (item.Status.Equals(0))
+                    {
+                        <i class="entypo-block" style="font-size:large; color:darkred;"></i>
+                    }
+                    else if (item.Status.Equals(1))
+                    {
+                        <i class="entypo-check" style="font-size:large;color:#50b54f"></i>
+                    }
                 </td>
                 <td>
                     <a href="@Url.Action("GetQuestion","Exam",new { id=item.ID})" name="view_ques" class="btn btn-info icon btn-icon view" data->

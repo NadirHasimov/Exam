@@ -243,11 +243,14 @@ function CreateDataTable() {
     jQuery(document).ready(function ($) {
         tableContainer = $("#tbl_ticket");
 
-        table = tableContainer.DataTable({
+        table = tableContainer.dataTable({
             //"sDom": "tip",
 
             "bStateSave": true,
             "sPaginationType": "bootstrap",
+            //"sDom": "<'row'<'col-xs-6 col-left'l><'col-xs-6 col-right'<'export-data'T>f>r>t<'row'<'col-xs-6 col-left'i><'col-xs-6 col-right'p>>",
+            //"oTableTools": {
+            //},
             "aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
             "aoColumns": [
                 {

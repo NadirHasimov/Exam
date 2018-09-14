@@ -76,4 +76,9 @@ namespace Exam.Models
 
         }
     }
+    public class array
+    {
+        public int id { get; set; }
+        public int parent { get; set; }
+    }
 }

@@ -58,3 +58,22 @@ textarea {
 .input-validation-error {
     border-color: red;
 }
+
+/*Toatr font-size*/
+.toast-message {
+    font-size: x-large !important;
+}
+
+#toast-container > div {
+    width: 500px;
+}
+
+.toast-top-full-width {
+    /*top: 50%;*/
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    right: 40%;
+    width: auto;
+    margin-top: 0;
+    /*margin-bottom: 10px;*/
+}

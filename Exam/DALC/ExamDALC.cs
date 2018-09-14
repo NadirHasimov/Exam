@@ -235,5 +235,34 @@ namespace Exam.DALC
             return profs;
         }
 
+        public static bool Feedback(string text, int id)
+        {
+            using (SqlConnection con = new SqlConnection(AppConfig.ConnectionString))
+            {
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand(SqlQueries.Exam.feedback, con))
+                {
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Parameters.AddWithValue("@text", text);
+                    cmd.Parameters.AddWithValue("@id", id);
+                    return cmd.ExecuteNonQuery() == 1;
+                }
+            }
+        }
+
+        public static string GetFeedback(int id)
+        {
+            using (SqlConnection con = new SqlConnection(AppConfig.ConnectionString))
+            {
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand(SqlQueries.Exam.getFeedback, con))
+                {
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Parameters.AddWithValue("@id", id);
+                    string text = cmd.ExecuteScalar().ToString();
+                    return text;
+                }
+            }
+        }
     }
 }

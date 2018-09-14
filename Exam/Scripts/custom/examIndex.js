@@ -6,6 +6,7 @@ $(document).ready(function () {
     GoToQuestion();
     CreateTimer();
     ViewPicture();
+    Feedback();
 });
 
 //function CallbackFunction(event) {
@@ -27,12 +28,15 @@ $(document).ready(function () {
 
 function CreateDataTable() {
     table = $('#question').DataTable({
+        "dom": '<"top"Bfrtipl>rt<"bottom"ipl><"clear">',
         "aLengthMenu": [[5], [5]],
+        "buttons": [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ],
         "ordering": false,
         "bLengthChange": false,
         "bFilter": false,
-        "bInfo": false,
-        "dom": '<"top"ipl>rt<"bottom"ipl><"clear">'
+        "bInfo": false
     });
     $('#question').on('page.dt', function () {
         var info = table.page.info();
@@ -276,5 +280,37 @@ function CreateTimer() {
 
     $('#confirm').click(function () {
         clearInterval(interval);
+    });
+}
+function Feedback() {
+    $('body').on('click', '.feedback', function () {
+        console.log('fffff');
+        $.ajax({
+            url: '/Exam/GetFeedback',
+            type: 'GET',
+            data: { id: $('input[name="TicketDetailId"]').val() },
+            success: function (response) {
+                $('textarea[name="text"]').val(response);
+            },
+            error: function () {
+                $('textarea[name="text"]').val('');
+            }
+        });
+        $('textarea[name="text"]').val('');
+        $('#feedback_modal').modal('show');
+    });
+    $('#feedback_ok').on('click', function () {
+        $.ajax({
+            url: '/Exam/Feedback',
+            type: 'POST',
+            data: { text: $('textarea[name="text"]').val(), id: $('input[name="TicketDetailId"]').val() },
+            success: function (response) {
+                if (response) {
+                    showSuccessNotification('Your feedback will be considered.');
+                } else showErrorNotification('Error');
+                $('#feedback_modal').modal('hide');
+            }
+        });
+        console.log();
     });
 }
