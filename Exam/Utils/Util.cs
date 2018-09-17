@@ -6,6 +6,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 
+
 namespace Exam.Utils
 {
     public static class Util
@@ -30,6 +31,18 @@ namespace Exam.Utils
                 p.TypeName = "dbo.ANSWERS";
                 DataTable _dt = new DataTable() { Columns = { "ID", "VARIANT" } };
                 data.ForEach(value => _dt.Rows.Add(value.id, value.variant));
+                p.Value = _dt;
+            }
+        }
+
+        public static void AddWithValue_Parent_Child(this SqlParameterCollection paramCollection, string parameterName, List<array> data)
+        {
+            if (paramCollection != null)
+            {
+                var p = paramCollection.Add(parameterName, SqlDbType.Structured);
+                p.TypeName = "dbo.[PARENT_CHILD]";
+                DataTable _dt = new DataTable() { Columns = { "PARENT", "CHILD" } };
+                data.ForEach(value => _dt.Rows.Add(value.parent, value.child));
                 p.Value = _dt;
             }
         }

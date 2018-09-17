@@ -157,6 +157,43 @@ namespace Exam.DALC
 
             public const string getFeedback = @"SELECT FEED_BACK FROM TICKET_DETAIL WHERE ID=@id";
 
+            public const string addQuesLimit = @"DECLARE @parent nvarchar(100),@child nvarchar(100),
+			                                    @parent_id int,@child_id int, @user_id int
+	                                            SELECT @user_id=ID FROM [USER] WHERE USERNAME=@username
+	                                            DECLARE CUR_INSERT_QUES_LIMIT CURSOR FOR
+	                                            	SELECT Parent,Child FROM @departs
+	                                              OPEN CUR_INSERT_QUES_LIMIT
+	                                              FETCH NEXT FROM CUR_INSERT_QUES_LIMIT INTO @parent,@child
+	                                            WHILE @@FETCH_STATUS=0
+	                                            BEGIN
+	                                            	IF (ISNUMERIC(@parent)=1)
+	                                            	BEGIN
+	                                            		SET @parent_id=@parent
+	                                            		IF(ISNUMERIC(@child)=1)
+	                                            		BEGIN
+	                                            			SET @child_id=@child
+	                                            			UPDATE DEPARTMENT SET PARENT_ID=@parent_id WHERE ID=@child_id
+	                                            		END
+	                                            		ELSE
+	                                            		BEGIN	
+	                                            			INSERT INTO DEPARTMENT(NAME,PARENT_ID) VALUES (@child,@parent_id)
+	                                            			SET @child_id=SCOPE_IDENTITY()
+	                                            		END
+	                                            	END
+	                                            	ELSE
+	                                            		INSERT INTO DEPARTMENT(NAME,PARENT_ID)  VALUES(@parent,0)
+	                                            		SET @parent_id=SCOPE_IDENTITY()
+	                                            		INSERT INTO DEPARTMENT(NAME,PARENT_ID) VALUES(@child,@parent_id)
+	                                            		SET @child_id=SCOPE_IDENTITY()
+	                                            	BEGIN
+	                                            		INSERT INTO QUES_PROFESSION_LIMIT
+	                                            		(PROFESSION_ID,MIN_QUES_COUNT,QUES_COUNT,SUB_CATEGORY_ID,USER_ID)
+	                                            		VALUES
+	                                            		(@child_id,@limit,@count,@subCategoryId,@user_id)
+	                                            	END
+	                                            END";
+
+
         }
     }
 }

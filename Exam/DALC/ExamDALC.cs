@@ -1,4 +1,5 @@
 ﻿using Exam.DomainModels;
+using Exam.Models;
 using Exam.Utils;
 using System;
 using System.Collections.Generic;
@@ -261,6 +262,25 @@ namespace Exam.DALC
                     cmd.Parameters.AddWithValue("@id", id);
                     string text = cmd.ExecuteScalar().ToString();
                     return text;
+                }
+            }
+        }
+
+        public static bool AddQuesLimit(int count, int limit, string subId, string parentId, array[] array)
+        {
+            using (SqlConnection con = new SqlConnection(AppConfig.ConnectionString))
+            {
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand("sp_add_ques_limit", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@username", HttpContext.Current.User.Identity.Name);
+                    cmd.Parameters.AddWithValue("@count", count);
+                    cmd.Parameters.AddWithValue("@limit", limit);
+                    cmd.Parameters.AddWithValue("@subCategoryId", subId);
+                    cmd.Parameters.AddWithValue("@parentId", parentId);
+                    cmd.Parameters.AddWithValue_Parent_Child("@departs", array.ToList());
+                    return 1 < cmd.ExecuteNonQuery();
                 }
             }
         }

@@ -116,7 +116,8 @@ namespace Exam.Controllers
 
         public ActionResult QuestionLimit()
         {
-            ViewBag.Parents = ExamDALC.GetProfs();
+            ViewBag.Departments = ExamDALC.GetProfs();
+            ViewBag.ParentCategories = ExamDALC.GetCategories().Where(r => r.Item3 == 0).ToList();
             return View();
         }
 
@@ -137,10 +138,9 @@ namespace Exam.Controllers
         }
 
         [HttpPost]
-        public JsonResult AddQuesLimit(int count, int limit, array[] array)
-        {
-            return Json(true, JsonRequestBehavior.AllowGet);
-        }
+        public JsonResult AddQuesLimit(int count, int limit, string subId, string parentId, array[] array)
+            => Json(ExamDALC.AddQuesLimit(count, limit, subId, parentId, array), JsonRequestBehavior.AllowGet);
+
         [AuthorizeController]
         public ActionResult GetQuestion(int id)
         {

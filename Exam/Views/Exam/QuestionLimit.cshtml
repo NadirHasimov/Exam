@@ -7,18 +7,32 @@
 }
 
 
-<div class="selectbox-container">
+<div class="department-container">
     <div class="col-md-12" id="1">
         <select id="select1" class="select">
             <option></option>
-            @foreach (var item in (List<Tuple<int, string>>)ViewBag.Parents)
+            @foreach (var item in (List<Tuple<int, string>>)ViewBag.Departments)
             {
                 <option value="@item.Item1">@item.Item2</option>
             }
         </select>
     </div>
 </div>
+<hr />
+<div class="category-container" style="">
+    <div class="col-md-12">
+        <select id="parentCategory" class="">
+            <option></option>
+            @foreach (var item in (List<Tuple<int, string, int>>)ViewBag.ParentCategories)
+            {
+                <option value="@item.Item1">@item.Item2</option>
+            }
+        </select>
+    </div>
+    <div class="col-md-12" id="sub">
 
+    </div>
+</div>
 <div class="">
     <div class="form-group">
         <div class="col-md-1">

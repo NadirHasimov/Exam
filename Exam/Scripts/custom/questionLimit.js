@@ -24,7 +24,7 @@ function CreateSelectBox() {
                 success: function (response) {
                     divId = parseInt(id) + 1;
                     var div = $('<div class="col-md-12" id="' + divId + '"></div>');
-                    div.appendTo('.selectbox-container');
+                    div.appendTo('.department-container');
                     var select = $("<select class='select'></select>").attr("id", "select" + divId).attr("name", "select");
                     select.append($("<option></option>"));
                     $.each(response.profs, function (index, data) {
@@ -53,7 +53,7 @@ function CreateSelectBox() {
                 }
             });
             var div = $('<div class="col-md-12" id="' + divId + '"></div>');
-            div.appendTo('.selectbox-container');
+            div.appendTo('.department-container');
             var select = $("<select class='select'></select>").attr("id", "select" + divId).attr("name", "select");
             select.append($("<option></option>"));
             $('#' + divId).html(select);
@@ -69,12 +69,60 @@ function CreateSelectBox() {
             });
         }
     });
+
+    $(document).on('change', '#parentCategory', function () {
+        console.log($(this).find(':selected').val());
+        parentCategory = $(this).find(':selected').val();
+        if ($.isNumeric(parentCategory)) {
+            $.ajax({
+                type: 'GET',
+                url: '/Exam/GetSubCategories',
+                data: { id: $(this).find(':selected').val() },
+                success: function (response) {
+                    var select = $("<select></select>").attr("id", "subId").attr("name", "select");
+                    select.append($("<option></option>"));
+                    $.each(response.data, function (index, w) {
+                        select.append($("<option></option>").attr("value", w.Item1).text(w.Item2));
+                    });
+                    $('#sub').html(select);
+                    $('#subId').selectize({
+                        create: true,
+                        placeholder: '~~Select option~~',
+                        sortField: 'text',
+                        render: {
+                            option_create: function (data, escape) {
+                                return '<div class="create"><strong>' + escape(data.input) + '</strong>&hellip; add new</div>';
+                            }
+                        }
+                    });
+                    console.log(response.data);
+                },
+                error: function () {
+                    showErrorNotification('Error occured.');
+                }
+            });
+        } else {
+            var select = $("<select></select>").attr("id", "subId").attr("name", "select");
+            select.append($("<option></option>"));
+            $('#sub').html(select);
+            $('#subId').selectize({
+                create: true,
+                placeholder: '~~Select option~~',
+                sortField: 'text',
+                render: {
+                    option_create: function (data, escape) {
+                        return '<div class="create"><strong>' + escape(data.input) + '</strong>&hellip; add new</div>';
+                    }
+                }
+            });
+        }
+    });
 }
 
 function ConvertToSelectize() {
-    $('.select').selectize({
+    $('select').selectize({
         create: true,
-        placeholder: 'Select organization...',
+        placeholder: '~~Select option~~',
         sortField: 'text',
         render: {
             option_create: function (data, escape) {
@@ -84,7 +132,7 @@ function ConvertToSelectize() {
     });
 }
 var object = {
-    id: "",
+    child: "",
     parent: ""
 };
 
@@ -93,26 +141,29 @@ function Save() {
     parent = 0;
     $('#save').on('click', function () {
         array = [];
-        $('select').each(function (i) {
+        $('.department-container select').each(function (i) {
             object = {};
-            $('select').each(function (j) {
+            $('.department-container select').each(function (j) {
                 if (j === i - 1) {
-                    parent = $(this).find(':selected').val();
+                    parent = $(this).find(':selected').val() == null || $(this).find(':selected').val() === ''
+                                                      ? '0' : $(this).find(':selected').val();
                 }
             });
-            object.id = $(this).find(':selected').val();
+            object.child = $(this).find(':selected').val();
             object.parent = parent;
             parent = '';
-            if ($.isNumeric(object.id)) {
+            if (!$.isEmptyObject(object.child)) {
                 array.push(object);
             }
         });
         limit = $('#limit').val();
         count = $('#count').val();
+        subId = $('#subId').find(':selected').val();
+        parentId = $('#parentCategory').find(':selected').val();
         $.ajax({
             type: 'POST',
             url: '/Exam/AddQuesLimit',
-            data: { count: count, limit: limit, array: array },
+            data: { count: count, limit: limit, subId: subId, parentId: parentId, array: array },
             success: function (response) {
                 if (response) {
                     showSuccessNotification('1111');
