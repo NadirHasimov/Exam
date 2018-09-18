@@ -73,7 +73,8 @@ namespace Exam.Controllers
                 ProfessionId = viewModel.ProfessionId,
                 ExamProfessionId = viewModel.ExamProfessionId,
                 Mobile = viewModel.Mobile,
-                Status = viewModel.Status
+                Status = viewModel.Status,
+                Finish = viewModel.Finish
             };
         }
 
@@ -96,7 +97,8 @@ namespace Exam.Controllers
                 ProfessionId = domainModel.ProfessionId,
                 ExamProfessionId = domainModel.ExamProfessionId,
                 Mobile = domainModel.Mobile,
-                Status = domainModel.Status
+                Status = domainModel.Status,
+                Finish = domainModel.Finish
             };
         }
     }

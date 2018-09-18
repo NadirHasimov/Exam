@@ -1288,6 +1288,7 @@
     <Content Include="Content\Theme\css\neon-core.css" />
     <Content Include="Content\Theme\css\neon-forms.css" />
     <Content Include="Content\Theme\css\neon-theme.css" />
+    <Content Include="images\double-tick.png" />
     <Content Include="images\logo.png" />
     <Content Include="Scripts\custom\candidateIndex.js" />
     <Content Include="Scripts\custom\examIndex.js" />

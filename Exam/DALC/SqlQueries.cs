@@ -87,14 +87,14 @@ namespace Exam.DALC
         public static class Ticket
         {
             public const string get = @"SELECT t.ID,c.FIN_CODE,c.NAME,c.SURNAME,
-                                        c.FATHER_NAME,d.NAME profession, t.DATE, t.TIME,t.APPR_STATUS
+                                        c.FATHER_NAME,d.NAME profession, t.DATE, t.TIME,t.APPR_STATUS,t.FINISH
                                         FROM TICKET t
                                         INNER JOIN CANDIDATE c ON t.CAND_ID=c.ID
                                         INNER JOIN DEPARTMENT d ON t.PROFESSION_ID=d.ID
                                         --WHERE t.APPR_STATUS";
 
             public const string approve = @"UPDATE TICKET SET APPR_STATUS=@type
-                                            WHERE ID IN (SELECT [Value] FROM @ids)";
+                                            WHERE ID IN (SELECT [Value] FROM @ids) and FINISH=0";
 
             public const string getCandQuestions = @"SELECT d.ID,t.ID TICKET_ID,t.REMAINDER_TIME,d.QUES_ID, d.QUES_ORDER_NO,q.QUES_TEXT,q.QUES_IMAGE_URL,a.QUES_VARIANT,a.ANSWER_TEXT,a.ANSWER_IMAGE 
                                                      FROM TICKET t 

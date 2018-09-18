@@ -138,43 +138,48 @@ var object = {
 
 var array = [];
 function Save() {
-    parent = 0;
+    parent = 'first';
     $('#save').on('click', function () {
-        array = [];
-        $('.department-container select').each(function (i) {
-            object = {};
-            $('.department-container select').each(function (j) {
-                if (j === i - 1) {
-                    parent = $(this).find(':selected').val() == null || $(this).find(':selected').val() === ''
-                                                      ? '0' : $(this).find(':selected').val();
-                }
-            });
-            object.child = $(this).find(':selected').val();
-            object.parent = parent;
-            parent = '';
-            if (!$.isEmptyObject(object.child)) {
-                array.push(object);
-            }
-        });
         limit = $('#limit').val();
         count = $('#count').val();
-        subId = $('#subId').find(':selected').val();
-        parentId = $('#parentCategory').find(':selected').val();
-        $.ajax({
-            type: 'POST',
-            url: '/Exam/AddQuesLimit',
-            data: { count: count, limit: limit, subId: subId, parentId: parentId, array: array },
-            success: function (response) {
-                if (response) {
-                    showSuccessNotification('1111');
-                } else {
-                    showErrorNotification(5555);
+        if (count < limit) {
+            showErrorNotification('Limit greater than count.');
+        } else {
+            array = [];
+            $('.department-container select').each(function (i) {
+                object = {};
+                $('.department-container select').each(function (j) {
+                    if (j === i - 1) {
+                        parent = $(this).find(':selected').val() == null || $(this).find(':selected').val() === ''
+                            ? 'first' : $(this).find(':selected').val();
+                    }
+                });
+                object.child = $(this).find(':selected').val();
+                object.parent = parent;
+                parent = '';
+                if (!$.isEmptyObject(object.child)) {
+                    array.push(object);
                 }
-            },
-            error: function () {
-                showErrorNotification('asdad');
-            }
-        });
-        console.log(array);
+            });
+
+            subId = $('#subId').find(':selected').val();
+            parentId = $('#parentCategory').find(':selected').val();
+            $.ajax({
+                type: 'POST',
+                url: '/Exam/AddQuesLimit',
+                data: { count: count, limit: limit, subId: subId, parentId: parentId, array: array },
+                success: function (response) {
+                    if (response) {
+                        showSuccessNotification('1111');
+                    } else {
+                        showErrorNotification(5555);
+                    }
+                },
+                error: function () {
+                    showErrorNotification('asdad');
+                }
+            });
+            console.log(array);
+        }
     });
 }

@@ -2275,7 +2275,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/12/2018 09:02:01</publishTime>
     </File>
     <File Include="assets/js/datatables/TableTools.min.js">
-      <publishTime>09/12/2018 09:02:01</publishTime>
+      <publishTime>09/18/2018 10:39:46</publishTime>
     </File>
     <File Include="assets/js/datatables/ZeroClipboard.js">
       <publishTime>09/12/2018 09:02:01</publishTime>
@@ -3937,16 +3937,16 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/12/2018 09:02:01</publishTime>
     </File>
     <File Include="bin/Az/Exam.resources.dll">
-      <publishTime>09/14/2018 15:12:04</publishTime>
+      <publishTime>09/18/2018 11:46:35</publishTime>
     </File>
     <File Include="bin/En/Exam.resources.dll">
-      <publishTime>09/14/2018 15:12:04</publishTime>
+      <publishTime>09/18/2018 11:46:35</publishTime>
     </File>
     <File Include="bin/Exam.dll">
-      <publishTime>09/14/2018 15:12:04</publishTime>
+      <publishTime>09/18/2018 11:46:34</publishTime>
     </File>
     <File Include="bin/Exam.pdb">
-      <publishTime>09/14/2018 15:12:04</publishTime>
+      <publishTime>09/18/2018 11:46:34</publishTime>
     </File>
     <File Include="bin/Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll">
       <publishTime>09/12/2018 09:02:03</publishTime>
@@ -4105,7 +4105,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/12/2018 09:02:03</publishTime>
     </File>
     <File Include="bin/Ru/Exam.resources.dll">
-      <publishTime>09/14/2018 15:12:05</publishTime>
+      <publishTime>09/18/2018 11:46:35</publishTime>
     </File>
     <File Include="bin/System.Web.Helpers.dll">
       <publishTime>09/12/2018 09:02:03</publishTime>
@@ -4344,23 +4344,26 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Global.asax">
       <publishTime>09/12/2018 09:02:00</publishTime>
     </File>
+    <File Include="images/double-tick.png">
+      <publishTime>09/18/2018 10:07:08</publishTime>
+    </File>
     <File Include="images/logo.png">
       <publishTime>09/12/2018 09:02:01</publishTime>
     </File>
     <File Include="Scripts/custom/candidateIndex.js">
-      <publishTime>09/14/2018 12:20:23</publishTime>
+      <publishTime>09/18/2018 10:49:19</publishTime>
     </File>
     <File Include="Scripts/custom/common.js">
       <publishTime>09/13/2018 16:47:25</publishTime>
     </File>
     <File Include="Scripts/custom/examIndex.js">
-      <publishTime>09/14/2018 11:40:39</publishTime>
+      <publishTime>09/18/2018 09:38:28</publishTime>
     </File>
     <File Include="Scripts/custom/examInset.js">
       <publishTime>09/14/2018 11:27:50</publishTime>
     </File>
     <File Include="Scripts/custom/questionLimit.js">
-      <publishTime>09/14/2018 14:55:50</publishTime>
+      <publishTime>09/18/2018 11:38:50</publishTime>
     </File>
     <File Include="Scripts/js/bootstrap-datepicker.js">
       <publishTime>09/12/2018 09:02:00</publishTime>
@@ -4675,7 +4678,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/12/2018 09:02:00</publishTime>
     </File>
     <File Include="Views/Candidate/Index.cshtml">
-      <publishTime>09/13/2018 15:55:02</publishTime>
+      <publishTime>09/18/2018 10:10:50</publishTime>
     </File>
     <File Include="Views/Candidate/List.cshtml">
       <publishTime>09/12/2018 12:03:20</publishTime>
@@ -4684,10 +4687,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/14/2018 11:59:45</publishTime>
     </File>
     <File Include="Views/Exam/Insert.cshtml">
-      <publishTime>09/13/2018 17:40:44</publishTime>
+      <publishTime>09/18/2018 11:43:58</publishTime>
     </File>
     <File Include="Views/Exam/QuestionLimit.cshtml">
-      <publishTime>09/14/2018 12:34:34</publishTime>
+      <publishTime>09/17/2018 11:27:52</publishTime>
     </File>
     <File Include="Views/Exam/_QuestionTable.cshtml">
       <publishTime>09/13/2018 15:04:12</publishTime>
@@ -4702,7 +4705,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/12/2018 09:02:00</publishTime>
     </File>
     <File Include="Views/User/SignIn.cshtml">
-      <publishTime>09/12/2018 09:02:00</publishTime>
+      <publishTime>09/18/2018 10:30:43</publishTime>
     </File>
     <File Include="Views/User/test.cshtml">
       <publishTime>09/12/2018 09:02:00</publishTime>

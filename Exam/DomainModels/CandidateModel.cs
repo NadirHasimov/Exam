@@ -38,5 +38,7 @@ namespace Exam.DomainModels
         public string Mobile { get; set; }
 
         public string Status { get; set; }
+
+        public bool Finish { get; set; }
     }
 }

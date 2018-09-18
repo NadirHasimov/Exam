@@ -445,9 +445,13 @@
                         {
                             <i class="entypo-clock" style="font-size:large; color:cornflowerblue;"></i>
                         }
-                        else if (candidate.Status.Equals("1"))
+                        else if (candidate.Status.Equals("1") && candidate.Finish == true)
                         {
-                            <i class="entypo-check" style="font-size:large;color:#50b54f"></i>
+                            <img width="18px" height="18px" src="~/images/double-tick.png" />
+                        }
+                        else if (candidate.Status.Equals("1") && candidate.Finish == false)
+                        {
+                            <i class="entypo-check" style="font-size:large; color:green;"></i>
                         }
                         else
                         {

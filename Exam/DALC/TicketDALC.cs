@@ -36,7 +36,8 @@ namespace Exam.DALC
                                 Profession = reader["profession"].ToString(),
                                 ExamDate = DateTime.Parse(reader["DATE"].ToString()),
                                 ExamTime = DateTime.Parse(reader["TIME"].ToString()).ToString("hh:mm"),
-                                Status = reader["APPR_STATUS"].ToString()
+                                Status = reader["APPR_STATUS"].ToString(),
+                                Finish = reader["FINISH"].ToString().Equals("0") ? false : true
                             });
                         }
                     }

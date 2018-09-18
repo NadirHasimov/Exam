@@ -75,7 +75,7 @@ function Finish() {
                 answer.id = $(this).find('input[name="TicketDetailId"]').val();
             }
             answer.variant = $(this).find('input[name = "variant"]:checked').val();
-            if (answer.variant !== null) {
+            if (answer.variant != null) {
                 answers.push(answer);
                 answer = {};
             }

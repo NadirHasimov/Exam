@@ -34,6 +34,11 @@
     <script src="~/Scripts/theme/jquery.validate.min.js"></script>
     <script src="~/Scripts/theme/jquery.validate.unobtrusive.min.js"></script>
     <script src="~/Scripts/theme/jquery-ui/jquery-ui.min.js"></script>
+    <script>
+        window.onbeforeunload = function () {
+            return "You have made changes on this page that you have not yet confirmed. If you navigate away from this page you will lose your unsaved changes";
+        };
+    </script>
 </head>
 <body>
     <input id="tblState" type="hidden" value="0" />

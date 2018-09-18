@@ -13,7 +13,6 @@ namespace Exam.Controllers
         // GET: Home
         public ActionResult Index()
         {
-
             // Index is default action 
             //var action = (Request.UrlReferrer.Segments.Skip(2).Take(1).SingleOrDefault() ?? "Index").Trim('/');
             return View();
