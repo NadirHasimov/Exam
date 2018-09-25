@@ -1,55 +1,108 @@
 ﻿@section Styles{
     <link href="~/Content/Selectize/css/selectize.css" rel="stylesheet" />
+    <style>
+        .panel-default > .panel-heading {
+            background-color: #2798ed;
+        }
+
+        h1, h2 {
+            color: white;
+        }
+
+        .dxpgControl_MetropolisBlue, .dxpgCustForm_MetropolisBlue {
+            border: 0px !important;
+        }
+
+        .pivot .panel-body {
+            padding: 0px;
+        }
+    </style>
 }
 @section Scripts{
     <script src="~/Content/Selectize/js/standalone/selectize.js"></script>
     <script src="~/Scripts/custom/questionLimit.js"></script>
 }
+<div class="panel panel-default panel-shadow limit" id="" data-collapsed="0">
+    <!-- to apply shadow add class "panel-shadow" -->
+    <!-- panel head -->
+    <div class="panel-heading">
+        <div class="panel-title"><h2>Limit control</h2></div>
 
-
-<div class="department-container">
-    <div class="col-md-12" id="1">
-        <select id="select1" class="select">
-            <option></option>
-            @foreach (var item in (List<Tuple<int, string>>)ViewBag.Departments)
-            {
-                <option value="@item.Item1">@item.Item2</option>
-            }
-        </select>
-    </div>
-</div>
-<hr />
-<div class="category-container" style="">
-    <div class="col-md-12">
-        <select id="parentCategory" class="">
-            <option></option>
-            @foreach (var item in (List<Tuple<int, string, int>>)ViewBag.ParentCategories)
-            {
-                <option value="@item.Item1">@item.Item2</option>
-            }
-        </select>
-    </div>
-    <div class="col-md-12" id="sub">
-
-    </div>
-</div>
-<div class="">
-    <div class="form-group">
-        <div class="col-md-1">
-            <input id="count" type="number" class="form-control" placeholder="Count" />
+        <div class="panel-options">
+            <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
         </div>
     </div>
-    <div class="form-group">
-        <div class="col-md-1">
-            <input id="limit" type="number" class="form-control" placeholder="Limit" />
+
+    <!-- panel body -->
+    <div class="panel-body">
+        <div class="department-container">
+            <div class="col-md-12" id="1">
+                <select id="select1" class="select">
+                    <option></option>
+                    @foreach (var item in (List<Tuple<int, string, int>>)ViewBag.Departments)
+                    {
+                        <option value="@item.Item1/@item.Item3">@item.Item2</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <hr />
+        <div class="category-container" style="">
+            <div class="col-md-12">
+                <select id="parentCategory" class="">
+                    <option></option>
+                    @foreach (var item in (List<Tuple<int, string, int>>)ViewBag.ParentCategories)
+                    {
+                        <option value="@item.Item1">@item.Item2</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-12" id="sub">
+
+            </div>
+        </div>
+        <div class="">
+            <div class="form-group">
+                <div class="col-md-1">
+                    <label class="control-label">Count</label>
+                    <input id="count" type="number" class="form-control" placeholder="Count" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-1">
+                    <label class="control-label">Limit</label>
+                    <input id="limit" type="number" class="form-control" placeholder="Limit" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-2">
+                    <a id="save" class="btn btn-success btn-icon icon-left" style="margin-top:22px;">
+                        <i class="entypo-list-add"></i>
+                        Save
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="form-group">
-        <div class="col-md-2">
-            <a id="save" class="btn btn-success btn-icon icon-left">
-                <i class="entypo-list-add"></i>
-                Save
-            </a>
+
+</div>
+
+
+<div class="panel panel-default panel-shadow pivot" id="" data-collapsed="0">
+    <!-- to apply shadow add class "panel-shadow" -->
+    <!-- panel head -->
+    <div class="panel-heading">
+        <div class="panel-title"><h2>Professions' question parameters </h2></div>
+
+        <div class="panel-options">
+            <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+        </div>
+    </div>
+
+    <!-- panel body -->
+    <div class="panel-body">
+        <div class="row" style="margin:20px 0px 20px 0px;" id="Grid">
+            @Html.Action("PivotGridPartial")
         </div>
     </div>
 </div>

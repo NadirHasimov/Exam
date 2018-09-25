@@ -1,0 +1,25 @@
+﻿@model List<V_GET_PROF_LIMITS>
+
+<script type="text/javascript">
+    function OnExportTypeChanged(s, e) {
+        var isDataAware = s.GetValue() == "ExcelDataAware";
+        options.GetItemByName("DataAwareGroup").SetVisible(isDataAware);
+        options.GetItemByName("WYSIWYGGroup").SetVisible(!isDataAware);
+    }
+</script>
+
+@*@{DemoHelper.Instance.ControlAreaMaxWidth = Unit.Percentage(100);}*@
+
+@section StartDemoRegion {
+    @{ Html.BeginForm(); }
+}
+
+
+
+@section DemoOptions {
+    @Html.Partial("ExportSettingsPartial", (PivotGridExportDemoOptions)ViewBag.DemoOptions)
+}
+
+@section EndDemoRegion {
+    @{ Html.EndForm(); }
+}

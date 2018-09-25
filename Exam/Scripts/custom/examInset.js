@@ -60,7 +60,7 @@ function CreateDataTable() {
                 'pdfHtml5'
             ],
             "sPaginationType": "bootstrap",
-            
+
             "aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
             "aoColumns": [
                 {
@@ -107,6 +107,10 @@ function CreateDataTable() {
         $('.text_filter').first().remove();
         $('.text_filter').last().remove();
         $('.text_filter').eq(5).remove();
+        $('.text_filter').eq(0).css({
+            "width": "6%",
+            "vertical-al"
+        });
     });
 }
 
@@ -118,6 +122,7 @@ function Preview() {
         $('#Cfield').html(' <label style="font-weight:bold;"><input type="radio" name="prewVaraiant" /> C)</label> ' + $('#AnswerTextC').val());
         $('#Dfield').html(' <label style="font-weight:bold;"><input type="radio" name="prewVaraiant" /> D)</label> ' + $('#AnswerTextD').val());
         $('#Efield').html(' <label style="font-weight:bold;"><input type="radio" name="prewVaraiant" /> E)</label> ' + $('#AnswerTextE').val());
+
         if ($('#QuestionImage').get(0).files.length === 0) {
             $('#qi').attr('src', '#');
         }
@@ -142,7 +147,7 @@ function Preview() {
         readURL(this, 'qi');
     });
     $("#AnswerImageA").change(function () {
-        readURL(this, 'va');
+        readURL(this, 'v_a');
     });
     $("#AnswerImageB").change(function () {
         readURL(this, 'vb');
@@ -258,6 +263,17 @@ function Edit() {
     $(document).on('click', '#question-table a.edit', function (e) {
         var correctVariant = "";
         e.preventDefault();
+        //$('.rmv-v').each(function () {
+        //    $(this).click();
+        //});
+        $('.fileinput-exists .thumbnail img').each(function () {
+            $(this).attr('src', "http://placehold.it/200x150");
+        });
+
+        $('.fileinput-exists .fileinput-new .thumbnail img').each(function () {
+            $(this).attr('src', "http://placehold.it/200x150");
+        });
+
         $.ajax({
             type: 'GET',
             url: $(this).attr('href'),
@@ -275,7 +291,6 @@ function Edit() {
                     }
                     if (w.QuestionText.length > 0 && i === 0) {
                         $('#QuestionText').val(w.QuestionText);
-                        console.log(w.QuestionText);
                         $('#parentCategoryId').val(w.ParentId).change();
                     }
                     if (w.QuestionImageUrl.length > 0 && i === 0) {
@@ -290,10 +305,10 @@ function Edit() {
                         }
                     }
                     if (w.Variant === 'B') {
-                        $('#AnswerTextB').val(w.AnswerText);
+                        $('#AnswerImageUrlB').val(w.AnswerImageUrl);
                         if (w.AnswerImageUrl.length > 0) {
+                            $('#AnswerTextB').val(w.AnswerText);
                             $('#ib').attr('src', w.AnswerImageUrl);
-                            $('#AnswerImageUrlB').val(w.AnswerImageUrl);
                         }
                     }
                     if (w.Variant === 'C') {
@@ -424,13 +439,14 @@ function ValidateQuestions() {
         if ($('#QuestionImage').get(0).files.length > 0) {
             $('#QuestionText').removeClass('input-validation-error');
         } else {
-            if ($('#QuestionText').val().length < 0) {
+            if ($('#QuestionText').val().length <= 0) {
                 $('#QuestionText').addClass('input-validation-error');
             }
         }
     });
 
     $('#rmv').click(function () {
+        console.log($('#QuestionText').val());
         if ($('#QuestionText').val().length === 0) {
             $('#QuestionText').addClass('input-validation-error');
         }

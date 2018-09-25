@@ -1,4 +1,5 @@
-﻿using Exam.DALC;
+﻿using DevExpress.Web.Mvc;
+using Exam.DALC;
 using Exam.DomainModels;
 using Exam.Models;
 using Exam.Utils;
@@ -11,7 +12,7 @@ using System.Web.Security;
 
 namespace Exam.Controllers
 {
-    [OutputCache(NoStore = true, Duration = 0)]
+    //[OutputCache(NoStore = true, Duration = 0)]
     public class ExamController : Controller
     {
         [AuthorizeExam]
@@ -124,7 +125,7 @@ namespace Exam.Controllers
         public JsonResult GetProfs(string parent)
         {
             int id = 0;
-            List<Tuple<int, string>> profs;
+            List<Tuple<int, string, int>> profs;
             try
             {
                 id = int.Parse(parent);
@@ -132,7 +133,7 @@ namespace Exam.Controllers
             }
             catch
             {
-                profs = new List<Tuple<int, string>>();
+                profs = new List<Tuple<int, string, int>>();
             }
             return Json(new { profs = profs, JsonRequestBehavior.AllowGet });
         }
@@ -141,12 +142,20 @@ namespace Exam.Controllers
         public JsonResult AddQuesLimit(int count, int limit, string subId, string parentId, array[] array)
             => Json(ExamDALC.AddQuesLimit(count, limit, subId, parentId, array), JsonRequestBehavior.AllowGet);
 
+        public ActionResult GetProfLimits()
+        {
+
+            return View();
+        }
+
         [AuthorizeController]
         public ActionResult GetQuestion(int id)
         {
             var question = ExamDALC.GetQuestion(id).Select(row => MapToQuestionViewModel(row)).ToList();
             return Json(new { question = question }, JsonRequestBehavior.AllowGet);
         }
+
+        public JsonResult GetCounts(int profId, int subId) => Json(ExamDALC.GetCounts(profId, subId), JsonRequestBehavior.AllowGet);
 
         [HttpPost]
         [AuthorizeController]
@@ -324,6 +333,64 @@ namespace Exam.Controllers
                 TicketId = model.TicketId,
                 Time = String.IsNullOrEmpty(model.Time) ? "0" : model.Time.Length == 1 ? "0" + model.Time : model.Time + ":00"
             };
+        }
+
+        Exam.ProfQuesCount db = new Exam.ProfQuesCount();
+
+        [ValidateInput(false)]
+        public ActionResult PivotGridPartial()
+        {
+            var model = db.V_GET_PROF_LIMITS.ToList();
+            string prof;
+            if (TempData["Prof"] != null)
+            {
+                prof = TempData["Prof"].ToString() ?? "";
+                model = model.Where(m => m.Path.Contains(prof)).ToList();
+                TempData["Prof"] = prof;
+            }
+            return PartialView("_PivotGridPartial", model);
+        }
+
+        public ActionResult GridPartial(string prof)
+        {
+            var model = new Exam.ProfQuesCount().V_GET_PROF_LIMITS.Where(m => m.Path.Contains(prof));
+            TempData["Prof"] = prof;
+            //var model = db.V_GET_PROF_LIMITS.Where(m => m.PARENT_ID == profId).ToList();
+            return PartialView("_PivotGridPartial", model.ToList());
+        }
+
+        //[HttpPost]
+        //public ActionResult Export(PivotGridExportDemoOptions options)
+        //{
+        //    if (Request.Params["ExportTo"] == null)
+        //    { // Theme changing
+        //        //ViewBag.DemoOptions = options;
+        //        //var model = db.V_GET_PROF_LIMITS;
+        //        return View("QuestionLimit");
+        //    }
+        //    return PivotGridDataOutputDemosHelper.GetExportActionResult(options, db.V_GET_PROF_LIMITS.ToList());
+        //}
+
+        [HttpGet]
+        public ActionResult Export()
+        {
+            ViewBag.DemoOptions = ViewBag.DemoOptions ?? new PivotGridExportDemoOptions();
+            return View("Export", db.V_GET_PROF_LIMITS.ToList()) ;
+        }
+        [HttpPost]
+        public ActionResult Export(PivotGridExportDemoOptions options)
+        {
+            if (Request.Params["ExportTo"] == null)
+            { // Theme changing
+                ViewBag.DemoOptions = options;
+                return View("Export", db.V_GET_PROF_LIMITS.ToList());
+            }
+
+            return PivotGridDataOutputDemosHelper.GetExportActionResult(options, db.V_GET_PROF_LIMITS);
+        }
+        public ActionResult ExportPartial()
+        {
+            return PartialView("ExportPartial", db.V_GET_PROF_LIMITS.ToList());
         }
     }
 }

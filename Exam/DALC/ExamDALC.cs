@@ -211,9 +211,9 @@ namespace Exam.DALC
             return result;
         }
 
-        public static List<Tuple<int, string>> GetProfs(int parent = 0)
+        public static List<Tuple<int, string, int>> GetProfs(int parent = 0)
         {
-            var profs = new List<Tuple<int, string>>();
+            var profs = new List<Tuple<int, string, int>>();
             using (SqlConnection con = new SqlConnection(AppConfig.ConnectionString))
             {
                 con.Open();
@@ -226,9 +226,11 @@ namespace Exam.DALC
                     {
                         while (reader.Read())
                         {
-                            profs.Add(new Tuple<int, string>
+                            profs.Add(new Tuple<int, string, int>
                                 (int.Parse(reader["ID"].ToString()),
-                                reader["NAME"].ToString()));
+                                reader["NAME"].ToString(),
+                                int.Parse(reader["PARENT_ID"].ToString())
+                                ));
                         }
                     }
                 }
@@ -278,11 +280,37 @@ namespace Exam.DALC
                     cmd.Parameters.AddWithValue("@count", count);
                     cmd.Parameters.AddWithValue("@limit", limit);
                     cmd.Parameters.AddWithValue("@subCategoryId", subId);
-                    cmd.Parameters.AddWithValue("@parentId", parentId);
+                    cmd.Parameters.AddWithValue("@parentCategoryId", parentId);//--
                     cmd.Parameters.AddWithValue_Parent_Child("@departs", array.ToList());
                     return 1 < cmd.ExecuteNonQuery();
                 }
             }
+        }
+
+        public static Tuple<int, int> GetCounts(int profId, int subId)
+        {
+            Tuple<int, int> counts = new Tuple<int, int>(0, 0);
+            using (SqlConnection con = new SqlConnection(AppConfig.ConnectionString))
+            {
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand(SqlQueries.Exam.getCounts, con))
+                {
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Parameters.AddWithValue("@prof_id", profId);
+                    cmd.Parameters.AddWithValue("@sub_id", subId);
+                    var reader = cmd.ExecuteReader();
+                    if (reader.HasRows)
+                    {
+                        if (reader.Read())
+                        {
+                            counts = new Tuple<int, int>(
+                                int.Parse(reader["QUES_COUNT"].ToString()),
+                                int.Parse(reader["MIN_QUES_COUNT"].ToString()));
+                        }
+                    }
+                }
+            }
+            return counts;
         }
     }
 }

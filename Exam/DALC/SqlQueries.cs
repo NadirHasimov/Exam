@@ -151,7 +151,7 @@ namespace Exam.DALC
             public const string updateQuestion = @"";
 
 
-            public const string getProfsByParent = @"SELECT ID,NAME FROM DEPARTMENT WHERE PARENT_ID=@parent_id and ACTIVE=1";
+            public const string getProfsByParent = @"SELECT ID,NAME,PARENT_ID FROM DEPARTMENT WHERE PARENT_ID=@parent_id and ACTIVE=1";
 
             public const string feedback = @"UPDATE TICKET_DETAIL SET FEED_BACK=@text WHERE ID=@id";
 
@@ -193,7 +193,8 @@ namespace Exam.DALC
 	                                            	END
 	                                            END";
 
-
+            public const string getCounts = @"SELECT QUES_COUNT,MIN_QUES_COUNT FROM QUES_PROFESSION_LIMIT
+                                              WHERE PROFESSION_ID=@prof_id AND SUB_CATEGORY_ID=@sub_id";
         }
     }
 }

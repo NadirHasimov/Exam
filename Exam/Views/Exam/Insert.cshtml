@@ -97,7 +97,7 @@
                 <hr />
                 <div class="row">
                     <div class="form-group">
-                        <div class="col-md-1"><label>A <input type="radio" name="Variants" value="A" checked /></label> </div>
+                        <div class="col-md-1"><label>A <input type="radio" name="Variants" value="A" /></label> </div>
                         <div class="col-md-6">
                             <textarea class="form-control autogrow variant" name="AnswerTextA" id="AnswerTextA" rows="3" placeholder="Variant A text"></textarea>
                         </div>
@@ -106,9 +106,11 @@
                                 <input type="hidden" value="" name="...">
                                 <div class="fileinput-new thumbnail" style="width: 100px; height: 80px;" data-trigger="fileinput">
                                     <img src="http://placehold.it/200x150" id="ia" alt="">
-                                    <input type="hidden" name="AnswerImageUrlA" id="AnswerImageUrlA" />
+                                    <input type="hidden" name="AnswerImageUrlA" id="AnswerImageUrlA">
                                 </div>
-                                <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 150px; max-height: 80px; line-height: 6px;"></div>
+                                <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 150px; max-height: 80px; line-height: 6px;">
+
+                                </div>
                                 <div>
                                     <span class="btn btn-white btn-file">
                                         <span class="fileinput-new">Select image</span>
@@ -119,8 +121,10 @@
                                 </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
+
                 <div class="row">
                     <div class="form-group">
                         <div class="col-md-1"><label>B <input type="radio" name="Variants" value="B" /></label> </div>
@@ -272,21 +276,21 @@
             <!-- panel body -->
             <div class="panel-body">
                 <div id="ques_container">
-                    @Html.Partial("_QuestionTable");
+                    @Html.Partial("_QuestionTable")
                 </div>
             </div>
 
             <!-- panel footer -->
             <div class="panel-footer">
                 <div class="row">
-                    <div class="form-group">
-                        <div class="col-md-2">
-                            <a href="@Url.Action("_ApproveQuestions","Exam")" id="appr_btn" class="btn btn-success icon btn-icon">
-                                <i class="entypo-check"></i>
-                                Approve
-                            </a>
-                        </div>
-                    </div>
+                    @*<div class="form-group">
+                            <div class="col-md-2">
+                                <a href="@Url.Action("_ApproveQuestions","Exam")" id="appr_btn" class="btn btn-success icon btn-icon">
+                                    <i class="entypo-check"></i>
+                                    Approve
+                                </a>
+                            </div>
+                        </div>*@
                 </div>
             </div>
         </div>
@@ -314,7 +318,7 @@
                         <label style="font-weight:bold;"><input type="radio" name="prewVaraiant" /> A)</label>
                     </div>
                     <br />
-                    <img src="#" id="va" width="100px" height="100px" alt="" style="margin-left:30px;" />
+                    <img src="#" id="v_a" width="100px" height="100px" alt="" style="margin-left:30px;" />
                 </div>
 
                 <div class="row">

@@ -129,7 +129,7 @@ function onExpiredFin() {
                                         if (login_status == 'success') {
                                             // Redirect to login page
                                             setTimeout(function () {
-                                                var redirect_url = '/Home/Index';
+                                                var redirect_url = '/Candidate/Index';
 
                                                 if (response.redirect_url && response.redirect_url.length) {
                                                     redirect_url = response.redirect_url;

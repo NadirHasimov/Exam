@@ -1,0 +1,50 @@
+@Html.DevExpress().PivotGrid(settings => {
+    settings.Name = "PivotGrid";
+    settings.CallbackRouteValues = new { Controller = "Exam", Action = "PivotGridPartial" };
+    //settings.OptionsData.DataProcessingEngine = PivotDataProcessingEngine.LegacyOptimized;
+    settings.OptionsData.DataProcessingEngine = PivotDataProcessingEngine.Legacy;
+
+
+    settings.OptionsView.ShowRowGrandTotalHeader = false;
+    settings.OptionsView.ShowRowTotals = false;
+    settings.OptionsView.ShowColumnGrandTotalHeader = false;
+    settings.OptionsView.ShowColumnGrandTotals = true;
+    settings.OptionsView.ShowColumnHeaders = false;
+    settings.OptionsView.ShowCustomTotalsForSingleValues = false;
+    settings.OptionsView.ShowDataHeaders = true;
+    settings.OptionsView.ShowRowGrandTotalHeader = false;
+    settings.OptionsView.ShowRowGrandTotals = false;
+    settings.OptionsView.ShowColumnTotals = false;
+    settings.OptionsCustomization.AllowDrag = true;
+    settings.OptionsPager.PageSizeItemSettings.Visible = true;
+    settings.OptionsPager.PageSizeItemSettings.Visible = true;
+
+    
+    settings.Fields.Add(field => {
+        field.Area = PivotArea.RowArea;
+        field.FieldName = "Path";
+        field.Caption = "Path";
+    });
+    settings.Fields.Add(field => {
+        field.Area = PivotArea.DataArea;
+        field.FieldName = "QUES_COUNT";
+        field.Caption = "Count";
+    });
+    settings.Fields.Add(field => {
+        field.Area = PivotArea.DataArea;
+        field.FieldName = "MIN_QUES_COUNT";
+        field.Caption = "Minimum correct answer count";
+    });
+    settings.Fields.Add(field => {
+        field.Area = PivotArea.ColumnArea;
+        field.FieldName = "SUB_CATEGORY";
+        field.Caption = "SUB_CATEGORY";
+    });
+    settings.Fields.Add(field => {
+        field.Area = PivotArea.ColumnArea;
+        field.FieldName = "CATEGORY";
+        field.Caption = "CATEGORY";
+    });
+
+
+}).Bind(Model).GetHtml()

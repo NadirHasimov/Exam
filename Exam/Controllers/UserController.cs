@@ -29,7 +29,7 @@ namespace Exam.Controllers
             {
                 return View();
             }
-            ReturnUrl = String.IsNullOrEmpty(ReturnUrl) ? Url.Action("Index", "Home") : ReturnUrl;
+            ReturnUrl = String.IsNullOrEmpty(ReturnUrl) ? Url.Action("Index", "Candidate") : ReturnUrl;
             int userType = UserDALC.GetUserType(username, password);
 
             if (userType == 1) //Active Directory

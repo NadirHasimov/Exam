@@ -32,7 +32,19 @@
 
     <script src="~/Scripts/theme/jquery.validate.min.js"></script>
     <script src="~/Scripts/theme/jquery.validate.unobtrusive.min.js"></script>
-    <scri+pt src="~/Scripts/theme/jquery-ui/jquery-ui.min.js"></scri+pt>
+    <script src="~/Scripts/theme/jquery-ui/jquery-ui.min.js"></script>
+    @Html.DevExpress().GetStyleSheets(
+        new StyleSheet { ExtensionSuite = ExtensionSuite.NavigationAndLayout },
+        new StyleSheet { ExtensionSuite = ExtensionSuite.Editors },
+        new StyleSheet { ExtensionSuite = ExtensionSuite.PivotGrid }
+    )
+    @Html.DevExpress().GetScripts(
+        new Script { ExtensionSuite = ExtensionSuite.NavigationAndLayout },
+        new Script { ExtensionSuite = ExtensionSuite.Editors },
+        new Script { ExtensionSuite = ExtensionSuite.PivotGrid }
+    )
+
+
 </head>
 <body class="page-body skin-white">
     @{
