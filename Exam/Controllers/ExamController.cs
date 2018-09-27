@@ -115,12 +115,14 @@ namespace Exam.Controllers
 
         public JsonResult GetFeedback(int id) => Json(ExamDALC.GetFeedback(id), JsonRequestBehavior.AllowGet);
 
+        [AuthorizeController]
         public ActionResult QuestionLimit()
         {
             ViewBag.Departments = ExamDALC.GetProfs();
             ViewBag.ParentCategories = ExamDALC.GetCategories().Where(r => r.Item3 == 0).ToList();
             return View();
         }
+
 
         public JsonResult GetProfs(string parent)
         {

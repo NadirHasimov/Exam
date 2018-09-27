@@ -39,6 +39,8 @@ namespace Exam.Models
 
         public string Status { get; set; }
 
+        public string Description { get; set; }
+
         public List<CandidateViewModel> Candidates { get; set; }
 
         public bool Finish { get; set; }

@@ -43,9 +43,9 @@ namespace Exam.Controllers
 
         public JsonResult GetProfessions() => Json(CandidateDALC.GetProfessions(), JsonRequestBehavior.AllowGet);
 
-        public ActionResult ApproveTickets(int[] ids, int type)
+        public ActionResult ApproveTickets(int[] ids, int type, string desc)
         {
-            bool result = TicketDALC.ApproveTickets(ids, type);
+            bool result = TicketDALC.ApproveTickets(ids, type, desc);
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
@@ -76,7 +76,8 @@ namespace Exam.Controllers
                 ExamProfessionId = viewModel.ExamProfessionId,
                 Mobile = viewModel.Mobile,
                 Status = viewModel.Status,
-                Finish = viewModel.Finish
+                Finish = viewModel.Finish,
+                Description = viewModel.Description
             };
         }
 
@@ -100,6 +101,7 @@ namespace Exam.Controllers
                 ExamProfessionId = domainModel.ExamProfessionId,
                 Mobile = domainModel.Mobile,
                 Status = domainModel.Status,
+                Description = domainModel.Description,
                 Finish = domainModel.Finish
             };
         }

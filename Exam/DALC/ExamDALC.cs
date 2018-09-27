@@ -280,7 +280,7 @@ namespace Exam.DALC
                     cmd.Parameters.AddWithValue("@username", HttpContext.Current.User.Identity.Name);
                     cmd.Parameters.AddWithValue("@count", count);
                     cmd.Parameters.AddWithValue("@limit", limit);
-                    cmd.Parameters.AddWithValue("@subCategoryId", subId);
+                    cmd.Parameters.AddWithValue("@subCategoryId", parentId == "14" ? parentId : subId);
                     cmd.Parameters.AddWithValue("@parentCategoryId", parentId);//--
                     cmd.Parameters.AddWithValue_Parent_Child("@departs", array.ToList());
                     return 1 < cmd.ExecuteNonQuery();

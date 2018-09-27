@@ -7,8 +7,8 @@
     //    console.log('change');
     //});s
     $(document).on('change', '.category-container select', function () {
-
-        GetQuesCounts();
+        var prof = $('.department-container select').eq(-2).find(':selected').val().split('/')[0];
+        GetQuesCounts(prof);
     });
     //$('.category-container select').change(function () {
     //    console.log('change');
@@ -16,18 +16,20 @@
 });
 
 function CreateSelectBox() {
+
     $(document).on('change', '.select', function () {
         var value = $(this).find(':selected').val().split('/');
         var parent = value[0];
         var id = parseInt($(this).closest('div').attr('id'));
         var divId = 0;
-        console.log(id);
+
         $('div').each(function () {
             i = $(this).attr('id');
             if (parseInt(i) > id) {
                 $(this).remove();
             }
         });
+
         if ($.isNumeric(parent)) {
             GetQuesCounts(parent);
             $.ajax({
@@ -96,48 +98,53 @@ function CreateSelectBox() {
     $(document).on('change', '#parentCategory', function () {
         console.log($(this).find(':selected').val());
         parentCategory = $(this).find(':selected').val();
-        if ($.isNumeric(parentCategory)) {
-            $.ajax({
-                type: 'GET',
-                url: '/Exam/GetSubCategories',
-                data: { id: $(this).find(':selected').val() },
-                success: function (response) {
-                    var select = $("<select></select>").attr("id", "subId").attr("name", "select");
-                    select.append($("<option></option>"));
-                    $.each(response.data, function (index, w) {
-                        select.append($("<option></option>").attr("value", w.Item1).text(w.Item2));
-                    });
-                    $('#sub').html(select);
-                    $('#subId').selectize({
-                        create: true,
-                        placeholder: '~~Select option~~',
-                        sortField: 'text',
-                        render: {
-                            option_create: function (data, escape) {
-                                return '<div class="create"><strong>' + escape(data.input) + '</strong>&hellip; add new</div>';
+        if (parseInt(parentCategory) !== 14) {
+            if ($.isNumeric(parentCategory)) {
+                $.ajax({
+                    type: 'GET',
+                    url: '/Exam/GetSubCategories',
+                    data: { id: $(this).find(':selected').val() },
+                    success: function (response) {
+                        var select = $("<select></select>").attr("id", "subId").attr("name", "select");
+                        select.append($("<option></option>"));
+                        $.each(response.data, function (index, w) {
+                            select.append($("<option></option>").attr("value", w.Item1).text(w.Item2));
+                        });
+                        $('#sub').html(select);
+                        $('#subId').selectize({
+                            create: true,
+                            placeholder: '~~Select option~~',
+                            sortField: 'text',
+                            render: {
+                                option_create: function (data, escape) {
+                                    return '<div class="create"><strong>' + escape(data.input) + '</strong>&hellip; add new</div>';
+                                }
                             }
-                        }
-                    });
-                    console.log(response.data);
-                },
-                error: function () {
-                    showErrorNotification('Error occured.');
-                }
-            });
-        } else {
-            var select = $("<select></select>").attr("id", "subId").attr("name", "select");
-            select.append($("<option></option>"));
-            $('#sub').html(select);
-            $('#subId').selectize({
-                create: true,
-                placeholder: '~~Select option~~',
-                sortField: 'text',
-                render: {
-                    option_create: function (data, escape) {
-                        return '<div class="create"><strong>' + escape(data.input) + '</strong>&hellip; add new</div>';
+                        });
+                        console.log(response.data);
+                    },
+                    error: function () {
+                        showErrorNotification('Error occured.');
                     }
-                }
-            });
+                });
+            } else {
+                var select = $("<select></select>").attr("id", "subId").attr("name", "select");
+                select.append($("<option></option>"));
+                $('#sub').html(select);
+                $('#subId').selectize({
+                    create: true,
+                    placeholder: '~~Select option~~',
+                    sortField: 'text',
+                    render: {
+                        option_create: function (data, escape) {
+                            return '<div class="create"><strong>' + escape(data.input) + '</strong>&hellip; add new</div>';
+                        }
+                    }
+                });
+            }
+        }
+        else {
+            $('#sub').html('');
         }
     });
 }
@@ -166,7 +173,8 @@ function Save() {
     $('#save').on('click', function () {
         limit = $('#limit').val();
         count = $('#count').val();
-        if (count < limit) {
+        console.log(count + ' ' + limit);
+        if (parseInt(count) < parseInt(limit)) {
             showErrorNotification('Limit greater than count.');
         } else {
             array = [];
@@ -194,39 +202,44 @@ function Save() {
 
             subId = $('#subId').find(':selected').val();
             parentId = $('#parentCategory').find(':selected').val();
-            $.ajax({
-                type: 'POST',
-                url: '/Exam/AddQuesLimit',
-                data: { count: count, limit: limit, subId: subId, parentId: parentId, array: array },
-                success: function (response) {
-                    if (response) {
-                        showSuccessNotification('1111');
-                    } else {
-                        showErrorNotification(5555);
+            if ($.isNumeric(parentId)) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/Exam/AddQuesLimit',
+                    data: { count: count, limit: limit, subId: subId, parentId: parentId, array: array },
+                    success: function (response) {
+                        if (response) {
+                            showSuccessNotification('Operation successfully executed.');
+                        } else {
+                            showErrorNotification('Error occured.');
+                        }
+                    },
+                    error: function () {
+                        showErrorNotification('Error ocured. Check network properties.');
                     }
-                },
-                error: function () {
-                    showErrorNotification('asdad');
-                }
-            });
+                });
+            }
+            else {
+                showErrorNotification('Select all fields.');
+            }
             console.log(array);
         }
     });
 }
 
-function GetQuesCounts(prof = null) {
-    var profId = prof == null || prof === '' ? $('.department-container select').eq(-2).find(':selected').val().split('/')[1] : prof;
+function GetQuesCounts(prof) {
+    //var profId = prof == null || prof === '' ? $('.department-container select').eq(-2).find(':selected').val().split('/')[0] : prof;
     var subId = null;
     subId = $('.category-container select').last().find(':selected').val();
     subId = subId === '' ? $('.category-container select').first().find(':selected').val() : subId;
-    console.log(subId);
+    console.log(subId + '--  ' + prof);
     $('#count').val(0);
     $('#limit').val(0);
     if (subId != null && subId !== '') {
         $.ajax({
             url: '/Exam/GetCounts',
             type: 'GET',
-            data: { profId: profId == null ? 0 : profId, subId: subId },
+            data: { profId: prof == null ? 0 : prof, subId: subId },
             success: function (response) {
                 if (response.Item1 !== 0) {
                     $('#count').val(response.Item1);

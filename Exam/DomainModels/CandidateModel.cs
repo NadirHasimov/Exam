@@ -39,6 +39,8 @@ namespace Exam.DomainModels
 
         public string Status { get; set; }
 
+        public string Description { get; set; }
+
         public bool Finish { get; set; }
     }
 }

@@ -37,7 +37,8 @@ namespace Exam.DALC
                                 ExamDate = DateTime.Parse(reader["DATE"].ToString()),
                                 ExamTime = DateTime.Parse(reader["TIME"].ToString()).ToString("hh:mm"),
                                 Status = reader["APPR_STATUS"].ToString(),
-                                Finish = reader["FINISH"].ToString().Equals("0") ? false : true
+                                Finish = reader["FINISH"].ToString().Equals("0") ? false : true,
+                                Description=reader["DESCRIPTION"].ToString()
                             });
                         }
                     }
@@ -46,7 +47,7 @@ namespace Exam.DALC
             return candidates;
         }
 
-        public static bool ApproveTickets(int[] ids, int type)
+        public static bool ApproveTickets(int[] ids, int type, string desc)
         {
             using (SqlConnection con = new SqlConnection(AppConfig.ConnectionString))
             {
@@ -56,6 +57,7 @@ namespace Exam.DALC
                     cmd.CommandType = CommandType.Text;
                     cmd.Parameters.AddWithValue_Tvp_Int("@ids", ids.ToList());
                     cmd.Parameters.AddWithValue("@type", type);
+                    cmd.Parameters.AddWithValue("@desc", desc);
                     int affectedRows = cmd.ExecuteNonQuery();
                     return affectedRows == ids.Count();
                 }
