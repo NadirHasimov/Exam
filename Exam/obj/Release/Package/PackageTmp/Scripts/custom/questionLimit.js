@@ -2,11 +2,23 @@
     ConvertToSelectize();
     CreateSelectBox();
     Save();
+    //$('.category-container select').on('change', function () {
+    //    GetQuesCounts();
+    //    console.log('change');
+    //});s
+    $(document).on('change', '.category-container select', function () {
+
+        GetQuesCounts();
+    });
+    //$('.category-container select').change(function () {
+    //    console.log('change');
+    //});
 });
 
 function CreateSelectBox() {
     $(document).on('change', '.select', function () {
-        var parent = $(this).find(':selected').val();
+        var value = $(this).find(':selected').val().split('/');
+        var parent = value[0];
         var id = parseInt($(this).closest('div').attr('id'));
         var divId = 0;
         console.log(id);
@@ -17,6 +29,7 @@ function CreateSelectBox() {
             }
         });
         if ($.isNumeric(parent)) {
+            GetQuesCounts(parent);
             $.ajax({
                 type: 'POST',
                 url: '/Exam/GetProfs',
@@ -28,7 +41,7 @@ function CreateSelectBox() {
                     var select = $("<select class='select'></select>").attr("id", "select" + divId).attr("name", "select");
                     select.append($("<option></option>"));
                     $.each(response.profs, function (index, data) {
-                        select.append($("<option></option>").attr("value", data.Item1).text(data.Item2));
+                        select.append($("<option></option>").attr("value", data.Item1 + '/' + data.Item3).text(data.Item2));
                     });
                     $('#' + divId).html(select);
                     $('#select' + divId + '').selectize({
@@ -44,7 +57,8 @@ function CreateSelectBox() {
                     divId = 0;
                 }
             });
-        } else {
+        }
+        else {
             divId = parseInt(id) + 1;
             $('div').each(function () {
                 i = $(this).attr('id');
@@ -68,6 +82,15 @@ function CreateSelectBox() {
                 }
             });
         }
+        console.log($(this).find(':selected').text());
+        $.ajax({
+            type: 'GET',
+            url: '/Exam/GridPartial',
+            data: { prof: $(this).find(':selected').text() },
+            success: function (response) {
+                $('#Grid').html(response);
+            }
+        });
     });
 
     $(document).on('change', '#parentCategory', function () {
@@ -139,6 +162,7 @@ var object = {
 var array = [];
 function Save() {
     parent = 'first';
+
     $('#save').on('click', function () {
         limit = $('#limit').val();
         count = $('#count').val();
@@ -146,17 +170,23 @@ function Save() {
             showErrorNotification('Limit greater than count.');
         } else {
             array = [];
+
             $('.department-container select').each(function (i) {
                 object = {};
-                $('.department-container select').each(function (j) {
-                    if (j === i - 1) {
-                        parent = $(this).find(':selected').val() == null || $(this).find(':selected').val() === ''
-                            ? 'first' : $(this).find(':selected').val();
-                    }
-                });
-                object.child = $(this).find(':selected').val();
-                object.parent = parent;
-                parent = '';
+                val = $(this).find(':selected').val().split('/');
+                object.child = val[0];
+                object.parent = val[1];
+
+                console.log(object);
+                //$('.department-container select').each(function (j) {
+                //    if (j === i - 1) {
+                //        parent = $(this).find(':selected').val() == null || $(this).find(':selected').val() === ''
+                //            ? 'first' : $(this).find(':selected').val();
+                //    }
+                //});
+                //object.child = $(this).find(':selected').val();
+                //object.parent = parent;
+                //parent = '';
                 if (!$.isEmptyObject(object.child)) {
                     array.push(object);
                 }
@@ -182,4 +212,27 @@ function Save() {
             console.log(array);
         }
     });
+}
+
+function GetQuesCounts(prof = null) {
+    var profId = prof == null || prof === '' ? $('.department-container select').eq(-2).find(':selected').val().split('/')[1] : prof;
+    var subId = null;
+    subId = $('.category-container select').last().find(':selected').val();
+    subId = subId === '' ? $('.category-container select').first().find(':selected').val() : subId;
+    console.log(subId);
+    $('#count').val(0);
+    $('#limit').val(0);
+    if (subId != null && subId !== '') {
+        $.ajax({
+            url: '/Exam/GetCounts',
+            type: 'GET',
+            data: { profId: profId == null ? 0 : profId, subId: subId },
+            success: function (response) {
+                if (response.Item1 !== 0) {
+                    $('#count').val(response.Item1);
+                    $('#limit').val(response.Item2);
+                }
+            }
+        });
+    }
 }

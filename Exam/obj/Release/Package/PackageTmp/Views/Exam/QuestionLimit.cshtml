@@ -39,9 +39,9 @@
             <div class="col-md-12" id="1">
                 <select id="select1" class="select">
                     <option></option>
-                    @foreach (var item in (List<Tuple<int, string>>)ViewBag.Departments)
+                    @foreach (var item in (List<Tuple<int, string, int>>)ViewBag.Departments)
                     {
-                        <option value="@item.Item1">@item.Item2</option>
+                        <option value="@item.Item1/@item.Item3">@item.Item2</option>
                     }
                 </select>
             </div>
@@ -64,17 +64,19 @@
         <div class="">
             <div class="form-group">
                 <div class="col-md-1">
+                    <label class="control-label">Count</label>
                     <input id="count" type="number" class="form-control" placeholder="Count" />
                 </div>
             </div>
             <div class="form-group">
                 <div class="col-md-1">
+                    <label class="control-label">Limit</label>
                     <input id="limit" type="number" class="form-control" placeholder="Limit" />
                 </div>
             </div>
             <div class="form-group">
                 <div class="col-md-2">
-                    <a id="save" class="btn btn-success btn-icon icon-left">
+                    <a id="save" class="btn btn-success btn-icon icon-left" style="margin-top:22px;">
                         <i class="entypo-list-add"></i>
                         Save
                     </a>
@@ -99,9 +101,8 @@
 
     <!-- panel body -->
     <div class="panel-body">
-        <div class="row" style="margin:20px 0px 20px 0px;">
+        <div class="row" style="margin:20px 0px 20px 0px;" id="Grid">
             @Html.Action("PivotGridPartial")
         </div>
-
     </div>
 </div>

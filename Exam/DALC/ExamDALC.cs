@@ -64,6 +64,7 @@ namespace Exam.DALC
                                         : HttpContext.Current.User.Identity.Name + "@ady.az");
                     cmd.Parameters.AddWithValue("@lang_id", 2);
                     cmd.Parameters.AddWithValue("@status", model.Status);
+                    cmd.Parameters.AddWithValue("@parent_category_id", model.ParentCategoryId);
 
                     int affectedRows = cmd.ExecuteNonQuery();
                     return affectedRows == 6;

@@ -41,6 +41,8 @@ namespace Exam.Controllers
             return Json(new { result = result.Item1, message = result.Item2, ID = result.Item3 }, JsonRequestBehavior.AllowGet);
         }
 
+        public JsonResult GetProfessions() => Json(CandidateDALC.GetProfessions(), JsonRequestBehavior.AllowGet);
+
         public ActionResult ApproveTickets(int[] ids, int type)
         {
             bool result = TicketDALC.ApproveTickets(ids, type);
