@@ -64,17 +64,20 @@ a.disabled {
 #select2Prof {
     margin-left: 15% !important;
 }
-.modal-body{
-    padding-bottom:0px;
-    padding-top:0px;
+
+.modal-body {
+    padding-bottom: 0px;
+    padding-top: 0px;
 }
-hr{
-    margin-top:0px;
-    margin-bottom:5px;
+
+hr {
+    margin-top: 0px;
+    margin-bottom: 5px;
 }
-.form-wizard .tab-content .pager{
-    margin-top:5px;
-    margin-bottom:10px;
+
+.form-wizard .tab-content .pager {
+    margin-top: 5px;
+    margin-bottom: 10px;
 }
 
 .table-container .col-xs-1, .table-container .col-sm-1, .table-container .col-md-1, .table-container .col-lg-1, .table-container .col-xs-2, .table-container .col-sm-2, .table-container .col-md-2, .table-container .col-lg-2, .table-container .col-xs-3, .table-container .col-sm-3,
@@ -85,6 +88,19 @@ hr{
     padding-left: 0px !important;
     padding-right: 0px !important;
 }
-.table-container{
-    margin-top:20px;
+
+.modal textarea {
+    height: 80px !important;
+    margin-top: 10px;
 }
+
+.table-container {
+    margin-top: 20px;
+}
+
+.popover-content {
+    word-wrap: break-word !important;
+}
+/*.popover {
+    max-width: none;
+}*/

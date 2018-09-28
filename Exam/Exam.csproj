@@ -1473,6 +1473,7 @@
       <DependentUpon>Resource.Ru.resx</DependentUpon>
     </Compile>
     <Compile Include="Utils\AuthorizeController.cs" />
+    <Compile Include="Utils\Log.cs" />
     <Compile Include="Utils\Util.cs" />
     <Compile Include="Utils\ValidateTextAndImage.cs" />
     <Compile Include="V_GET_PROF_LIMITS.cs" />

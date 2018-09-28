@@ -455,7 +455,7 @@
                         }
                         else
                         {
-                            <i class="entypo-block" style="font-size:large; color:#e15252"></i>
+                            <i class="entypo-block block" data-content="@candidate.Description" style="font-size:large; color:#e15252"></i>
                         }
                     </td>
                 </tr>
@@ -464,6 +464,34 @@
     </table>
 </div>
 
+<div class="modal fade" id="disable_modal">
+    <div class="modal-dialog modalCenter">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    x
+                </button>
+                <h3>Disable</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-group">
+                        <textarea class="form-control autogrow" rows="3" placeholder="Description" id="desc"></textarea>
+                    </div>
+                </div>
+                <div class="row">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div">
+                    <button type="button" class="btn btn-success col-md-2" id="btn_ok" style="bottom:5px;  left:20px; position:absolute;">
+                        Ok
+                    </button>
+                    <button type="button" class="btn btn-secondary col-md-2" data-dismiss="modal" style="bottom:5px;  right:20px; position:absolute;">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 @*<link rel="stylesheet" href="~/assets/js/selectboxit/jquery.selectBoxIt.css">s*@

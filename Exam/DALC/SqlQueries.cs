@@ -14,6 +14,30 @@ namespace Exam.DALC
                                                 WHERE c.FIN_CODE=@fin_code AND APPR_STATUS=1 AND t.FINISH=0 
                                                 	  AND [DATE] =CAST(GETDATE() AS NVARCHAR)";
 
+            public const string addLog = @"DECLARE @user_id nvarchar(100), @operation_type INT,@user_type INT
+
+                                           IF(CHARINDEX('Exam/Index',@action)>0)
+                                           BEGIN
+                                           	SET @user_type=1
+                                           END
+                                           ELSE 
+                                           BEGIN
+                                           	SET @user_type=0
+                                           END
+                                           
+                                           SELECT @operation_type= ID  FROM MENU m  WHERE m.MNU_NAME=@action
+                                           
+                                           
+                                           INSERT INTO LOGS 
+                                           (	
+                                           	[IP],BROWSER,C_U_STATUS,CANDIDATE_USER_ID,[DESCRIPTION],
+                                           	LOG_SUCCESS_STATUS,OPERATION_TYPE,PAGE_NAME)
+                                           VALUES
+                                           (
+                                           	@ip,@browser,@user_type,@user_id,@description,@success_status,
+                                           	@operation_type,@page_name
+                                            )";
+
         }
         public static class Role
         {

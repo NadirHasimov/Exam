@@ -377,7 +377,7 @@ namespace Exam.Controllers
         public ActionResult Export()
         {
             ViewBag.DemoOptions = ViewBag.DemoOptions ?? new PivotGridExportDemoOptions();
-            return View("Export", db.V_GET_PROF_LIMITS.ToList()) ;
+            return View("Export", db.V_GET_PROF_LIMITS.ToList());
         }
 
         [HttpPost]

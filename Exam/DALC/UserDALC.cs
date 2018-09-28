@@ -4,6 +4,8 @@ using System.Data;
 using System.Data.SqlClient;
 using System.DirectoryServices;
 using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 using System.Web;
 using System.Web.Mvc;
 
@@ -145,6 +147,71 @@ namespace Exam.DALC
                     return result > 0;
                 }
             }
+        }
+
+        public static void AddLog(HttpContextBase context, bool status, string description)
+        {
+            string ip = string.IsNullOrEmpty(HttpContext.Current.Request.ServerVariables["HTTP_X_FORWARDED_FOR"])
+                    ? HttpContext.Current.Request.UserHostAddress
+                    : HttpContext.Current.Request.ServerVariables["HTTP_X_FORWARDED_FOR"];
+            if (string.IsNullOrEmpty(ip) || ip.Trim() == "::1")
+            { // still can't decide or is LAN
+                var lan = Dns.GetHostEntry(Dns.GetHostName()).AddressList.FirstOrDefault(r => r.AddressFamily == AddressFamily.InterNetwork);
+                ip = lan == null ? string.Empty : lan.ToString();
+            }
+            using (SqlConnection con = new SqlConnection(AppConfig.ConnectionString))
+            {
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand(SqlQueries.User.addLog, con))
+                {
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Parameters.AddWithValue("@browser", GetBrowserInfo());
+                }
+            }
+        }
+        private static string GetBrowserInfo()
+        {
+            System.Web.HttpBrowserCapabilities browser = HttpContext.Current.Request.Browser;
+            string browserInfo =
+                @"Type = " + browser.Type + " , "
+
+                + "Name = " + browser.Browser + " , "
+
+                + "Version = " + browser.Version + " , "
+
+                + "Major Version = " + browser.MajorVersion + " , "
+
+                + "Minor Version = " + browser.MinorVersion + " , "
+
+                + "Platform = " + browser.Platform + " , "
+
+                + "Is Beta = " + browser.Beta + " , "
+
+                + "Is Crawler = " + browser.Crawler + " , "
+
+                + "Is AOL = " + browser.AOL + " , "
+
+                + "Is Win16 = " + browser.Win16 + " , "
+
+                + "Is Win32 = " + browser.Win32 + " , "
+
+                + "Supports Frames = " + browser.Frames + " , "
+
+                + "Supports Tables = " + browser.Tables + " , "
+
+                + "Supports Cookies = " + browser.Cookies + " , "
+
+                + "Supports VBScript = " + browser.VBScript + " , "
+
+                + "Supports JavaScript = " + browser.EcmaScriptVersion + " , "
+
+                + "Supports Java Applets = " + browser.JavaApplets + " , "
+
+                + "Supports ActiveX Controls = " + browser.ActiveXControls + " , "
+
+                + "Supports JavaScript Version = " + browser["JavaScriptVersion"];
+            return browserInfo;
+
         }
     }
 }

@@ -43,6 +43,11 @@ $(document).ready(function () {
     FilterDate();
     window.location.url = '';
     displayOperationResult();
+    $('.block').popover({
+        placement: "left",
+        trigger: "hover"
+        //container:".table"
+    });
 });
 
 var candidateData = {
@@ -309,33 +314,47 @@ function ApproveTickets() {
             showInfoNotification("Heç bir hesab seçilməyib!");
             return false;
         }
-        var chk_array = [];
-        $('input[type="checkbox"].chk:checked').each(function () {
-            chk_array.push($(this).val());
-        });
-        var ids = [];
-        for (i = 0; i < chk_array.length; i++) {
-            var splitted = chk_array[i].split(',');
-            ids.push(splitted[0]);
+        console.log($(this).text().trim());
+        if ($(this).text().trim() === 'Disable') {
+            console.log(0);
+            $('#disable_modal').modal('show').appendTo('body');
+            $('#btn_ok').click(function () {
+                approve('2');
+            });
         }
-
-        $.ajax({
-            type: 'POST',
-            url: '/Candidate/ApproveTickets',
-            data: JSON.stringify({ ids: ids, type: $(this).text().trim() === 'Disable' ? '2' : '1' }),
-            contentType: 'application/json',
-            success: function (response) {
-                if (response) {
-                    window.location.replace('/Candidate/Index#success');
-                    location.reload();
-                } else {
-                    showErrorNotification('Error occured.');
-                }
-            }
-        });
+        else {
+            approve('1');
+        }
     });
 }
+function approve(type) {
+    var chk_array = [];
+    var desc = $('#desc').val();
+    console.log(desc);
+    $('input[type="checkbox"].chk:checked').each(function () {
+        chk_array.push($(this).val());
+    });
+    var ids = [];
+    for (i = 0; i < chk_array.length; i++) {
+        var splitted = chk_array[i].split(',');
+        ids.push(splitted[0]);
+    }
 
+    $.ajax({
+        type: 'POST',
+        url: '/Candidate/ApproveTickets',
+        data: JSON.stringify({ ids: ids, type: type, desc: desc }),
+        contentType: 'application/json',
+        success: function (response) {
+            if (response) {
+                window.location.replace('/Candidate/Index#success');
+                location.reload();
+            } else {
+                showErrorNotification('Error occured.');
+            }
+        }
+    });
+}
 
 function FilterDate() {
     $('.daterange span').on('change', function () {
