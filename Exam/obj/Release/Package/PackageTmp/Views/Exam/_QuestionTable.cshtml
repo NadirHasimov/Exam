@@ -3,22 +3,22 @@
         <tr class="head">
             <th></th>
             <th>ID</th>
-            <th>Parent</th>
-            <th>Subcategory</th>
-            <th>Creator</th>
-            <th>Create date</th>
+            <th>Əsas</th>
+            <th>Alt</th>
+            <th>İstifadəçi</th>
+            <th>Yaranma tarixi</th>
             <th>Status</th>
-            <th>Action</th>
+            <th>Əməliyyat</th>
         </tr>
         <tr class="head">
             <th><input id="chkAll" type="checkbox" /></th>
             <th>ID</th>
-            <th>Parent</th>
-            <th>Subcategory</th>
-            <th>Creator</th>
-            <th>Create date</th>
+            <th>Əsas</th>
+            <th>Alt</th>
+            <th>İstifadəçi</th>
+            <th>Yaranma tarixi</th>
             <th>Status</th>
-            <th>Action</th>
+            <th>Əməliyyat</th>
         </tr>
     </thead>
     <tbody>
@@ -33,7 +33,7 @@
                 <td>@item.Parent</td>
                 <td>@item.Sub</td>
                 <td>@item.Creator</td>
-                <td>@item.CreateDate</td>
+                <td>@item.CreateDate.ToShortDateString()</td>
                 <td>
                     @if (item.Status.Equals(0))
                     {
@@ -47,11 +47,11 @@
                 <td>
                     <a href="@Url.Action("GetQuestion","Exam",new { id=item.ID})" name="view_ques" class="btn btn-info icon btn-icon view" data->
                         <i class="entypo-eye"></i>
-                        View
+                        Bax
                     </a>
                     <a href="@Url.Action("GetQuestion","Exam",new { id=item.ID})" name="edit" class="btn btn-primary icon btn-icon edit" data->
                         <i class="entypo-pencil"></i>
-                        Edit
+                        Dəyişdir
                     </a>
                 </td>
             </tr>

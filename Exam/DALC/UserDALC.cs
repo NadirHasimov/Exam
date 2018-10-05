@@ -159,6 +159,13 @@ namespace Exam.DALC
                 var lan = Dns.GetHostEntry(Dns.GetHostName()).AddressList.FirstOrDefault(r => r.AddressFamily == AddressFamily.InterNetwork);
                 ip = lan == null ? string.Empty : lan.ToString();
             }
+            string action = HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString() + "/"
+                           + HttpContext.Current.Request.RequestContext.RouteData.Values["action"].ToString();
+
+            if (context.Request.Params["ID"] != null)
+            {
+                string ID = context.Request.Params["ID"].ToString();
+            }
             using (SqlConnection con = new SqlConnection(AppConfig.ConnectionString))
             {
                 con.Open();
@@ -166,6 +173,12 @@ namespace Exam.DALC
                 {
                     cmd.CommandType = CommandType.Text;
                     cmd.Parameters.AddWithValue("@browser", GetBrowserInfo());
+                    cmd.Parameters.AddWithValue("@ip", ip);
+                    cmd.Parameters.AddWithValue("@description", string.IsNullOrEmpty(description) ? context.Request.HttpMethod : description);
+                    cmd.Parameters.AddWithValue("@success_status", status);
+                    cmd.Parameters.AddWithValue("@action", action);
+                    cmd.Parameters.AddWithValue("@username", context.User.Identity.Name);
+                    cmd.ExecuteNonQuery();
                 }
             }
         }
@@ -211,7 +224,6 @@ namespace Exam.DALC
 
                 + "Supports JavaScript Version = " + browser["JavaScriptVersion"];
             return browserInfo;
-
         }
     }
 }

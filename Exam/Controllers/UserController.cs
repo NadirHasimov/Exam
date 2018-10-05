@@ -45,6 +45,7 @@ namespace Exam.Controllers
                 FormsAuthentication.SetAuthCookie(username, false);
                 login_status = "success";
             }
+            UserDALC.AddLog(HttpContext, result, result ? "Success" : "Error");
             return Json(new { login_status = login_status, redirect_url = ReturnUrl }, JsonRequestBehavior.AllowGet);
         }
 
@@ -57,6 +58,7 @@ namespace Exam.Controllers
                 login_status = "success";
                 FormsAuthentication.SetAuthCookie(finCode, false);
             }
+            UserDALC.AddLog(HttpContext, result, result ? "Success" : "Error");
             return Json(new { login_status = login_status, redirect_url = Url.Action("Index", "Exam"), JsonRequestBehavior.AllowGet });
         }
 

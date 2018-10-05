@@ -34,11 +34,9 @@ function GetSubCategories() {
                     $.each(data, function (i, w) {
                         console.log(w);
                         $('#subCategoryId').append('<option value="' + w.Item1 + '">' + w.Item2 + '</option>');
-                        //$.each(w, function (j, e) {
-                        //});
                     });
                     $('#subCategoryId').select2({
-                        placeholder: '--Select profession--'
+                        placeholder: '--Vəzifə seç--'
                     });
                     if (SubId !== 0) {
                         $('#subCategoryId').select2('val', SubId);
@@ -143,6 +141,7 @@ function CreateDataTable() {
 
 function Preview() {
     $('#btn_preview').click(function () {
+        $('#prev_header').html('Ön izləmə');
         $('#ques_text').html($('#QuestionText').val());
         $('#Afield').html('<label style="font-weight:bold;"><input type="radio" name="prewVaraiant" /> A)</label> ' + $('#AnswerTextA').val());
         $('#Bfield').html(' <label style="font-weight:bold;"><input type="radio" name="prewVaraiant" /> B)</label> ' + $('#AnswerTextB').val());
@@ -154,7 +153,7 @@ function Preview() {
             $('#qi').attr('src', '#');
         }
         if ($('#AnswerImageA').get(0).files.length === 0) {
-            $('#va').attr('src', '#');
+            $('#v_a').attr('src', '#');
         }
         if ($('#AnswerImageB').get(0).files.length === 0) {
             $('#vb').attr('src', '#');
@@ -166,7 +165,7 @@ function Preview() {
             $('#vd').attr('src', '#');
         }
         if ($('#AnswerImageE').get(0).files.length === 0) {
-            $('#va').attr('src', '#');
+            $('#ve').attr('src', '#');
         }
     });
 
@@ -208,10 +207,18 @@ function View() {
             type: 'GET',
             url: $(this).attr('href'),
             success: function (response) {
+                console.log(response);
+                $('#qi').attr('src', '');
+                $('#v_a').attr('src', '');
+                $('#vb').attr('src', '');
+                $('#vc').attr('src', '');
+                $('#vd').attr('src', '');
+                $('#ve').attr('src', '');
                 $.each(response.question, function (i, w) {
                     console.log(w);
                     if (w.QuestionText.length > 0 && i === 0) {
                         $('#ques_text').html(w.QuestionText);
+                        $('#prev_header').html('Sual № ' + w.ID + ' || Kateqoriya: ' + w.Category);
                     }
                     if (w.QuestionImageUrl.length > 0 && i === 0) {
                         $('#qi').attr('src', w.QuestionImageUrl);
@@ -219,7 +226,8 @@ function View() {
                     if (w.Variant === 'A') {
                         $('#Afield').html('<label style="font-weight:bold;"><input type="radio" ' + (w.IsCorrectAnswer === true ? 'checked' : '') + ' "name="prewVaraiant" /> A)</label> ' + w.AnswerText);
                         if (w.AnswerImageUrl.length > 0) {
-                            $('#va').attr('src', w.AnswerImageUrl);
+                            console.log(w.AnswerImageUrl);
+                            $('#v_a').attr('src', w.AnswerImageUrl);
                         }
                     }
                     if (w.Variant === 'B') {
@@ -320,6 +328,7 @@ function Edit() {
                         $('#QuestionText').val(w.QuestionText);
                         console.log(w.ParentId);
                         $('#parentCategoryId').val(w.ParentId).change();
+                        $('#quesLabelText').html('Sual №' + w.ID);
                     }
                     if (w.QuestionImageUrl.length > 0 && i === 0) {
                         $('#iq').attr('src', w.QuestionImageUrl);

@@ -64,7 +64,7 @@ namespace Exam.Models
 
         public string Creator { get; set; }
 
-        public string CreateDate { get; set; }
+        public DateTime CreateDate { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

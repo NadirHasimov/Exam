@@ -25,9 +25,24 @@ namespace Exam.DALC
                                            	SET @user_type=0
                                            END
                                            
-                                           SELECT @operation_type= ID  FROM MENU m  WHERE m.MNU_NAME=@action
+										   IF(@username IS NULL OR @username='')
+										   BEGIN
+												SET @user_id=0
+										   END
+										   ELSE
+										   BEGIN
+												 IF(@user_type=1)
+												 BEGIN
+														SELECT @user_id=ID FROM CANDIDATE WHERE FIN_CODE=@username
+												 END
+												 ELSE
+												 BEGIN
+														SELECT @user_id=ID FROM [USER] WHERE USERNAME=@username
+												 END
+										   END
                                            
-                                           
+                                           SELECT @operation_type= ID  FROM MENU m  WHERE PARENT_ID IS NULL AND m.MNU_NAME=@action 
+
                                            INSERT INTO LOGS 
                                            (	
                                            	[IP],BROWSER,C_U_STATUS,CANDIDATE_USER_ID,[DESCRIPTION],
@@ -35,7 +50,7 @@ namespace Exam.DALC
                                            VALUES
                                            (
                                            	@ip,@browser,@user_type,@user_id,@description,@success_status,
-                                           	@operation_type,@page_name
+                                           	@operation_type,@action
                                             )";
 
         }
@@ -164,7 +179,7 @@ namespace Exam.DALC
 	                                             INNER JOIN [USER] u
 	                                             ON q.USER_ID=u.ID";
 
-            public const string getQuestion = @"SELECT q.ID,q.ACTIVE,CASE  WHEN  Q.SUB_CATEGORY_ID=14 THEN q.PROFESSION_ID ELSE q.SUB_CATEGORY_ID END SUB_CATEGORY_ID,
+            public const string getQuestion = @"SELECT q.ID,q.ACTIVE,c1.NAME +' / '+c.NAME CATEGORY,CASE  WHEN  Q.SUB_CATEGORY_ID=14 THEN q.PROFESSION_ID ELSE q.SUB_CATEGORY_ID END SUB_CATEGORY_ID,
 						                        CASE WHEN c.PARENT_ID=0 THEN q.SUB_CATEGORY_ID
 						                        ELSE c.PARENT_ID END PARENT_ID,
 						                        q.QUES_TEXT,q.QUES_IMAGE_URL,a.ANSWER_TEXT,
@@ -173,6 +188,7 @@ namespace Exam.DALC
                                                 INNER JOIN QUES_ANSWER a
                                                 ON q.ID=a.QUES_ID
 						                        INNER JOIN CATEGORY c ON c.ID=q.SUB_CATEGORY_ID
+												INNER JOIN CATEGORY c1 ON c1.ID=c.PARENT_ID
                                                 WHERE q.ID=@ID";
 
             public const string approveQuestions = @"UPDATE QUESTION SET ACTIVE=1 WHERE ID IN (SELECT [Value] FROM @ids)";
@@ -224,6 +240,16 @@ namespace Exam.DALC
 
             public const string getCounts = @"SELECT QUES_COUNT,MIN_QUES_COUNT FROM QUES_PROFESSION_LIMIT
                                               WHERE PROFESSION_ID=@prof_id AND SUB_CATEGORY_ID=@sub_id";
+
+            public const string updateDepart = @"UPDATE DEPARTMENT SET [NAME]=@text WHERE ID=@id";
+
+            public const string updateCategory = @"UPDATE CATEGORY SET [NAME]=@text WHERE ID=@id";
+
+            public const string deleteDepart = @"UPDATE DEPARTMENT SET [ACTIVE]=0 WHERE ID=@id";
+
+            public const string deleteCategory = @"UPDATE CATEGORY SET [ACTIVE]=0 WHERE ID=@id";
+
+
         }
     }
 }

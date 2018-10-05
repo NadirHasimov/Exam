@@ -63,6 +63,456 @@ namespace Exam.Resources {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string Action {
+            get {
+                return ResourceManager.GetString("Action", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Active {
+            get {
+                return ResourceManager.GetString("Active", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string AdminTabTitle {
+            get {
+                return ResourceManager.GetString("AdminTabTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string ApproveBtn {
+            get {
+                return ResourceManager.GetString("ApproveBtn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string ApprvAndCntn {
+            get {
+                return ResourceManager.GetString("ApprvAndCntn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string BirthDate {
+            get {
+                return ResourceManager.GetString("BirthDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Cancel {
+            get {
+                return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string CandidatePageTitle {
+            get {
+                return ResourceManager.GetString("CandidatePageTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string CandidateTabTitle {
+            get {
+                return ResourceManager.GetString("CandidateTabTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Change {
+            get {
+                return ResourceManager.GetString("Change", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Clock {
+            get {
+                return ResourceManager.GetString("Clock", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Close {
+            get {
+                return ResourceManager.GetString("Close", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string ConfirmText {
+            get {
+                return ResourceManager.GetString("ConfirmText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string CreateDate {
+            get {
+                return ResourceManager.GetString("CreateDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string CreateTicketBtn {
+            get {
+                return ResourceManager.GetString("CreateTicketBtn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string CreateTicketModalTitle {
+            get {
+                return ResourceManager.GetString("CreateTicketModalTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Creator {
+            get {
+                return ResourceManager.GetString("Creator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Date {
+            get {
+                return ResourceManager.GetString("Date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string DisableBtn {
+            get {
+                return ResourceManager.GetString("DisableBtn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Divorced {
+            get {
+                return ResourceManager.GetString("Divorced", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Edit {
+            get {
+                return ResourceManager.GetString("Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string ExamDataTabText {
+            get {
+                return ResourceManager.GetString("ExamDataTabText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string ExamProfession {
+            get {
+                return ResourceManager.GetString("ExamProfession", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string FamilyStatus {
+            get {
+                return ResourceManager.GetString("FamilyStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Feedback {
+            get {
+                return ResourceManager.GetString("Feedback", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string FeedBackTitle {
+            get {
+                return ResourceManager.GetString("FeedBackTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Female {
+            get {
+                return ResourceManager.GetString("Female", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string FilterDate {
+            get {
+                return ResourceManager.GetString("FilterDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string FINCode {
+            get {
+                return ResourceManager.GetString("FINCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string FinishExam {
+            get {
+                return ResourceManager.GetString("FinishExam", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string FirstName {
+            get {
+                return ResourceManager.GetString("FirstName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string ForgotPassword {
+            get {
+                return ResourceManager.GetString("ForgotPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Gender {
+            get {
+                return ResourceManager.GetString("Gender", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string ID {
+            get {
+                return ResourceManager.GetString("ID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string İnsertPanelTitle {
+            get {
+                return ResourceManager.GetString("İnsertPanelTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string InvalidLogInMessage {
+            get {
+                return ResourceManager.GetString("InvalidLogInMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string InvalidLogInTitle {
+            get {
+                return ResourceManager.GetString("InvalidLogInTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string LastName {
+            get {
+                return ResourceManager.GetString("LastName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string LocalCandidate {
+            get {
+                return ResourceManager.GetString("LocalCandidate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string LoggingIn {
+            get {
+                return ResourceManager.GetString("LoggingIn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string LogInBtn {
+            get {
+                return ResourceManager.GetString("LogInBtn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Mail {
+            get {
+                return ResourceManager.GetString("Mail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Male {
+            get {
+                return ResourceManager.GetString("Male", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Married {
+            get {
+                return ResourceManager.GetString("Married", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string MiddleName {
+            get {
+                return ResourceManager.GetString("MiddleName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Mobile {
+            get {
+                return ResourceManager.GetString("Mobile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Next {
+            get {
+                return ResourceManager.GetString("Next", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Ok {
+            get {
+                return ResourceManager.GetString("Ok", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Parent {
+            get {
+                return ResourceManager.GetString("Parent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Passive {
+            get {
+                return ResourceManager.GetString("Passive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string password {
             get {
                 return ResourceManager.GetString("password", resourceCulture);
@@ -72,9 +522,234 @@ namespace Exam.Resources {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string PersonalDataTabText {
+            get {
+                return ResourceManager.GetString("PersonalDataTabText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string PreviewModalTitle {
+            get {
+                return ResourceManager.GetString("PreviewModalTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Previous {
+            get {
+                return ResourceManager.GetString("Previous", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Profession {
+            get {
+                return ResourceManager.GetString("Profession", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string QuesListModalTitle {
+            get {
+                return ResourceManager.GetString("QuesListModalTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string QuestionsList {
+            get {
+                return ResourceManager.GetString("QuestionsList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string QuestionsPanelTitle {
+            get {
+                return ResourceManager.GetString("QuestionsPanelTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string QuestionStatus {
+            get {
+                return ResourceManager.GetString("QuestionStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string QuestionText {
+            get {
+                return ResourceManager.GetString("QuestionText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Remove {
+            get {
+                return ResourceManager.GetString("Remove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string ResultModalTitle {
+            get {
+                return ResourceManager.GetString("ResultModalTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Save {
+            get {
+                return ResourceManager.GetString("Save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string SaveCandidateTabText {
+            get {
+                return ResourceManager.GetString("SaveCandidateTabText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string SearchTabText {
+            get {
+                return ResourceManager.GetString("SearchTabText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Selectİmage {
+            get {
+                return ResourceManager.GetString("Selectİmage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string SendBtn {
+            get {
+                return ResourceManager.GetString("SendBtn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string SignInPageLogoTitle {
+            get {
+                return ResourceManager.GetString("SignInPageLogoTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Single {
+            get {
+                return ResourceManager.GetString("Single", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Status {
+            get {
+                return ResourceManager.GetString("Status", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Subcategory {
+            get {
+                return ResourceManager.GetString("Subcategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string username {
             get {
                 return ResourceManager.GetString("username", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Variant {
+            get {
+                return ResourceManager.GetString("Variant", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Variantİmage {
+            get {
+                return ResourceManager.GetString("Variantİmage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string VariantText {
+            get {
+                return ResourceManager.GetString("VariantText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string View {
+            get {
+                return ResourceManager.GetString("View", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string ViewQuestion {
+            get {
+                return ResourceManager.GetString("ViewQuestion", resourceCulture);
             }
         }
     }

@@ -12,6 +12,7 @@ namespace Exam.Controllers
 {
     [AuthorizeController]
     [OutputCache(NoStore = true, Duration = 0)]
+    [Log]
     public class CandidateController : Controller
     {
         // GET: Candidate
@@ -77,6 +78,7 @@ namespace Exam.Controllers
                 Mobile = viewModel.Mobile,
                 Status = viewModel.Status,
                 Finish = viewModel.Finish,
+                LocalCandidateStatus = viewModel.ProfessionId != 0,
                 Description = viewModel.Description
             };
         }
@@ -102,6 +104,7 @@ namespace Exam.Controllers
                 Mobile = domainModel.Mobile,
                 Status = domainModel.Status,
                 Description = domainModel.Description,
+                LocalCandidateStatus = domainModel.LocalCandidateStatus,
                 Finish = domainModel.Finish
             };
         }

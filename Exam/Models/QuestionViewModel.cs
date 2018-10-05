@@ -66,5 +66,7 @@ namespace Exam.Models
         public int TicketId { get; set; }
 
         public string Time { get; set; }
+
+        public string Category { get; set; }
     }
 }

@@ -12,7 +12,7 @@ using System.Web.Security;
 
 namespace Exam.Controllers
 {
-    //[OutputCache(NoStore = true, Duration = 0)]
+    [Log]
     public class ExamController : Controller
     {
         [AuthorizeExam]
@@ -24,7 +24,7 @@ namespace Exam.Controllers
                 return View("SignIn", "Home");
             }
             var questions = TicketDALC.GetCandQuestions(User.Identity.Name).Select(row => MapToQuestionViewModel(row)).ToList();
-            //TicketDALC.UpdateTicketFinish(questions.FirstOrDefault().TicketId);
+            TicketDALC.UpdateTicketFinish(questions.FirstOrDefault().TicketId);
             if (questions.Count == 0)
             {
                 FormsAuthentication.SignOut();
@@ -156,6 +156,18 @@ namespace Exam.Controllers
             var question = ExamDALC.GetQuestion(id).Select(row => MapToQuestionViewModel(row)).ToList();
             return Json(new { question = question }, JsonRequestBehavior.AllowGet);
         }
+
+        [HttpPost]
+        public JsonResult UpdateDepart(int id, string text) => Json(ExamDALC.UpdateDepart(id, text), JsonRequestBehavior.AllowGet);
+
+        [HttpPost]
+        public JsonResult UpdateCategory(int id, string text) => Json(ExamDALC.UpdateCategory(id, text), JsonRequestBehavior.AllowGet);
+
+        [HttpPost]
+        public JsonResult DeleteDepart(int id) => Json(ExamDALC.DeleteDepart(id), JsonRequestBehavior.AllowGet);
+
+        [HttpPost]
+        public JsonResult DeleteCategory(int id) => Json(ExamDALC.DeleteCategory(id), JsonRequestBehavior.AllowGet);
 
         public JsonResult GetCounts(int profId, int subId) => Json(ExamDALC.GetCounts(profId, subId), JsonRequestBehavior.AllowGet);
 
@@ -303,6 +315,7 @@ namespace Exam.Controllers
                 TicketDetailId = model.TicketDetailId,
                 OrderNumber = model.OrderNumber,
                 TicketId = model.TicketId,
+                Category = model.Category
             };
         }
 
@@ -333,6 +346,7 @@ namespace Exam.Controllers
                 TicketDetailId = model.TicketDetailId,
                 OrderNumber = model.OrderNumber,
                 TicketId = model.TicketId,
+                Category = model.Category,
                 Time = String.IsNullOrEmpty(model.Time) ? "0" : model.Time.Length == 1 ? "0" + model.Time : model.Time + ":00"
             };
         }
@@ -359,42 +373,6 @@ namespace Exam.Controllers
             TempData["Prof"] = prof;
             //var model = db.V_GET_PROF_LIMITS.Where(m => m.PARENT_ID == profId).ToList();
             return PartialView("_PivotGridPartial", model.ToList());
-        }
-
-        //[HttpPost]
-        //public ActionResult Export(PivotGridExportDemoOptions options)
-        //{
-        //    if (Request.Params["ExportTo"] == null)
-        //    { // Theme changing
-        //        //ViewBag.DemoOptions = options;
-        //        //var model = db.V_GET_PROF_LIMITS;
-        //        return View("QuestionLimit");
-        //    }
-        //    return PivotGridDataOutputDemosHelper.GetExportActionResult(options, db.V_GET_PROF_LIMITS.ToList());
-        //}
-
-        [HttpGet]
-        public ActionResult Export()
-        {
-            ViewBag.DemoOptions = ViewBag.DemoOptions ?? new PivotGridExportDemoOptions();
-            return View("Export", db.V_GET_PROF_LIMITS.ToList());
-        }
-
-        [HttpPost]
-        public ActionResult Export(PivotGridExportDemoOptions options)
-        {
-            if (Request.Params["ExportTo"] == null)
-            { // Theme changing
-                ViewBag.DemoOptions = options;
-                return View("Export", db.V_GET_PROF_LIMITS.ToList());
-            }
-
-            return PivotGridDataOutputDemosHelper.GetExportActionResult(options, db.V_GET_PROF_LIMITS);
-        }
-
-        public ActionResult ExportPartial()
-        {
-            return PartialView("ExportPartial", db.V_GET_PROF_LIMITS.ToList());
         }
     }
 }

@@ -93,7 +93,7 @@ namespace Exam.DALC
                                 Sub = reader["Sub"].ToString(),
                                 Status = Boolean.Parse(reader["ACTIVE"].ToString()) ? 1 : 0,
                                 Creator = reader["USERNAME"].ToString(),
-                                CreateDate = DateTime.Parse(reader["CREATE_DATE"].ToString()).ToString("dd/mm/yyyy")
+                                CreateDate = DateTime.Parse(reader["CREATE_DATE"].ToString())
                             });
                         }
                     }
@@ -128,7 +128,8 @@ namespace Exam.DALC
                                 IsCorrectAnswer = bool.Parse(reader["TRUE_ANSWER"].ToString()),
                                 ParentId = int.Parse(reader["PARENT_ID"].ToString()),
                                 SubId = int.Parse(reader["SUB_CATEGORY_ID"].ToString()),
-                                Status = bool.Parse(reader["ACTIVE"].ToString()) ? 1 : 0
+                                Status = bool.Parse(reader["ACTIVE"].ToString()) ? 1 : 0,
+                                Category = reader["CATEGORY"].ToString()
                             });
                         }
 
@@ -269,8 +270,9 @@ namespace Exam.DALC
             }
         }
 
-        public static bool AddQuesLimit(int count, int limit, string subId, string parentId, array[] array)
+        public static Tuple<bool, string> AddQuesLimit(int count, int limit, string subId, string parentId, array[] array)
         {
+            string message = "";
             using (SqlConnection con = new SqlConnection(AppConfig.ConnectionString))
             {
                 con.Open();
@@ -280,10 +282,17 @@ namespace Exam.DALC
                     cmd.Parameters.AddWithValue("@username", HttpContext.Current.User.Identity.Name);
                     cmd.Parameters.AddWithValue("@count", count);
                     cmd.Parameters.AddWithValue("@limit", limit);
-                    cmd.Parameters.AddWithValue("@subCategoryId", parentId == "14" ? parentId : subId);
+                    cmd.Parameters.AddWithValue("@subCategoryId", parentId == "14" ? parentId : string.IsNullOrEmpty(subId) ? "0" : subId);
                     cmd.Parameters.AddWithValue("@parentCategoryId", parentId);//--
                     cmd.Parameters.AddWithValue_Parent_Child("@departs", array.ToList());
-                    return 1 < cmd.ExecuteNonQuery();
+                    var reader = cmd.ExecuteReader();
+                    if (reader.HasRows)
+                    {
+                        reader.Read();
+                        message = reader["message"].ToString();
+                        message = message.Contains("'UNIQUE_PARENT_NAME'") ? "Bu məlumat bazada mövcuddur." : message;
+                    }
+                    return new Tuple<bool, string>(message.Equals("Ok"), message);
                 }
             }
         }
@@ -313,5 +322,65 @@ namespace Exam.DALC
             }
             return counts;
         }
+
+        public static bool UpdateDepart(int id, string text)
+        {
+            using (SqlConnection con = new SqlConnection(AppConfig.ConnectionString))
+            {
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand(SqlQueries.Exam.updateDepart, con))
+                {
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Parameters.AddWithValue("@text", text);
+                    cmd.Parameters.AddWithValue("@id", id);
+                    return cmd.ExecuteNonQuery() > 0;
+                }
+            }
+        }
+
+        public static bool UpdateCategory(int id, string text)
+        {
+            using (SqlConnection con = new SqlConnection(AppConfig.ConnectionString))
+            {
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand(SqlQueries.Exam.updateCategory, con))
+                {
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Parameters.AddWithValue("@text", text);
+                    cmd.Parameters.AddWithValue("@id", id);
+                    return cmd.ExecuteNonQuery() > 0;
+                }
+            }
+        }
+
+
+        public static bool DeleteDepart(int id)
+        {
+            using (SqlConnection con = new SqlConnection(AppConfig.ConnectionString))
+            {
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand(SqlQueries.Exam.deleteDepart, con))
+                {
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Parameters.AddWithValue("@id", id);
+                    return cmd.ExecuteNonQuery() > 0;
+                }
+            }
+        }
+
+        public static bool DeleteCategory(int id)
+        {
+            using (SqlConnection con = new SqlConnection(AppConfig.ConnectionString))
+            {
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand(SqlQueries.Exam.deleteCategory, con))
+                {
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Parameters.AddWithValue("@id", id);
+                    return cmd.ExecuteNonQuery() > 0;
+                }
+            }
+        }
+
     }
 }

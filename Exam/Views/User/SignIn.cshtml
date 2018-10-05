@@ -1,4 +1,5 @@
 ﻿@model Exam.Models.UserViewModel
+@using Exam.Resources
 @using reCAPTCHA.MVC
 @{
     Layout = null;
@@ -31,11 +32,11 @@
                 <a href="index.html" class="logo">
                     <img src="~/images/logo.png" style="font-size:30px" alt="" />
                 </a>
-                <p class="description">HR Online Test System</p>
+                <p class="description">HR Online Test Sistemi</p>
                 <!-- progress bar indicator -->
                 <div class="login-progressbar-indicator">
                     <h3>0%</h3>
-                    <span>logging in...</span>
+                    <span>Yoxlanılır...</span>
                 </div>
             </div>
         </div>
@@ -45,8 +46,8 @@
         <div class="login-form">
             <div class="login-content">
                 <div class="form-login-error">
-                    <h3>Invalid login</h3>
-                    <p>Username or password is incorrect.</p>
+                    <h3>Yanlış login</h3>
+                    <p>İstifadəçi adı və ya şifrə yanlışdır.</p>
                 </div>
                 <ul class="nav nav-tabs bordered">
                     <li>
@@ -56,7 +57,7 @@
                     </li>
                     <li class="active">
                         <a href="#candidate" data-toggle="tab">
-                            <span class="hidden-xs">Candidate</span>
+                            <span class="hidden-xs">Namizəd</span>
                         </a>
                     </li>
                 </ul>
@@ -96,7 +97,7 @@
                                     Login In
                                 </button>
                                 <div class="login-bottom-links">
-                                    <a href="extra-forgot-password.html" class="link">Forgot your password?</a>
+                                    <a href="extra-forgot-password.html" class="link">Şifrəni unutmusunuz?</a>
                                 </div>
                             </div>
                         </form>
@@ -121,7 +122,7 @@
                             <div class="form-group">
                                 <button type="submit" class="btn btn-primary btn-block btn-login">
                                     <i class="entypo-login"></i>
-                                    Login In
+                                    Daxil ol
                                 </button>
                             </div>
                         </form>

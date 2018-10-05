@@ -23,8 +23,12 @@ $(document).ready(function () {
                     $('#DateClone').val($('#Date').val());
                     $('#clockClone').val($('#clock').val());
                     $('#MobileClone').val($('#Mobile').val());
+                    if ($('#local_candidate').prop('checked')) {
+                        $('#local_candidate_clone').prop('checked', true);
+                        $('[name=ProfessionIdClone]').select2('val', $('#ProfessionId').find(':selected').val());
+                        $('#div_prof_clone').show();
+                    }
                     $('[name=professionClone]').select2('val', $('#profession').find(':selected').val());
-                    $('[name=ProfessionIdClone]').select2('val', $('#ProfessionId').find(':selected').val());
                     $("#tab4 input, #tab4 select").prop('disabled', true);
                     console.log($('input[name=Gender]:checked').val());
                 }
@@ -61,7 +65,8 @@ var candidateData = {
     Mobile: "",
     ProfessionId: "",
     Gender: "",
-    FamilyStatus: ""
+    FamilyStatus: "",
+    LocalCandidateStatus: ""
 };
 
 var candidateModel = {
@@ -155,8 +160,11 @@ function setData(data) {
         $('#FamilyStatusId').val(candidateData.FamilyStatusId);
         $("#tab2 input, #tab2 select,#tab2 a").prop('disabled', true);
         $('#tab2 a').addClass('disabled');
+        $('#local_candidate').prop('checked', candidateData.LocalCandidateStatus).change();
+        //$('#div_prof').prop('hidden', !candidateData.LocalCandidateStatus);
     } else {
         $('#Gender0').prop('checked', true);
+        $('#local_candidate').prop('checked', false).change();
         $("#tab2 input, #tab2 select").prop('disabled', false);
         $('#FinCode').prop('disabled', true);
         $('#tab2 input:not(:radio)').val('');
@@ -224,7 +232,11 @@ function getData() {
     candidateModel.LastName = $('#LastName').val();
     candidateModel.MiddleName = $('#MiddleName').val();
     candidateModel.FinCode = $('#FinCode').val();
-    candidateModel.ProfessionId = $('#ProfessionId').val();
+    if ($('#local_candidate').prop('checked')) {
+        candidateModel.ProfessionId = $('#ProfessionId').val();
+    } else {
+        candidateModel.ProfessionId = 0;
+    }
     candidateModel.ExamProfessionId = $('#profession').find(':selected').val();
     candidateModel.GenderId = $('input[name=Gender]:checked').val();
     candidateModel.FamilyStatusId = $('#FamilyStatusId').val();
@@ -384,6 +396,14 @@ function CreateEventHandler() {
     $('#tbl_ticket').on('click', 'tbody tr', function (event) {
         if (event.target.type !== 'checkbox') {
             $(':checkbox', this).trigger('click');
+        }
+    });
+
+    $('#local_candidate').change(function () {
+        if ($(this).prop('checked')) {
+            $('#div_prof').show(1000);
+        } else {
+            $('#div_prof').hide(1000);
         }
     });
 }

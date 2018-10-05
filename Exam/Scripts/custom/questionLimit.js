@@ -13,7 +13,14 @@
     //$('.category-container select').change(function () {
     //    console.log('change');
     //});
+    modifyDepartment();
+    modifyCategory();
+    deleteDepartment();
+    deleteCategory();
+    displayOperationResult();
 });
+
+var $selectizeSubCategory;
 
 function CreateSelectBox() {
 
@@ -23,8 +30,9 @@ function CreateSelectBox() {
         var id = parseInt($(this).closest('div').attr('id'));
         var divId = 0;
 
-        $('div').each(function () {
-            i = $(this).attr('id');
+        $('.department-container .parent').each(function () {
+            i = $(this).attr('id').substring(2);
+            console.log(i);
             if (parseInt(i) > id) {
                 $(this).remove();
             }
@@ -37,49 +45,77 @@ function CreateSelectBox() {
                 url: '/Exam/GetProfs',
                 data: { parent: parent },
                 success: function (response) {
+
                     divId = parseInt(id) + 1;
-                    var div = $('<div class="col-md-12" id="' + divId + '"></div>');
-                    div.appendTo('.department-container');
+
+                    var ParentDiv = $('<div class="parent" id="id' + divId + '"></div>'); //create parent div 
+                    ParentDiv.appendTo('.department-container'); //append to page 
+
+                    var div = $('<div class="col-md-11" id="' + divId + '"></div>'); // create
+                    div.appendTo(ParentDiv);
+
                     var select = $("<select class='select'></select>").attr("id", "select" + divId).attr("name", "select");
                     select.append($("<option></option>"));
+                    var optionsCount = 0;
                     $.each(response.profs, function (index, data) {
                         select.append($("<option></option>").attr("value", data.Item1 + '/' + data.Item3).text(data.Item2));
+                        optionsCount++;
                     });
+
                     $('#' + divId).html(select);
+
                     $('#select' + divId + '').selectize({
                         create: true,
-                        placeholder: '--Select--',
+                        placeholder: '--Seç--',
                         sortField: 'text',
                         render: {
                             option_create: function (data, escape) {
-                                return '<div class="create"><strong>' + escape(data.input) + '</strong>&hellip; add new</div>';
+                                return '<div class="create"><strong>' + escape(data.input) + '</strong>&hellip; əlavə et</div>';
                             }
                         }
                     });
+                    if (optionsCount !== 0) {
+                        $(ParentDiv).append(`<div class="form-group">
+                                            <div class="">
+                                                <a href="#" class="modifyDepartment btn btn-info">Dəyişdir</a>
+                                                <a href="#" class="deleteDepartment btn btn-danger">Sil</a>
+                                            </div>
+                                         </div>`);
+                    }
                     divId = 0;
                 }
             });
         }
         else {
             divId = parseInt(id) + 1;
-            $('div').each(function () {
-                i = $(this).attr('id');
+            $('.department-container .parent').each(function () {
+                i = $(this).attr('id').substring(2);
+                console.log(i);
                 if (parseInt(i) > id) {
                     $(this).remove();
                 }
             });
-            var div = $('<div class="col-md-12" id="' + divId + '"></div>');
-            div.appendTo('.department-container');
+
+            divId = parseInt(id) + 1;
+
+            var ParentDiv = $('<div class="parent" id="id' + divId + '"></div>'); //create parent div 
+            ParentDiv.appendTo('.department-container'); //append to page 
+
+            var div = $('<div class="col-md-11" id="' + divId + '"></div>'); // create
+            div.appendTo(ParentDiv);
+
             var select = $("<select class='select'></select>").attr("id", "select" + divId).attr("name", "select");
             select.append($("<option></option>"));
+
             $('#' + divId).html(select);
+
             $('#select' + divId + '').selectize({
                 create: true,
-                placeholder: '--Select--',
+                placeholder: '--Seç--',
                 sortField: 'text',
                 render: {
                     option_create: function (data, escape) {
-                        return '<div class="create"><strong>' + escape(data.input) + '</strong>&hellip; add new</div>';
+                        return '<div class="create"><strong>' + escape(data.input) + '</strong>&hellip; əlavə et</div>';
                     }
                 }
             });
@@ -105,22 +141,36 @@ function CreateSelectBox() {
                     url: '/Exam/GetSubCategories',
                     data: { id: $(this).find(':selected').val() },
                     success: function (response) {
+
                         var select = $("<select></select>").attr("id", "subId").attr("name", "select");
                         select.append($("<option></option>"));
+                        var optionsCount = 0;
                         $.each(response.data, function (index, w) {
+                            optionsCount++;
                             select.append($("<option></option>").attr("value", w.Item1).text(w.Item2));
                         });
                         $('#sub').html(select);
+                        if (optionsCount === 0) {
+                            $('#categoryButtons').html('');
+                        } else {
+                            $('#categoryButtons').html(`<div class="form-group">
+                                                                    <div class="">
+                                                                        <a href="#" class="modifyCategory btn btn-info">Dəyişdir</a>
+                                                                        <a href="#" class="deleteCategory btn btn-danger">Sil</a>
+                                                                    </div>
+                                                                </div>`);
+                        }
                         $('#subId').selectize({
                             create: true,
-                            placeholder: '~~Select option~~',
+                            placeholder: '~~Seç~~',
                             sortField: 'text',
                             render: {
                                 option_create: function (data, escape) {
-                                    return '<div class="create"><strong>' + escape(data.input) + '</strong>&hellip; add new</div>';
+                                    return '<div class="create"><strong>' + escape(data.input) + '</strong>&hellip; əlavə et</div>';
                                 }
                             }
                         });
+
                         console.log(response.data);
                     },
                     error: function () {
@@ -133,11 +183,11 @@ function CreateSelectBox() {
                 $('#sub').html(select);
                 $('#subId').selectize({
                     create: true,
-                    placeholder: '~~Select option~~',
+                    placeholder: '~~Seç~~',
                     sortField: 'text',
                     render: {
                         option_create: function (data, escape) {
-                            return '<div class="create"><strong>' + escape(data.input) + '</strong>&hellip; add new</div>';
+                            return '<div class="create"><strong>' + escape(data.input) + '</strong>&hellip; əlavə et</div>';
                         }
                     }
                 });
@@ -145,6 +195,7 @@ function CreateSelectBox() {
         }
         else {
             $('#sub').html('');
+            $('#categoryButtons').html('');
         }
     });
 }
@@ -156,7 +207,7 @@ function ConvertToSelectize() {
         sortField: 'text',
         render: {
             option_create: function (data, escape) {
-                return '<div class="create"><strong>' + escape(data.input) + '</strong>&hellip; add new</div>';
+                return '<div class="create"><strong>' + escape(data.input) + '</strong>&hellip; əlavə et</div>';
             }
         }
     });
@@ -171,20 +222,22 @@ function Save() {
     parent = 'first';
 
     $('#save').on('click', function () {
-        limit = $('#limit').val();
-        count = $('#count').val();
-        console.log(count + ' ' + limit);
-        if (parseInt(count) < parseInt(limit)) {
+        limit = parseInt($('#limit').val());
+        count = parseInt($('#count').val());
+        console.log(count < limit);
+        if (count < limit) {
             showErrorNotification('Limit greater than count.');
-        } else {
+        }
+        else if (limit === 0 || count === 0) {
+            showErrorNotification('Sual və minimum düzgün  cavab sayı 0 ola bilməz.');
+        }
+        else {
             array = [];
-
             $('.department-container select').each(function (i) {
                 object = {};
                 val = $(this).find(':selected').val().split('/');
                 object.child = val[0];
                 object.parent = val[1];
-
                 console.log(object);
                 //$('.department-container select').each(function (j) {
                 //    if (j === i - 1) {
@@ -202,20 +255,20 @@ function Save() {
 
             subId = $('#subId').find(':selected').val();
             parentId = $('#parentCategory').find(':selected').val();
-            if ($.isNumeric(parentId)) {
+            if ($.isNumeric(parentId) && array.length !== 0) {
                 $.ajax({
                     type: 'POST',
                     url: '/Exam/AddQuesLimit',
                     data: { count: count, limit: limit, subId: subId, parentId: parentId, array: array },
                     success: function (response) {
-                        if (response) {
+                        if (response.Item1) {
                             showSuccessNotification('Operation successfully executed.');
                         } else {
-                            showErrorNotification('Error occured.');
+                            showErrorNotification(response.Item2);
                         }
                     },
                     error: function () {
-                        showErrorNotification('Error ocured. Check network properties.');
+                        showErrorNotification('Error occured. Check your fields.');
                     }
                 });
             }
@@ -248,4 +301,288 @@ function GetQuesCounts(prof) {
             }
         });
     }
+}
+
+function modifyDepartment() {
+    var depart, selectId, departId, departText, divId;
+    $(document).on('click', '.modifyDepartment', function () {
+        //Part 1
+        //select closest department option
+        depart = $(this).parent().parent().parent().find('select');
+        divId = parseInt($(this).parent().parent().parent().find('.col-md-11').attr('id'));
+        console.log(divId);
+        selectId = depart.attr('id');
+        console.log(depart.html());
+        if (selectId === 'select1') {
+            departText = depart.find(':selected').first().text();
+        } else {
+            departText = depart.find(':selected').text();
+        }
+        departId = depart.find(':selected').val().split('/')[0];
+        $('#modifiedText').val(departText);
+        //check departId valid 
+        if (departId > 0) {
+            //show modal
+            $('#confirmUpDelStatus').val('0');
+            $('#departModifyModal').modal('show').appendTo('body');
+        }
+        //Part 2s
+        //Update current depart when click ok button
+    });
+
+
+    $('#mdfy_ok').click(function () {
+        var inputText = $('#modifiedText').val();
+        if (parseInt($('#confirmUpDelStatus').val()) === 0) {// check modify category or depart
+            if (inputText) {
+                console.log(departId + ' ' + departText);
+                console.log(depart);
+                if (depart) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/Exam/UpdateDepart',
+                        data: { id: departId, text: $('#modifiedText').val() },
+                        success: function (response) {
+                            if (response) {
+                                //depart.find(':selected').text($('#modifiedText').val());
+                                //depart[0].selectize.clearCache();
+                                //depart[0].selectize.destroy();
+                                //$('#' + selectId).selectize();
+                                if (selectId === 'select1') {
+                                    window.location.replace('/Exam/QuestionLimit/#success');
+                                    window.location.reload();
+                                } else {
+                                    $('#select' + (divId - 1)).change();
+                                }
+                                showSuccessNotification('Operation successfully executed.');
+                                depart = null;
+                                departId = null;
+                                departText = null;
+                            } else {
+                                showErrorNotification('Error occured.1');
+                            }
+                        },
+                        error: function () {
+                            showErrorNotification('Error occured.2');
+                        }
+                    });
+                    //console.log($('#select1').html());
+                    $('#departModifyModal').modal('hide');
+                }
+                departId = null;
+                departText = null;
+            } else {
+                $('#modifiedText').addClass('input-validation-error');
+            }
+            $('#modifiedText').keypress(function () {
+                if ($('#modifiedText').val().length + 1) {
+                    $('#modifiedText').removeClass('input-validation-error');
+                } else {
+                    $('#modifiedText').addClass('input-validation-error');
+                }
+            });
+            $('#modifiedText').keyup(function () {
+                if ($('#modifiedText').val().length === 0) {
+                    $('#modifiedText').addClass('input-validation-error');
+                }
+                else {
+                    $('#modifiedText').removeClass('input-validation-error');
+                }
+            });
+        }
+    });
+
+}
+
+function modifyCategory() {
+    var category, selectId, categoryId, categoryText, categoryVal;
+    $(document).on('click', '.modifyCategory', function () {
+        //Part 1
+        //select closest department option
+        category = $(this).parent().parent().parent().parent().find('select');
+        categoryVal = category.find(':selected').val();
+        categoryId = category.find(':selected').val();
+
+        selectId = category.attr('id');
+        if (selectId === 'subId') {
+            categoryText = category.find(':selected').text();
+        } else {
+            categoryText = category.find(':selected').first().text();
+        }
+        console.log(category.html());
+        console.log(categoryText + ' ' + categoryId);
+        $('#modifiedText').val(categoryText);
+        //check categoryId valid 
+        if (categoryId > 0) {
+            //show modal
+            $('#confirmUpDelStatus').val('1');
+            $('#departModifyModal').modal('show').appendTo('body');
+        }
+    });
+    //Part 2s
+    //Update current depart when click ok button
+
+
+    $('#mdfy_ok').click(function () {
+        if (parseInt($('#confirmUpDelStatus').val()) === 1) {// check modify category or depart
+            var inputText = $('#modifiedText').val();
+            if (inputText) {
+                console.log(categoryText + ' ' + categoryId);
+                if (category) {
+                    console.log(6666666);
+                    $.ajax({
+                        type: 'POST',
+                        url: '/Exam/UpdateCategory',
+                        data: { id: categoryId, text: $('#modifiedText').val() },
+                        success: function (response) {
+                            if (response) {
+                                //category[0].selectize.clearCache();
+                                //category[0].selectize.destroy();
+                                if (selectId === 'subId') {
+                                    showSuccessNotification('Operation successfully executed.');
+                                    console.log(categoryVal);
+                                    $('#parentCategory').change();
+
+                                } else {
+                                    window.location.replace('/Exam/QuestionLimit#success');
+                                    window.location.reload();
+                                }
+                                //$('#' + selectId).find(':selected').text($('#modifiedText').val());
+                                //$(category).selectize();
+                                category = null;
+                                categoryId = null;
+                                categoryText = null;
+                            } else {
+                                showErrorNotification('Error occured.1');
+                            }
+                        },
+                        error: function () {
+                            showErrorNotification('Error occured.2');
+                        }
+                    });
+                    //console.log($('#select1').html());
+                    $('#departModifyModal').modal('hide');
+                }
+                categoryId = null;
+                categoryText = null;
+            } else {
+                $('#modifiedText').addClass('input-validation-error');
+            }
+            $('#modifiedText').keypress(function () {
+                if ($('#modifiedText').val().length + 1) {
+                    $('#modifiedText').removeClass('input-validation-error');
+                } else {
+                    $('#modifiedText').addClass('input-validation-error');
+                }
+            });
+            $('#modifiedText').keyup(function () {
+                if ($('#modifiedText').val().length === 0) {
+                    $('#modifiedText').addClass('input-validation-error');
+                }
+                else {
+                    $('#modifiedText').removeClass('input-validation-error');
+                }
+            });
+        }
+    });
+}
+
+function deleteCategory() {
+    var category, id, deleteButton, selectId;
+
+    $(document).on('click', '.deleteCategory', function () {
+        category = $(this).parent().parent().parent().parent().find('select');
+        selectId = category.attr('id');
+        deleteButton = $(this);
+        id = category.find(':selected').val();
+        if (id > 0) {
+            $('#confirmModal').modal('show').appendTo('body');
+            $('#DeleteUpDelStatus').val('1');
+        }
+        console.log(id);
+    });
+
+    $('#confirm').click(function () {
+        if (parseInt($('#DeleteUpDelStatus').val()) === 1) {
+            var divId = parseInt($(deleteButton).parent().parent().parent().find('.col-md-11').attr('id'));
+            divId = divId - 1;
+            console.log(divId);
+            $.ajax({
+                type: 'POST',
+                url: '/Exam/DeleteCategory',
+                data: { id: id },
+                success: function (response) {
+                    if (response) {
+                        if (selectId === 'subId') {
+                            showSuccessNotification('Operation successfully executed.');
+                            $('#confirmModal').modal('hide');
+                            $('#parentCategory').change();
+
+                        } else {
+                            window.location.replace('/Exam/QuestionLimit#success');
+                            window.location.reload();
+                        }
+                    } else {
+                        showErrorNotification('Error occured.');
+                    }
+                },
+                error: function () {
+                    showErrorNotification('Error');
+                }
+            });
+        }
+    });
+}
+
+function deleteDepartment() {
+    var depart, id, deleteButton;
+
+    $(document).on('click', '.deleteDepartment', function () {
+        depart = $(this).parent().parent().parent().find('select');
+        deleteButton = $(this);
+        id = depart.find(':selected').val().split('/')[0];
+        if (id > 0) {
+            $('#confirmModal').modal('show').appendTo('body');
+            $('#DeleteUpDelStatus').val('0');
+        }
+        console.log(id);
+    });
+
+    $('#confirm').click(function () {
+        if (parseInt($('#DeleteUpDelStatus').val()) === 0) {
+            var divId = parseInt($(deleteButton).parent().parent().parent().find('.col-md-11').attr('id'));
+            divId = divId - 1;
+            console.log(divId);
+            $.ajax({
+                type: 'POST',
+                url: '/Exam/DeleteDepart',
+                data: { id: id },
+                success: function (response) {
+                    if (response) {
+                        if (divId === 0) {
+                            window.location.replace('/Exam/QuestionLimit#success');
+                            window.location.reload();
+                        } else {
+                            $('#select' + divId).change();
+                            $('#confirmModal').modal('hide');
+                            showSuccessNotification('Operation executed successfully.');
+                        }
+                    } else {
+                        showErrorNotification('Error occured.');
+                    }
+                },
+                error: function () {
+                    showErrorNotification('Error');
+                }
+            });
+        }
+    });
+}
+
+function displayOperationResult() {
+    result = window.location.hash;
+    if (result === '#success') {
+        showSuccessNotification('Operation executed successfully.');
+    }
+    window.location.hash = '';
 }

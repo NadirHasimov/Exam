@@ -55,5 +55,7 @@ namespace Exam.DomainModels
 
         public string Time { get; set; }
 
+        public string Category { get; set; }
+
     }
 }

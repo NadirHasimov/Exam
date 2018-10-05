@@ -33,7 +33,7 @@
 }
 
 <hr />
-<h2>Candidate</h2>
+<h2>Namizərd</h2>
 <br />
 
 <hr />
@@ -42,7 +42,7 @@
     @using (Html.BeginForm("Index", "Candidate", FormMethod.Get))
     {
         <input id="dt_range" type="text" name="dt_range" value="" hidden />
-        <button type="submit" class="btn btn-default pull-left btn-icon" id="filterDate"> <i class="entypo-search"></i>Filter Date</button>
+        <button type="submit" class="btn btn-default pull-left btn-icon" id="filterDate"> <i class="entypo-search"></i>Tarixə görə filtirlə</button>
         <div class="col-md-4 pull-left">
             <div class="daterange daterange-inline" data-format="MMMM D, YYYY" data-start-date="March 13, 2018" data-end-date="March 27, 2018">
                 <i class="entypo-calendar"></i>
@@ -52,15 +52,15 @@
     }
     <a href="#" class="btn btn-danger icon btn-icon icon-left pull-right" style="" id="btn_disable">
         <i class="entypo-block"></i>
-        Disable
+        Deaktiv et
     </a>
     <a href="#" class="btn btn-success icon btn-icon icon-left pull-right" style="margin-right:10px;" id="btn_approve">
         <i class="entypo-check"></i>
-        Approve
+        Təsdiqlə
     </a>
     <a href="javascript:;" id="mdl_btn" style="margin-right:10px;" onclick="$('#modal').appendTo('body').modal('show')" class="btn btn-info icon btn-icon icon-left pull-right">
         <i class="entypo-list-add"></i>
-        Create ticket
+        Bilet yarat
     </a>
 </div>
 <div class="modal fade custom-width" id="modal">
@@ -70,7 +70,7 @@
                 <button type="button" class="close" data-dismiss="modal">
                     x
                 </button>
-                <h3 class="modal-title">Create candidate and ticket</h3>
+                <h3 class="modal-title">Bilet və namizərd yarat</h3>
             </div>
             <div class="modal-body">
                 <form id="rootwizard" class="form-wizard validate">
@@ -121,27 +121,27 @@
                             <div class="row align-center">
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label class="control-label" for="FinCode">FIN code</label>
+                                        <label class="control-label" for="FinCode">FIN kod</label>
                                         <input class="form-control" name="FinCode" id="FinCode" data-validate="required" />
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label class="control-label" for="FirstName">Name</label>
+                                        <label class="control-label" for="FirstName">Ad</label>
                                         <input class="form-control" name="FirstName" id="FirstName" data-validate="required" />
                                     </div>
                                 </div>
 
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label class="control-label" for="LastName">Surname</label>
+                                        <label class="control-label" for="LastName">Soyad</label>
                                         <input class="form-control" name="LastName" id="LastName" data-validate="required" />
                                     </div>
                                 </div>
 
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label class="control-label" for="MiddleName">Middle name</label>
+                                        <label class="control-label" for="MiddleName">Ata adı</label>
                                         <input class="form-control" name="MiddleName" id="MiddleName" data-validate="required" />
                                     </div>
                                 </div>
@@ -150,7 +150,7 @@
                             <div class="row align-center">
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label class="control-label" for="Birthdate">Birthdate</label>
+                                        <label class="control-label" for="Birthdate">Doğum tarixi</label>
                                         <div class="input-group">
                                             <input type="text" id="Birthdate" name="Birthdate" class="form-control datepicker" data-format="dd/mm/yyyy" data-validate="required">
                                         </div>
@@ -165,15 +165,19 @@
 
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label class="control-label" for="Mobile">Mobile</label>
+                                        <label class="control-label" for="Mobile">Mobil</label>
                                         <input class="form-control" type="tel" name="Mobile" id="Mobile" data-validate="required" />
                                     </div>
                                 </div>
-
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label><input type="checkbox" id="local_candidate" value="1" />  Lokal namizərd</label>
+                                    </div>
+                                </div>
 
                             </div>
                             <div class="row align-center">
-                                <div class="col-md-6">
+                                <div class="col-md-6" hidden id="div_prof">
                                     <div class="form-group">
                                         <label class="control-label" for="ProfessionId">Profession</label>
                                         <select id="ProfessionId" name="ProfessionId" class="profession" data-validate="">
@@ -186,19 +190,19 @@
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label class="control-label" for="Gender">Gender</label>
+                                        <label class="control-label" for="Gender">Cins</label>
                                         <br />
-                                        <label style="margin-right:2%;"><input type="radio" name="Gender" class="" id="Gender0" value="0" /> Male</label>
-                                        <label><input type="radio" name="Gender" id="Gender1" class="" value="1" /> Female</label>
+                                        <label style="margin-right:2%;"><input type="radio" name="Gender" class="" id="Gender0" value="0" /> Kişi</label>
+                                        <label><input type="radio" name="Gender" id="Gender1" class="" value="1" /> Qadın</label>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label class="control-label" for="FamilyStatus">Family status</label>
+                                        <label class="control-label" for="FamilyStatus">Ailə vəziyyəti</label>
                                         <select name="test" class="form-control" id="FamilyStatusId">
-                                            <option value="1">Married</option>
-                                            <option value="2" selected>Single</option>
-                                            <option value="3">Divorced</option>
+                                            <option value="1">Evli</option>
+                                            <option value="2" selected>Subay</option>
+                                            <option value="3">Boşanmış</option>
                                         </select>
                                     </div>
                                 </div>
@@ -223,7 +227,7 @@
                                 <div class="row">
                                     <div class="col-md-3 center-picker">
                                         <div class="form-group">
-                                            <label class="control-label" for="Date">Date</label>
+                                            <label class="control-label" for="Date">Tarix</label>
                                             <div class="input-group">
                                                 <input type="text" id="Date" name="Date" class="form-control datepicker" data-format="dd/mm/yyyy" data-validate="required">
                                                 <div class="input-group-addon">
@@ -234,7 +238,7 @@
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <label class="control-label" for="clock">Clock</label>
+                                            <label class="control-label" for="clock">Saat</label>
                                             <div class="input-group">
                                                 <input type="text" id="clock" name="clock" class="form-control timepicker" data-template="dropdown" data-validate="required" data-format="" data-show-seconds="true" data-default-time="11:25 AM" data-show-meridian="true" data-minute-step="5" data-second-step="5">
                                                 <div class="input-group-addon">
@@ -250,27 +254,27 @@
                             <div class="row align-center">
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label class="control-label" for="FinCodeClone">FIN code</label>
+                                        <label class="control-label" for="FinCodeClone">FIN kod</label>
                                         <input class="form-control" name="FinCodeClone" id="FinCodeClone" data-validate="required" />
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label class="control-label" for="FirstNameClone">Name</label>
+                                        <label class="control-label" for="FirstNameClone">Ad</label>
                                         <input class="form-control" name="FirstNameClone" id="FirstNameClone" data-validate="required" />
                                     </div>
                                 </div>
 
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label class="control-label" for="LastNameClone">Surname</label>
+                                        <label class="control-label" for="LastNameClone">Soyad</label>
                                         <input class="form-control" name="LastNameClone" id="LastNameClone" data-validate="required" />
                                     </div>
                                 </div>
 
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label class="control-label" for="MiddleNameClone">Middle name</label>
+                                        <label class="control-label" for="MiddleNameClone">Ata adı</label>
                                         <input class="form-control" name="MiddleNameClone" id="MiddleNameClone" data-validate="required" />
                                     </div>
                                 </div>
@@ -279,7 +283,7 @@
                             <div class="row align-center">
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label class="control-label" for="BirthdateClone">Birthdate</label>
+                                        <label class="control-label" for="BirthdateClone">Doğum tarixi</label>
                                         <div class="input-group">
                                             <input type="text" id="BirthdateClone" name="BirthdateClone" class="form-control datepicker" data-format="dd/mm/yyyy" data-validate="required">
                                         </div>
@@ -294,14 +298,22 @@
 
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label class="control-label" for="MobileClone">Mobile</label>
+                                        <label class="control-label" for="MobileClone">Mobil</label>
                                         <input class="form-control" type="tel" name="MobileClone" id="MobileClone" data-validate="required" />
                                     </div>
                                 </div>
 
-                                <div class="col-md-3">
+                                <div class="col-md-2">
                                     <div class="form-group">
-                                        <label class="control-label" for="ProfessionIdClone">Profession</label>
+                                        <label><input type="checkbox" id="local_candidate_clone" value="1" />  Lokal namizərd</label>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row align-center">
+                                <div class="col-md-4" id="div_prof_clone" hidden>
+                                    <div class="form-group">
+                                        <label class="control-label" for="ProfessionIdClone">İxtisas</label>
                                         <select id="ProfessionIdClone" name="ProfessionIdClone" class="profession" data-validate="">
                                             @foreach (var candidate in Exam.DALC.CandidateDALC.GetProfessions())
                                             {
@@ -310,23 +322,22 @@
                                         </select>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row align-center">
+
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label class="control-label" for="GenderClone">Gender</label>
+                                        <label class="control-label" for="GenderClone">Cins</label>
                                         <br />
-                                        <label style="margin-right:2%;"><input type="radio" name="GenderClone" class="" id="GenderClone0" value="0" /> Male</label>
-                                        <label><input type="radio" name="GenderClone" id="GenderClone1" class="" value="1" /> Female</label>
+                                        <label style="margin-right:2%;"><input type="radio" name="GenderClone" class="" id="GenderClone0" value="0" /> Kişi</label>
+                                        <label><input type="radio" name="GenderClone" id="GenderClone1" class="" value="1" /> Qadın</label>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label class="control-label" for="FamilyStatusClone">Family status</label>
+                                        <label class="control-label" for="FamilyStatusClone">Ailə vəziyyəti</label>
                                         <select name="FamilyStatusClone" class="form-control" id="FamilyStatusIdClone">
-                                            <option value="1">Married</option>
-                                            <option value="2" selected>Single</option>
-                                            <option value="3">Divorced</option>
+                                            <option value="1">Evli</option>
+                                            <option value="2" selected>Subay</option>
+                                            <option value="3">Boşanmış</option>
                                         </select>
                                     </div>
                                 </div>
@@ -335,7 +346,7 @@
                             <div class="row align-center">
                                 <div class="form-group">
                                     <div class="col-md-12">
-                                        <label class="control-label" for="professionClone">Exam profession</label>
+                                        <label class="control-label" for="professionClone">İmtahan ixtisası</label>
                                         <select id="professionClone" name="professionClone" class="profession" data-validate="required">
                                             @foreach (var candidate in Exam.DALC.CandidateDALC.GetProfessions())
                                             {
@@ -357,7 +368,7 @@
 
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label class="control-label" for="DateClone">Date</label>
+                                        <label class="control-label" for="DateClone">Tarix</label>
                                         <div class="input-group">
                                             <input type="text" id="DateClone" name="DateClone" class="form-control  datepicker" data-format="dd/mm/yyyy" data-validate="required">
                                         </div>
@@ -365,7 +376,7 @@
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label class="control-label" for="clockClone">Clock</label>
+                                        <label class="control-label" for="clockClone">Saat</label>
                                         <div class="input-group">
                                             <input type="text" id="clockClone" name="clockClone" class="form-control timepicker" data-template="dropdown" data-validate="required" data-show-seconds="true" data-default-time="11:25 AM" data-show-meridian="true" data-minute-step="5" data-second-step="5">
                                         </div>
@@ -375,11 +386,11 @@
                                     <div class="form-group">
                                         <a href="#" data-dismiss="modal" class="btn btn-default pull-right icon btn-icon icon-left" id="" style="font-size:small;margin-left: 10px;">
                                             <i class="entypo-cancel"></i>
-                                            Cancel
+                                            Çıx
                                         </a>
                                         <a href="#" class="btn btn-success icon btn-icon icon-left pull-right" id="saveCandidate" style="font-size:small;">
                                             <i class="entypo-floppy" style="font-size:medium;"></i>
-                                            Save
+                                            Yadda saxla
                                         </a>
                                     </div>
                                 </div>
@@ -388,11 +399,11 @@
 
                         <ul class="pager wizard">
                             <li class="previous">
-                                <a href="#" id="prevBtn"><i class="entypo-left-open"></i> Previous</a>
+                                <a href="#" id="prevBtn"><i class="entypo-left-open"></i> Əvvəlki</a>
                             </li>
 
                             <li class="next">
-                                <a href="#" id="nextBtn">Next <i class="entypo-right-open"></i></a>
+                                <a href="#" id="nextBtn">Sonrakı <i class="entypo-right-open"></i></a>
                             </li>
                         </ul>
 
@@ -407,24 +418,24 @@
         <thead>
             <tr>
                 <th></th>
-                <th>FIN code</th>
-                <th>Name</th>
-                <th>Surname</th>
-                <th>Middle name</th>
-                <th>Profession</th>
-                <th>Date</th>
-                <th>Time</th>
+                <th>FIN kod</th>
+                <th>Ad</th>
+                <th>Soyad</th>
+                <th>Ata adı</th>
+                <th>İxtisas</th>
+                <th>Tarix</th>
+                <th>Saat</th>
                 <th>Status</th>
             </tr>
             <tr>
                 <th><input type="checkbox" name="chkAll" id="chkAll" /></th>
-                <th>FIN code</th>
-                <th>Name</th>
-                <th>Surname</th>
-                <th>Middle name</th>
-                <th>Profession</th>
-                <th>Date</th>
-                <th>Time</th>
+                <th>FIN kod</th>
+                <th>Ad</th>
+                <th>Soyad</th>
+                <th>Ata adı</th>
+                <th>İxtisas</th>
+                <th>Tarix</th>
+                <th>Saat</th>
                 <th>Status</th>
             </tr>
         </thead>
@@ -471,7 +482,7 @@
                 <button type="button" class="close" data-dismiss="modal">
                     x
                 </button>
-                <h3>Disable</h3>
+                <h3>Deaktiv et</h3>
             </div>
             <div class="modal-body">
                 <div class="row">

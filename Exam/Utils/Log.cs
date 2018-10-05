@@ -7,6 +7,7 @@ using System.Web.Mvc;
 
 namespace Exam.Utils
 {
+    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public class Log : ActionFilterAttribute, IActionFilter
     {
         public override void OnActionExecuted(ActionExecutedContext filterContext)

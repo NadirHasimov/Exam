@@ -51,6 +51,6 @@ namespace Exam.DomainModels
 
         public string Creator { get; set; }
 
-        public string CreateDate { get; set; }
+        public DateTime CreateDate { get; set; }
     }
 }

@@ -43,6 +43,8 @@ namespace Exam.Models
 
         public List<CandidateViewModel> Candidates { get; set; }
 
+        public bool LocalCandidateStatus { get; set; }
+
         public bool Finish { get; set; }
     }
 }

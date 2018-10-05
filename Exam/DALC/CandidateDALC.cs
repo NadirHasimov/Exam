@@ -36,6 +36,7 @@ namespace Exam.DALC
                         model.Birthdate = DateTime.Parse(reader["B_DATE"].ToString());
                         model.FinCode = reader["FIN_CODE"].ToString();
                         model.Mobile = reader["MOBILE"].ToString();
+                        model.LocalCandidateStatus = bool.Parse(reader["LOCAL_CAND_S"].ToString());
                     }
                 }
             }
@@ -87,6 +88,7 @@ namespace Exam.DALC
                     cmd.Parameters.AddWithValue("@date", model.ExamDate);
                     cmd.Parameters.AddWithValue("@mail", model.Mail);
                     cmd.Parameters.AddWithValue("@time", model.ExamTime);
+                    cmd.Parameters.AddWithValue("@local_cand_s", model.LocalCandidateStatus);
                     string message = "", ID = "";
                     bool result = false;
                     var reader = cmd.ExecuteReader();
