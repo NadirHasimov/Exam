@@ -117,6 +117,7 @@
                             </div>
                         </div>
                         <div class="tab-pane" id="tab2">
+                            <input hidden type="text" value="0" id="TicketId" name="TicketId" />
                             <input type="text" name="ID" id="ID" hidden />
                             <div class="row align-center">
                                 <div class="col-md-3">
@@ -425,6 +426,7 @@
                 <th>İxtisas</th>
                 <th>Tarix</th>
                 <th>Saat</th>
+                <th>Əməliyyat</th>
                 <th>Status</th>
             </tr>
             <tr>
@@ -436,6 +438,7 @@
                 <th>İxtisas</th>
                 <th>Tarix</th>
                 <th>Saat</th>
+                <th>Əməliyyat</th>
                 <th>Status</th>
             </tr>
         </thead>
@@ -451,6 +454,12 @@
                     <td>@candidate.Profession</td>
                     <td>@candidate.ExamDate.ToShortDateString()</td>
                     <td>@candidate.ExamTime.ToString()</td>
+                    <td>
+                        <a href="#" data-finCode="@candidate.FinCode" data-TicketId="@candidate.TicketId" data-apprStatus="@candidate.Status" class="cand-edit btn btn-info icon btn-icon icon-left">
+                            <i class="entypo-pencil"></i>
+                            Dəyişdir
+                        </a>
+                    </td>
                     <td>
                         @if (candidate.Status.Equals("0"))
                         {

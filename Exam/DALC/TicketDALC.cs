@@ -38,7 +38,8 @@ namespace Exam.DALC
                                 ExamTime = DateTime.Parse(reader["TIME"].ToString()).ToString("hh:mm"),
                                 Status = reader["APPR_STATUS"].ToString(),
                                 Finish = reader["FINISH"].ToString().Equals("0") ? false : true,
-                                Description=reader["DESCRIPTION"].ToString()
+                                Description = reader["DESCRIPTION"].ToString(),
+                                TicketID = int.Parse(reader["TICKET_ID"].ToString())
                             });
                         }
                     }
@@ -131,6 +132,22 @@ namespace Exam.DALC
                 }
             }
             else return true;
+        }
+
+        public static int GetApprvStatus(int ticketId)
+        {
+            int apprvStatus = 0;
+            using (SqlConnection con = new SqlConnection(AppConfig.ConnectionString))
+            {
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand(SqlQueries.Ticket.getApprvStatus, con))
+                {
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Parameters.AddWithValue("@ticket_id", ticketId);
+                    apprvStatus = int.Parse(cmd.ExecuteScalar().ToString());
+                }
+            }
+            return apprvStatus;
         }
     }
 }

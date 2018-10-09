@@ -8,7 +8,6 @@ $(document).ready(function () {
     ViewPicture();
     Feedback();
 });
-
 //function CallbackFunction(event) {
 //    if (window.event) {
 //        if (window.event.clientX < 40 && window.event.clientY < 0) {

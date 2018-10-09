@@ -44,5 +44,7 @@ namespace Exam.DomainModels
         public string Description { get; set; }
 
         public bool Finish { get; set; }
+
+        public int TicketID { get; set; }
     }
 }

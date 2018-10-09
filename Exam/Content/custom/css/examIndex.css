@@ -86,3 +86,7 @@
 #feedback {
     font-size: medium;
 }
+
+.full-screen {
+    cursor: zoom-in;
+}

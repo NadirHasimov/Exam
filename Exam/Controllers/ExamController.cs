@@ -80,7 +80,7 @@ namespace Exam.Controllers
         {
             var referer = Request.ServerVariables["http_referer"];
             var categoreis = ExamDALC.GetCategories();
-            ViewBag.parentCategories = categoreis.Where(row => row.Item3 == 0).ToList();
+            ViewBag.parentCategories = categoreis.Where(row => row.Item3 == 0).OrderBy(row => row.Item1).ToList();
             ViewBag.subCategories = categoreis.Where(row => row.Item3 == 1).ToList();
             ViewBag.questions = ExamDALC.GetQuestions();
             return View();

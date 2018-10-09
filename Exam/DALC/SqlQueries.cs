@@ -72,10 +72,13 @@ namespace Exam.DALC
 
         public static class Candidate
         {
-            public const string getCandidateByFin = @"SELECT c.*,d.NAME PROFESSION FROM CANDIDATE c
+            public const string getCandidateByFin = @"SELECT c.*,d.NAME PROFESSION,t.PROFESSION_ID EXAM_PROFESSION_ID,t.TIME,t.DATE 
+													  FROM CANDIDATE c
                                                       INNER JOIN DEPARTMENT d
                                                       ON c.PROFESSION_ID=d.ID
-                                                      WHERE c.ACTIVE=1 AND c.FIN_CODE=@fin_code";
+													  LEFT JOIN TICKET t 
+													  ON T.CAND_ID=c.ID
+                                                      WHERE c.ACTIVE=1 AND c.FIN_CODE=@fin_code AND (t.ID=@ticket_id OR @ticket_id=0)";
             public const string getProfessions = @"WITH CTE AS (
                                                    	SELECT ID,PARENT_ID, [NAME], CAST([NAME] AS nvarchar(255))[Path] FROM DEPARTMENT
                                                    	WHERE PARENT_ID=0
@@ -125,7 +128,7 @@ namespace Exam.DALC
 
         public static class Ticket
         {
-            public const string get = @"SELECT t.ID,t.DESCRIPTION,c.FIN_CODE,c.NAME,c.SURNAME,
+            public const string get = @"SELECT t.ID TICKET_ID,t.DESCRIPTION,c.ID,c.FIN_CODE,c.NAME,c.SURNAME,
                                         c.FATHER_NAME,d.NAME profession, t.DATE, t.TIME,t.APPR_STATUS,t.FINISH
                                         FROM TICKET t
                                         INNER JOIN CANDIDATE c ON t.CAND_ID=c.ID
@@ -164,6 +167,8 @@ namespace Exam.DALC
             public const string updateFinish = @"UPDATE t set FINISH=1
                                                  from TICKET t
                                                  where t.ID=@ticket_id";
+
+            public const string getApprvStatus = @"SELECT APPR_STATUS FROM TICKET WHERE ID=@ticket_id";
         }
         public static class Exam
         {

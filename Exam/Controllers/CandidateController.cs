@@ -30,9 +30,9 @@ namespace Exam.Controllers
             return View(tickets);
         }
 
-        public ActionResult GetCandidate(string finCode)
+        public ActionResult GetCandidate(string finCode, int ticketId)
         {
-            var candidate = CandidateDALC.GetCandidateByFin(finCode);
+            var candidate = CandidateDALC.GetCandidateByFin(finCode, ticketId);
             return Json(new { candidate = candidate }, JsonRequestBehavior.AllowGet);
         }
 
@@ -49,6 +49,8 @@ namespace Exam.Controllers
             bool result = TicketDALC.ApproveTickets(ids, type, desc);
             return Json(result, JsonRequestBehavior.AllowGet);
         }
+
+        public JsonResult GetApprvStatus(int ticketId) => Json(TicketDALC.GetApprvStatus(ticketId), JsonRequestBehavior.AllowGet);
 
         public ActionResult List()
         {
@@ -79,6 +81,7 @@ namespace Exam.Controllers
                 Status = viewModel.Status,
                 Finish = viewModel.Finish,
                 LocalCandidateStatus = viewModel.ProfessionId != 0,
+                TicketID = viewModel.TicketId,
                 Description = viewModel.Description
             };
         }
@@ -105,7 +108,8 @@ namespace Exam.Controllers
                 Status = domainModel.Status,
                 Description = domainModel.Description,
                 LocalCandidateStatus = domainModel.LocalCandidateStatus,
-                Finish = domainModel.Finish
+                Finish = domainModel.Finish,
+                TicketId = domainModel.TicketID
             };
         }
     }

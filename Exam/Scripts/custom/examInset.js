@@ -208,12 +208,12 @@ function View() {
             url: $(this).attr('href'),
             success: function (response) {
                 console.log(response);
-                $('#qi').attr('src', '');
-                $('#v_a').attr('src', '');
-                $('#vb').attr('src', '');
-                $('#vc').attr('src', '');
-                $('#vd').attr('src', '');
-                $('#ve').attr('src', '');
+                $('#qi').removeAttr('src');
+                $('#v_a').removeAttr('src');
+                $('#vb').removeAttr('src');
+                $('#vc').removeAttr('src');
+                $('#vd').removeAttr('src');
+                $('#ve').removeAttr('src');
                 $.each(response.question, function (i, w) {
                     console.log(w);
                     if (w.QuestionText.length > 0 && i === 0) {
@@ -243,7 +243,7 @@ function View() {
                         }
                     }
                     if (w.Variant === 'D') {
-                        $('#Dfield').html('<label style="font-weight:bold;"><input type="radio" ' + (w.IsCorrectAnswer === true ? 'checked' : '') + '  name="prewVaraiant" /> D)</label> ' + w.AnswerText);
+                        $('#Dfield').html('<label style="font-weight:   bold;"><input type="radio" ' + (w.IsCorrectAnswer === true ? 'checked' : '') + '  name="prewVaraiant" /> D)</label> ' + w.AnswerText);
                         if (w.AnswerImageUrl.length > 0) {
                             $('#vd').attr('src', w.AnswerImageUrl);
                         }
@@ -328,7 +328,7 @@ function Edit() {
                         $('#QuestionText').val(w.QuestionText);
                         console.log(w.ParentId);
                         $('#parentCategoryId').val(w.ParentId).change();
-                        $('#quesLabelText').html('Sual №' + w.ID);
+                        $('#quesLabelText').html('Sual №' + w.ID + ' || Kateqoriya: ' + w.Category);
                     }
                     if (w.QuestionImageUrl.length > 0 && i === 0) {
                         $('#iq').attr('src', w.QuestionImageUrl);

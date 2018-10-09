@@ -46,5 +46,7 @@ namespace Exam.Models
         public bool LocalCandidateStatus { get; set; }
 
         public bool Finish { get; set; }
+
+        public int TicketId { get; set; }
     }
 }

@@ -10,7 +10,7 @@ namespace Exam.DALC
 {
     public static class CandidateDALC
     {
-        public static CandidateModel GetCandidateByFin(string finCode)
+        public static CandidateModel GetCandidateByFin(string finCode, int ticketId)
         {
             CandidateModel model = new CandidateModel();
             using (SqlConnection con = new SqlConnection(AppConfig.ConnectionString))
@@ -20,6 +20,7 @@ namespace Exam.DALC
                 {
                     cmd.CommandType = CommandType.Text;
                     cmd.Parameters.AddWithValue("@fin_code", finCode);
+                    cmd.Parameters.AddWithValue("@ticket_id", ticketId);
                     SqlDataReader reader = cmd.ExecuteReader();
                     if (reader.HasRows)
                     {
@@ -37,6 +38,9 @@ namespace Exam.DALC
                         model.FinCode = reader["FIN_CODE"].ToString();
                         model.Mobile = reader["MOBILE"].ToString();
                         model.LocalCandidateStatus = bool.Parse(reader["LOCAL_CAND_S"].ToString());
+                        model.ExamProfessionId = int.Parse(reader["EXAM_PROFESSION_ID"].ToString());
+                        model.ExamDate = DateTime.Parse(reader["DATE"].ToString());
+                        model.ExamTime = reader["TIME"].ToString();
                     }
                 }
             }
@@ -89,6 +93,7 @@ namespace Exam.DALC
                     cmd.Parameters.AddWithValue("@mail", model.Mail);
                     cmd.Parameters.AddWithValue("@time", model.ExamTime);
                     cmd.Parameters.AddWithValue("@local_cand_s", model.LocalCandidateStatus);
+                    cmd.Parameters.AddWithValue("@ticket_id", model.TicketID);
                     string message = "", ID = "";
                     bool result = false;
                     var reader = cmd.ExecuteReader();
@@ -97,7 +102,7 @@ namespace Exam.DALC
                         if (reader.Read())
                         {
                             message = reader["message"].ToString();
-                            result = String.Equals("Ok", message);
+                            result = String.Equals("Ok", message) || String.Equals("OKU", message);
                             ID = reader["ticket_id"].ToString();
                         }
                     }
