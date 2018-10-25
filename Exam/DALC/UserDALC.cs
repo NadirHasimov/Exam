@@ -149,7 +149,7 @@ namespace Exam.DALC
             }
         }
 
-        public static void AddLog(HttpContextBase context, bool status, string description)
+        public static void AddLog(HttpContextBase context, bool status, string description, string finCode = "")
         {
             string ip = string.IsNullOrEmpty(HttpContext.Current.Request.ServerVariables["HTTP_X_FORWARDED_FOR"])
                     ? HttpContext.Current.Request.UserHostAddress
@@ -176,9 +176,9 @@ namespace Exam.DALC
                     cmd.Parameters.AddWithValue("@ip", ip);
                     cmd.Parameters.AddWithValue("@description", string.IsNullOrEmpty(description) ? context.Request.HttpMethod : description);
                     cmd.Parameters.AddWithValue("@success_status", status);
-                    cmd.Parameters.AddWithValue("@action", action);
-                    cmd.Parameters.AddWithValue("@username", context.User.Identity.Name);
-                    cmd.ExecuteNonQuery();
+                    cmd.Parameters.AddWithValue("@action", string.IsNullOrEmpty(finCode) ? action : "Exam/Agreement");
+                    cmd.Parameters.AddWithValue("@username", string.IsNullOrEmpty(finCode) ? context.User.Identity.Name : finCode);
+                    int affectedRows = cmd.ExecuteNonQuery();
                 }
             }
         }

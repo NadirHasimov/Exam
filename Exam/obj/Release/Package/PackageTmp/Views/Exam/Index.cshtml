@@ -23,7 +23,7 @@
     <link rel="stylesheet" href="~/assets/css/neon-forms.css">
     <link rel="stylesheet" href="~/assets/css/custom.css">
     <link rel="stylesheet" href="~/assets/css/skins/white.css">
-    <link href="~/Content/custom/css/examIndex.css" rel="stylesheet" />
+    <link href="~/Content/custom/css/examIndex.css?v=1.6" rel="stylesheet" />
 
     <link href="~/Content/Theme/css/dataTables.jqueryui.css" rel="stylesheet" />
 
@@ -54,13 +54,11 @@
                 Feedback
             </a>
         </div>
-        <div class="row pull-right">
-            @*<button class="btn" id="stop">Stop timer</button>
-                <button class="btn" id="start">Start timer</button>
-                <button class="btn" id="show">Show timer</button>
-                <button class="btn" id="hide">Hide timer</button>*@
-            <span id="timer" style="font-size:xx-large; margin-right:20px;">@Model.FirstOrDefault().Time</span>
+        <div class="timer_config row">
+            <button class="btn" style="font-size:large;" id="show">Vaxtı gizlət</button>
+            @*<button class="btn" style="font-size:large;" id="hide">Vaxtı gizlət</button>*@
         </div>
+        <span id="timer" style="font-size:xx-large; margin-right:20px;">@Model.FirstOrDefault().Time</span>
     </div>
 
     <div class="modal fade" id="quesList">
@@ -122,28 +120,28 @@
                             @if (counter == 1)
                             {
                                 <div class="row" style="">
-                                    <div class="" id="" style="font-size:x-large; font-weight:bold;">
-                                        <label class="order">@item.OrderNumber</label>.  @item.QuestionText
+                                    <div class="question" id="" style="font-size:x-large; font-weight:bold;">
+                                        <label class="order">@item.OrderNumber</label>.  @item.QuestionText <i class="entypo-help-circled" title="Daha sonra qərar verəcəm" style="font-size:large;color:mediumblue"></i>
                                     </div>
                                     <br />
                                     @if (!String.IsNullOrEmpty(item.QuestionImageUrl))
                                     {
-                                        <a href="@item.QuestionImageUrl.ToString()" target="_blank">
-                                            <img src="@item.QuestionImageUrl" alt="" width="100px" height="100px" class="qp" id="qi" style="margin-left:30px;" />
-                                        </a>
+                                        @*<a href="@item.QuestionImageUrl.ToString()" target="_blank">*@
+                                        <img src="@item.QuestionImageUrl" alt="" width="100px" height="100px" class="qp" id="qi" style="margin-left:30px;" />
+                                        @*</a>*@
                                     }
                                     <input name="TicketDetailId" type="hidden" value="@item.TicketDetailId" />
                                 </div>
                                 <hr />
                             }
                             <div class="row" style="">
-                                <label><input type="radio" name="variant" value="@item.Variant" />  <label style="font-weight:bold">@item.Variant)</label>    @item.AnswerText </label>
+                                <label><input type="radio" name="variant" class="" value="@item.Variant" />  <label style="font-weight:bold">@item.Variant)</label>    @item.AnswerText </label>
                                 @if (!String.IsNullOrEmpty(item.AnswerImageUrl))
                                 {
                                     <br />
-                                    <a href="@item.AnswerImageUrl" target="_blank">
-                                        <img src="@item.AnswerImageUrl" alt="" width="100px" height="100px" id="qi" class="ap" style="margin-left:30px;" />
-                                    </a>
+                                    @*<a href="@item.AnswerImageUrl" target="_blank">*@
+                                    <img src="@item.AnswerImageUrl" alt="" width="100px" height="100px" id="qi" class="ap" style="margin-left:30px;" />
+                                    @*</a>*@
                                 }
                             </div>
                         </td>
@@ -189,14 +187,13 @@
                     <table class="table table-bordered" id="tbl_result">
                         <thead>
                             <tr>
-                                <th>True answers</th>
-                                <th>False answers</th>
-                                <th>Blanked answers</th>
+                                <th>Kateqoriya</th>
+                                <th>Doğru </th>
+                                <th>Yalnış</th>
+                                <th>Boş</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr></tr>
-                        </tbody>
+                        <tbody></tbody>
                     </table>
                     <button type="button" id="ok" class="btn btn-success">Ok</button>
                 </div>
@@ -204,10 +201,8 @@
         </div>
     </div>
     <div class="modal fade custom-width" id="pic">
-        <div class="modal-dialog" style="width:40%">
-            <div class="modal-content">
-                <img src="#" alt="" id="picture" />
-            </div>
+        <div class="modal-dialog" style="width:40%;text-align:center;">
+            <img src="#" alt="" id="picture" />
         </div>
     </div>
     <div class="modal fade custom-width" id="feedback_modal">
@@ -236,6 +231,28 @@
         </div>
     </div>
 
+    @*<div id="agreement_modal" class="modal fade custom-width">
+            <div class="modal-dialog" style="width:50%">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">
+                            x
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="agreement_text" style="text-align:center;">
+                            This text is really long and the height of its container is only 100 pixels. Therefore, a scrollbar is added to help the reader to scroll the content. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum. Typi non habent claritatem insitam; est usus legentis in iis qui facit eorum claritatem.
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <label><input type="checkbox" id="chk_agree">  Razıyam</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>*@
+
     <script src="~/assets/js/gsap/main-gsap.js"></script>
     <script src="~/assets/js/jquery-ui/js/jquery-ui-1.10.3.minimal.min.js"></script>
     <script src="~/assets/js/bootstrap.js"></script>
@@ -249,7 +266,7 @@
     <script src="~/Scripts/theme/jquery.dataTables.min.js"></script>
     @*<script src="~/assets/js/jquery.dataTables.min.js"></script>*@
     <script src="~/Scripts/theme/dataTables.jqueryui.js"></script>
-    <script src="~/Scripts/custom/examIndex.js"></script>
+    <script src="~/Scripts/custom/examIndex.js?v=1.6"></script>
 
     <script src="~/Scripts/custom/common.js"></script>
 

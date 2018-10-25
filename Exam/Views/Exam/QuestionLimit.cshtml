@@ -20,7 +20,7 @@
 }
 @section Scripts{
     <script src="~/Content/Selectize/js/standalone/selectize.js"></script>
-    <script src="~/Scripts/custom/questionLimit.js"></script>
+    <script src="~/Scripts/custom/questionLimit.js?v=1.6"></script>
 }
 <div class="panel panel-default panel-shadow limit" id="" data-collapsed="0">
     <!-- to apply shadow add class "panel-shadow" -->
@@ -40,9 +40,9 @@
                 <div class="col-md-11" id="1">
                     <select id="select1" class="select">
                         <option></option>
-                        @foreach (var item in (List<Tuple<int, string, int>>)ViewBag.Departments)
+                        @foreach (var item in (List<Tuple<int, string, int, string>>)ViewBag.Departments)
                         {
-                            <option value="@item.Item1/@item.Item3">@item.Item2</option>
+                            <option value="@item.Item1/@item.Item3/@item.Item4">@item.Item2</option>
                         }
                     </select>
                 </div>
@@ -89,12 +89,12 @@
         <div class="row" style="margin-top:10px;">
             <div class="form-group">
                 <div class="col-md-1">
-                    <label class="control-label">Limit</label>
-                    <input id="limit" type="number" class="form-control" placeholder="Limit" />
-                </div>
-                <div class="col-md-1">
                     <label class="control-label">Say</label>
                     <input id="count" type="number" class="form-control" placeholder="Say" />
+                </div>
+                <div class="col-md-1">
+                    <label class="control-label">Limit</label>
+                    <input id="limit" type="number" class="form-control" placeholder="Limit" />
                 </div>
                 <div class="col-md-2">
                     <a id="save" class="btn btn-success btn-icon icon-left" style="margin-top:22px;">

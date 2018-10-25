@@ -1,10 +1,14 @@
 ﻿var table;
 $(document).ready(function () {
+    $('#mdl_btn').on('click', function () {
+        $('#href1').click();
+        $('#TicketId').val(0);
+    });
     getUserData();
+    EditCandidate();
     $('.profession').select2();
     var d = new Date();
     $('#Date').val(d.toShortFormat());
-
     //add class listener----
     var $div = $("#tab4");
     var observer = new MutationObserver(function (mutations) {
@@ -66,7 +70,10 @@ var candidateData = {
     ProfessionId: "",
     Gender: "",
     FamilyStatus: "",
-    LocalCandidateStatus: ""
+    LocalCandidateStatus: "",
+    ExamTime: "",
+    ExamDate: "",
+    ExamProfessionId: ""
 };
 
 var candidateModel = {
@@ -84,7 +91,8 @@ var candidateModel = {
     ExamProfessionId: "",
     Mail: "",
     Mobile: "",
-    Profession: ""
+    Profession: "",
+    TicketId: ""
 };
 function getUserData() {
     var counter = 0,
@@ -115,10 +123,11 @@ function getUserData() {
                     finCur = $('#finCode').val();
                     //console.log(finCur + ' ' + finFocusIn);
                     if (((counter === 0) || (finCur !== finPrev)) && finCur.length === 7) {
+                        console.log($('#TicketId').val());
                         $.ajax({
                             type: 'GET',
                             url: '/Candidate/GetCandidate',
-                            data: { finCode: finCur },
+                            data: { finCode: finCur, ticketId: $('#TicketId').val() },
                             success: function (response) {
                                 console.log(response);
                                 candidateData = response.candidateData;
@@ -143,8 +152,9 @@ function setData(data) {
     candidateData = data.candidate;
     //console.log(candidateData);
     if (candidateData.FirstName !== null) {
+        var ticketId = parseInt($('#TicketId').val());
         var date = new Date(parseFloat(candidateData.Birthdate.substr(6)));
-        var birth = new Date(candidateData.Birthdate.substr(6));
+        var examDate = new Date(parseFloat(candidateData.ExamDate.substring(6)));
         //console.log(date.toLocaleDateString());
         $('#FirstName').val(candidateData.LastName);
         $('#FinCode').val(candidateData.FinCode);
@@ -152,16 +162,32 @@ function setData(data) {
         $('#MiddleName').val(candidateData.MiddleName);
         //console.log(date.toShortFormat());
         $('#Birthdate').val(date.toShortFormat());
-        $('[name=ProfessionId]').select2('val', candidateData.ProfessionId);
         $('#Gender' + candidateData.GenderId + '').prop('checked', true);
         $('#Mail').val(candidateData.Mail);
         $('#Mobile').val(candidateData.Mobile);
         $('#ID').val(candidateData.ID);
         $('#FamilyStatusId').val(candidateData.FamilyStatusId);
-        $("#tab2 input, #tab2 select,#tab2 a").prop('disabled', true);
-        $('#tab2 a').addClass('disabled');
+
+        $('[name=ProfessionId]').select2('val', candidateData.ProfessionId);
+
         $('#local_candidate').prop('checked', candidateData.LocalCandidateStatus).change();
         //$('#div_prof').prop('hidden', !candidateData.LocalCandidateStatus);
+        if (ticketId === 0) {
+            $("#tab2 input, #tab2 select,#tab2 a").prop('disabled', true);
+            $('#tab2 a').addClass('disabled');
+        } else {
+            $('[name=profession]').select2('val', candidateData.ExamProfessionId);
+            $('#Date').val(examDate.toShortFormat());
+            $('#clock').val(candidateData.ExamTime);
+
+            //$('#Gender0').prop('checked', true);
+            //$('#local_candidate').prop('checked', false).change();
+            $("#tab2 input, #tab2 select").prop('disabled', false);
+            $('#FinCode').prop('disabled', true);
+            //$('#tab2 input:not(:radio)').val('');
+            $('#FinCode').val($('#finCode').val());
+            $('.select2-choice').removeClass('disabled');
+        }
     } else {
         $('#Gender0').prop('checked', true);
         $('#local_candidate').prop('checked', false).change();
@@ -192,6 +218,7 @@ function saveCandidate() {
             data: { viewModel: data },
             success: function (response) {
                 if (response.result) {
+                    console.log(response);
                     //table.row.add([
                     //'<input name="ids[]" class="chk" type="checkbox" value="' + response.ID + '" />',
                     //data.FinCode,
@@ -203,21 +230,37 @@ function saveCandidate() {
                     //data.ExamTime,
                     //'Təsdiqlənmədi'
                     //]).draw();
-                    jQuery('#tbl_ticket').dataTable().fnAddData(['<input name="ids[]" class="chk" type="checkbox" value="' + response.ID + '" />',
-                    data.FinCode,
-                    data.FirstName,
-                    data.LastName,
-                    data.MiddleName,
-                    data.Profession,
-                    data.ExamDate,
-                    data.ExamTime,
-                        'Təsdiqlənmədi']);
+                    if (response.message === 'Ok') {
+                        table = jQuery('#tbl_ticket').DataTable();
+                        table.fnAddData(['<input name="ids[]" class="chk" type="checkbox" value="' + response.ID + '" />',
+                        data.FinCode,
+                        data.FirstName,
+                        data.LastName,
+                        data.MiddleName,
+                        data.Profession,
+                        data.ExamDate,
+                        data.ExamTime,
+                        `<a href="#" data-finCode=` + data.FinCode + `'" data-TicketId="` + response.ID + `" data-apprStatus="` + 0 + `" class="cand-edit btn btn-info icon btn-icon icon-left">
+                            <i class="entypo-pencil"></i>
+                            Dəyişdir
+                        </a>`,
+                            '<i class="entypo-clock" style="font-size:large; color:cornflowerblue;"></i>']);
 
+                        //jQuery('#tbl_ticket').dataTable().order([6, 'desc']).draw();
+                        //table.order([6, 'desc']).draw();
+                        //table
+                        //    .column('0:visible')
+                        //    .order('asc')
+                        //    .draw();
+                        showSuccessNotification('Bilet yaradıldı');
+                    } else if (response.message === 'OKU') {
+                        showSuccessNotification('Bilet dəyişdirildi.');
+                    }
                     $('#tab2 input:not(:radio)').val('');
                     $('#finCode').val('');
                     $('#href1').click();
                     //$('#modal').modal('toggle');
-                    showSuccessNotification('Operation successfully executed.');
+
                 } else {
                     showErrorNotification(response.message);
                 }
@@ -247,6 +290,7 @@ function getData() {
     candidateModel.ExamTime = $('#clock').val();
     candidateModel.Mobile = $('#Mobile').val();
     candidateModel.Profession = $('#profession').find(':selected').text();
+    candidateModel.TicketId = $('#TicketId').val();
     return candidateModel;
 }
 function CreateDataTable() {
@@ -260,7 +304,7 @@ function CreateDataTable() {
     jQuery(document).ready(function ($) {
         tableContainer = $("#tbl_ticket");
 
-        table = tableContainer.dataTable({
+        table = tableContainer.DataTable({
             //"sDom": "tip",
 
             "bStateSave": true,
@@ -274,14 +318,17 @@ function CreateDataTable() {
                     "bSortable": false,
                     "bWidth": "10%"
                 },
+                {
+                    "bWidth": "10%"
+                },
                 null,
                 null,
                 null,
                 null,
                 null,
                 null,
-                null,
-                { "bSortable": false }
+                { "bSortable": false },
+                null
             ],
             //Responsive Settings
             bAutoWidth: false,
@@ -311,6 +358,7 @@ function CreateDataTable() {
         $('.text_filter').addClass('form-control');
         $('.text_filter').first().remove();
         $('.text_filter').last().remove();
+        $('.text_filter').eq(7).remove();
     });
 
     $('#srch').change(function () {
@@ -359,10 +407,14 @@ function approve(type) {
         contentType: 'application/json',
         success: function (response) {
             if (response) {
-                window.location.replace('/Candidate/Index#success');
+                location.replace('/Candidate/Index#success');
                 location.reload();
             } else {
-                showErrorNotification('Error occured.');
+                if (type === '1') {
+                    showErrorNotification('Bu bilet üçün imtahan bitb və ya tarix düzgün deyil.');
+                } else {
+                    showErrorNotification('Xəta baş verdi.');
+                }
             }
         }
     });
@@ -417,4 +469,36 @@ function displayOperationResult() {
         showErrorNotification('Error occured. Try again.');
     }
     window.location.hash = '';
+}
+
+function EditCandidate() {
+    $('.cand-edit').on('click', function (e) {
+        e.preventDefault();
+        var ticketId = $(this).attr("data-TicketId");
+        var finCode = $(this).attr("data-finCode");
+        console.log(ticketId);
+        console.log(finCode);
+        $.ajax({
+            type: 'GET',
+            url: '/Candidate/GetApprvStatus',
+            data: { ticketId: parseInt($(this).attr("data-TicketId")) },
+            success: function (response) {
+                if (parseInt(response) === 0) {
+                    $('#prevBtn').click();
+                    $('#TicketId').val(ticketId);
+                    $('#finCode').val(finCode);
+                    $('#modal').modal('show').appendTo('body');
+                    $('#nextBtn').click();
+                } else {
+                    showInfoNotification('Seçdiyiniz bilet təsdiqləndiyi üçün dəyişdirilə bilməz!');
+                }
+                console.log($(this).attr("data-finCode"));
+            },
+            error: function () {
+                showErrorNotification('Xəta baş verdi! Zəhmət olmasa yenidən cəhd edin!');
+            }
+        });
+
+        console.log($(this).attr('data-TicketId'));
+    });
 }

@@ -123,7 +123,7 @@ function getUserData() {
                     finCur = $('#finCode').val();
                     //console.log(finCur + ' ' + finFocusIn);
                     if (((counter === 0) || (finCur !== finPrev)) && finCur.length === 7) {
-                        console.log(6666666666666666);
+                        console.log($('#TicketId').val());
                         $.ajax({
                             type: 'GET',
                             url: '/Candidate/GetCandidate',
@@ -230,8 +230,9 @@ function saveCandidate() {
                     //data.ExamTime,
                     //'Təsdiqlənmədi'
                     //]).draw();
-                    if (response.message !== 'OK') {
-                        jQuery('#tbl_ticket').dataTable().fnAddData(['<input name="ids[]" class="chk" type="checkbox" value="' + response.ID + '" />',
+                    if (response.message === 'Ok') {
+                        table = jQuery('#tbl_ticket').DataTable();
+                        table.fnAddData(['<input name="ids[]" class="chk" type="checkbox" value="' + response.ID + '" />',
                         data.FinCode,
                         data.FirstName,
                         data.LastName,
@@ -239,7 +240,18 @@ function saveCandidate() {
                         data.Profession,
                         data.ExamDate,
                         data.ExamTime,
-                            'Təsdiqlənmədi']);
+                        `<a href="#" data-finCode=` + data.FinCode + `'" data-TicketId="` + response.ID + `" data-apprStatus="` + 0 + `" class="cand-edit btn btn-info icon btn-icon icon-left">
+                            <i class="entypo-pencil"></i>
+                            Dəyişdir
+                        </a>`,
+                            '<i class="entypo-clock" style="font-size:large; color:cornflowerblue;"></i>']);
+
+                        //jQuery('#tbl_ticket').dataTable().order([6, 'desc']).draw();
+                        //table.order([6, 'desc']).draw();
+                        //table
+                        //    .column('0:visible')
+                        //    .order('asc')
+                        //    .draw();
                         showSuccessNotification('Bilet yaradıldı');
                     } else if (response.message === 'OKU') {
                         showSuccessNotification('Bilet dəyişdirildi.');
@@ -248,7 +260,6 @@ function saveCandidate() {
                     $('#finCode').val('');
                     $('#href1').click();
                     //$('#modal').modal('toggle');
-
                 } else {
                     showErrorNotification(response.message);
                 }
@@ -292,7 +303,7 @@ function CreateDataTable() {
     jQuery(document).ready(function ($) {
         tableContainer = $("#tbl_ticket");
 
-        table = tableContainer.dataTable({
+        table = tableContainer.DataTable({
             //"sDom": "tip",
 
             "bStateSave": true,
@@ -395,10 +406,14 @@ function approve(type) {
         contentType: 'application/json',
         success: function (response) {
             if (response) {
-                window.location.replace('/Candidate/Index#success');
+                location.replace('/Candidate/Index#success');
                 location.reload();
             } else {
-                showErrorNotification('Error occured.');
+                if (type === '1') {
+                    showErrorNotification('Bu bilet üçün imtahan bitb və ya tarix düzgün deyil.');
+                } else {
+                    showErrorNotification('Xəta baş verdi.');
+                }
             }
         }
     });

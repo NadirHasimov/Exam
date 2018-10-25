@@ -3937,7 +3937,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/12/2018 09:02:01</publishTime>
     </File>
     <File Include="bin/Az/Exam.resources.dll">
-      <publishTime>10/05/2018 16:10:21</publishTime>
+      <publishTime>10/23/2018 10:13:02</publishTime>
     </File>
     <File Include="bin/de/DevExpress.Data.v17.1.resources.dll">
       <publishTime>09/19/2018 16:56:28</publishTime>
@@ -4279,7 +4279,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/21/2018 18:01:27</publishTime>
     </File>
     <File Include="bin/En/Exam.resources.dll">
-      <publishTime>10/05/2018 16:10:21</publishTime>
+      <publishTime>10/23/2018 10:13:02</publishTime>
     </File>
     <File Include="bin/EntityFramework.dll">
       <publishTime>06/07/2018 22:03:48</publishTime>
@@ -4432,10 +4432,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/21/2018 18:01:27</publishTime>
     </File>
     <File Include="bin/Exam.dll">
-      <publishTime>10/05/2018 16:10:21</publishTime>
+      <publishTime>10/23/2018 10:13:01</publishTime>
     </File>
     <File Include="bin/Exam.pdb">
-      <publishTime>10/05/2018 16:10:21</publishTime>
+      <publishTime>10/23/2018 10:13:01</publishTime>
     </File>
     <File Include="bin/ja/DevExpress.Data.v17.1.resources.dll">
       <publishTime>09/19/2018 16:56:28</publishTime>
@@ -4882,7 +4882,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/21/2018 18:01:27</publishTime>
     </File>
     <File Include="bin/Ru/Exam.resources.dll">
-      <publishTime>10/05/2018 16:10:21</publishTime>
+      <publishTime>10/23/2018 10:13:02</publishTime>
     </File>
     <File Include="bin/System.Web.Helpers.dll">
       <publishTime>09/12/2018 09:02:03</publishTime>
@@ -4902,6 +4902,12 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="bin/System.Web.Webpages.Razor.dll">
       <publishTime>09/12/2018 09:02:03</publishTime>
     </File>
+    <File Include="Content/custom/css/agreement.css">
+      <publishTime>10/10/2018 23:43:57</publishTime>
+    </File>
+    <File Include="Content/custom/css/bootstrap.min.css">
+      <publishTime>10/18/2018 14:57:03</publishTime>
+    </File>
     <File Include="Content/custom/css/candidateIndex.css">
       <publishTime>09/27/2018 17:31:33</publishTime>
     </File>
@@ -4909,7 +4915,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/13/2018 16:44:15</publishTime>
     </File>
     <File Include="Content/custom/css/examIndex.css">
-      <publishTime>09/14/2018 08:55:21</publishTime>
+      <publishTime>10/11/2018 12:11:41</publishTime>
+    </File>
+    <File Include="Content/custom/css/examMonitor.css">
+      <publishTime>10/16/2018 15:12:33</publishTime>
+    </File>
+    <File Include="Content/custom/css/FontAwesome.css">
+      <publishTime>10/16/2018 10:32:41</publishTime>
     </File>
     <File Include="Content/custom/css/signIn.css">
       <publishTime>09/12/2018 09:02:00</publishTime>
@@ -4968,6 +4980,12 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Content/Selectize/less/selectize.less">
       <publishTime>09/12/2018 09:02:00</publishTime>
     </File>
+    <File Include="Content/Theme/css/bootstrap-clockpicker.css">
+      <publishTime>10/18/2018 14:48:29</publishTime>
+    </File>
+    <File Include="Content/Theme/css/bootstrap-clockpicker.min.css">
+      <publishTime>10/18/2018 14:48:29</publishTime>
+    </File>
     <File Include="Content/Theme/css/bootstrap-datetimepicker.css">
       <publishTime>09/12/2018 09:02:00</publishTime>
     </File>
@@ -4988,6 +5006,9 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="Content/Theme/css/dataTables.jqueryui.css">
       <publishTime>09/12/2018 09:02:00</publishTime>
+    </File>
+    <File Include="Content/Theme/css/daterangepicker.css">
+      <publishTime>10/18/2018 09:48:40</publishTime>
     </File>
     <File Include="Content/Theme/css/neon-core.css">
       <publishTime>09/12/2018 09:02:00</publishTime>
@@ -5106,6 +5127,27 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Content/Theme/images/loader-2.gif">
       <publishTime>09/12/2018 09:02:00</publishTime>
     </File>
+    <File Include="fonts/font-awesome/css/font-awesome.css">
+      <publishTime>10/16/2018 09:59:29</publishTime>
+    </File>
+    <File Include="fonts/font-awesome/css/font-awesome.min.css">
+      <publishTime>10/16/2018 09:59:29</publishTime>
+    </File>
+    <File Include="fonts/font-awesome/fontawesome-webfont.eot">
+      <publishTime>10/16/2018 09:59:29</publishTime>
+    </File>
+    <File Include="fonts/font-awesome/fontawesome-webfont.svg">
+      <publishTime>10/16/2018 09:59:29</publishTime>
+    </File>
+    <File Include="fonts/font-awesome/fontawesome-webfont.ttf">
+      <publishTime>10/16/2018 09:59:29</publishTime>
+    </File>
+    <File Include="fonts/font-awesome/fontawesome-webfont.woff">
+      <publishTime>10/16/2018 09:59:29</publishTime>
+    </File>
+    <File Include="fonts/font-awesome/FontAwesome.otf">
+      <publishTime>10/16/2018 09:59:29</publishTime>
+    </File>
     <File Include="fonts/glyphicons-halflings-regular.eot">
       <publishTime>09/12/2018 09:02:01</publishTime>
     </File>
@@ -5121,26 +5163,53 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Global.asax">
       <publishTime>09/12/2018 09:02:00</publishTime>
     </File>
+    <File Include="images/159.gif">
+      <publishTime>10/15/2018 17:15:06</publishTime>
+    </File>
+    <File Include="images/714.GIF">
+      <publishTime>10/15/2018 17:15:06</publishTime>
+    </File>
+    <File Include="images/background.png">
+      <publishTime>10/15/2018 17:15:07</publishTime>
+    </File>
     <File Include="images/double-tick.png">
-      <publishTime>09/18/2018 10:07:08</publishTime>
+      <publishTime>09/26/2018 17:54:54</publishTime>
     </File>
     <File Include="images/logo.png">
       <publishTime>09/12/2018 09:02:01</publishTime>
     </File>
     <File Include="Scripts/custom/candidateIndex.js">
-      <publishTime>10/02/2018 14:32:03</publishTime>
+      <publishTime>10/12/2018 12:20:10</publishTime>
     </File>
     <File Include="Scripts/custom/common.js">
       <publishTime>09/13/2018 16:47:25</publishTime>
     </File>
+    <File Include="Scripts/custom/em.js">
+      <publishTime>10/16/2018 14:21:44</publishTime>
+    </File>
     <File Include="Scripts/custom/examIndex.js">
-      <publishTime>10/02/2018 11:32:12</publishTime>
+      <publishTime>10/15/2018 16:35:59</publishTime>
     </File>
     <File Include="Scripts/custom/examInset.js">
-      <publishTime>10/05/2018 11:40:42</publishTime>
+      <publishTime>10/15/2018 10:30:16</publishTime>
+    </File>
+    <File Include="Scripts/custom/Jquery.js">
+      <publishTime>10/15/2018 17:13:11</publishTime>
+    </File>
+    <File Include="Scripts/custom/moment.js">
+      <publishTime>10/15/2018 17:14:03</publishTime>
+    </File>
+    <File Include="Scripts/custom/monitorTest.js">
+      <publishTime>10/19/2018 14:39:55</publishTime>
     </File>
     <File Include="Scripts/custom/questionLimit.js">
-      <publishTime>10/05/2018 16:04:00</publishTime>
+      <publishTime>10/22/2018 00:01:43</publishTime>
+    </File>
+    <File Include="Scripts/js/bootstrap-clockpicker.js">
+      <publishTime>10/18/2018 14:47:26</publishTime>
+    </File>
+    <File Include="Scripts/js/bootstrap-clockpicker.min.js">
+      <publishTime>10/18/2018 14:47:26</publishTime>
     </File>
     <File Include="Scripts/js/bootstrap-datepicker.js">
       <publishTime>09/12/2018 09:02:00</publishTime>
@@ -5150,6 +5219,9 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="Scripts/js/bootstrap.js">
       <publishTime>09/12/2018 09:02:00</publishTime>
+    </File>
+    <File Include="Scripts/js/bootstrap.min.js">
+      <publishTime>10/18/2018 14:49:44</publishTime>
     </File>
     <File Include="Scripts/js/joinable.js">
       <publishTime>09/12/2018 09:02:00</publishTime>
@@ -5204,6 +5276,15 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="Scripts/theme/dataTables.jqueryui.js">
       <publishTime>09/12/2018 09:02:00</publishTime>
+    </File>
+    <File Include="Scripts/theme/date-range-picker/daterangepicker.min.js">
+      <publishTime>10/18/2018 09:53:37</publishTime>
+    </File>
+    <File Include="Scripts/theme/date-range-picker/jquery.min.js">
+      <publishTime>10/18/2018 09:48:19</publishTime>
+    </File>
+    <File Include="Scripts/theme/date-range-picker/moment.min.js">
+      <publishTime>10/18/2018 09:48:19</publishTime>
     </File>
     <File Include="Scripts/theme/inputmask.js">
       <publishTime>09/12/2018 09:02:00</publishTime>
@@ -5455,10 +5536,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/12/2018 09:02:00</publishTime>
     </File>
     <File Include="Views/Candidate/Index.cshtml">
-      <publishTime>10/05/2018 14:30:20</publishTime>
+      <publishTime>10/15/2018 13:00:08</publishTime>
     </File>
     <File Include="Views/Candidate/List.cshtml">
       <publishTime>10/04/2018 19:53:29</publishTime>
+    </File>
+    <File Include="Views/Exam/Agreement.cshtml">
+      <publishTime>10/15/2018 00:49:43</publishTime>
     </File>
     <File Include="Views/Exam/Export.cshtml">
       <publishTime>09/24/2018 16:49:39</publishTime>
@@ -5467,13 +5551,19 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/24/2018 15:07:51</publishTime>
     </File>
     <File Include="Views/Exam/Index.cshtml">
-      <publishTime>10/04/2018 20:41:31</publishTime>
+      <publishTime>10/15/2018 15:48:37</publishTime>
     </File>
     <File Include="Views/Exam/Insert.cshtml">
-      <publishTime>10/05/2018 09:38:36</publishTime>
+      <publishTime>10/15/2018 13:01:45</publishTime>
+    </File>
+    <File Include="Views/Exam/Monitor.cshtml">
+      <publishTime>10/19/2018 14:06:41</publishTime>
     </File>
     <File Include="Views/Exam/QuestionLimit.cshtml">
-      <publishTime>10/05/2018 12:05:32</publishTime>
+      <publishTime>10/15/2018 13:02:05</publishTime>
+    </File>
+    <File Include="Views/Exam/_Monitor.cshtml">
+      <publishTime>10/19/2018 09:52:49</publishTime>
     </File>
     <File Include="Views/Exam/_PivotGridPartial.cshtml">
       <publishTime>09/24/2018 14:26:37</publishTime>
@@ -5482,7 +5572,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/05/2018 11:25:04</publishTime>
     </File>
     <File Include="Views/Home/Index.cshtml">
-      <publishTime>09/12/2018 09:02:00</publishTime>
+      <publishTime>10/08/2018 11:26:23</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
       <publishTime>10/05/2018 12:51:45</publishTime>
@@ -5491,7 +5581,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/12/2018 09:02:00</publishTime>
     </File>
     <File Include="Views/User/SignIn.cshtml">
-      <publishTime>10/04/2018 23:44:11</publishTime>
+      <publishTime>10/05/2018 16:27:16</publishTime>
     </File>
     <File Include="Views/User/test.cshtml">
       <publishTime>09/12/2018 09:02:00</publishTime>
@@ -5503,7 +5593,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/12/2018 09:02:00</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>10/04/2018 17:23:21</publishTime>
+      <publishTime>10/23/2018 10:13:03</publishTime>
     </File>
   </ItemGroup>
 </Project>

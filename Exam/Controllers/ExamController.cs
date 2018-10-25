@@ -43,14 +43,10 @@ namespace Exam.Controllers
             if (status)
             {
                 var result = ExamDALC.GetResult(TicketId);
-                int trueAnswerCount = result.Where(r => r.Item2 != 2).Sum(r => r.Item2);
-                int falseAnswerCount = result.Where(r => r.Item2 == 0).Count();
-                int blankedAnswerCount = result.Where(r => r.Item2 == 2).Count();
+
                 return Json(new
                 {
-                    trueAnswerCount = trueAnswerCount,
-                    falseAnswerCount = falseAnswerCount,
-                    blankedAnswerCount = blankedAnswerCount
+                    result
                 }, JsonRequestBehavior.AllowGet);
             }
             else
@@ -63,15 +59,11 @@ namespace Exam.Controllers
         public ActionResult GetResult(int TicketId)
         {
             var result = ExamDALC.GetResult(TicketId);
-            int trueAnswerCount = result.Where(r => r.Item2 != 2).Sum(r => r.Item2);
-            int falseAnswerCount = result.Where(r => r.Item2 == 0).Count();
-            int blankedAnswerCount = result.Where(r => r.Item2 == 2).Count();
+
 
             return Json(new
             {
-                trueAnswerCount = trueAnswerCount,
-                falseAnswerCount = falseAnswerCount,
-                blankedAnswerCount = blankedAnswerCount
+                result
             }, JsonRequestBehavior.AllowGet);
         }
 
@@ -118,16 +110,17 @@ namespace Exam.Controllers
         [AuthorizeController]
         public ActionResult QuestionLimit()
         {
+            TempData["Prof"] = "";
             ViewBag.Departments = ExamDALC.GetProfs();
             ViewBag.ParentCategories = ExamDALC.GetCategories().Where(r => r.Item3 == 0).ToList();
             return View();
         }
 
-
+        [HttpPost]
         public JsonResult GetProfs(string parent)
         {
             int id = 0;
-            List<Tuple<int, string, int>> profs;
+            List<Tuple<int, string, int, string>> profs;
             try
             {
                 id = int.Parse(parent);
@@ -135,7 +128,7 @@ namespace Exam.Controllers
             }
             catch
             {
-                profs = new List<Tuple<int, string, int>>();
+                profs = new List<Tuple<int, string, int, string>>();
             }
             return Json(new { profs = profs, JsonRequestBehavior.AllowGet });
         }
@@ -155,6 +148,33 @@ namespace Exam.Controllers
         {
             var question = ExamDALC.GetQuestion(id).Select(row => MapToQuestionViewModel(row)).ToList();
             return Json(new { question = question }, JsonRequestBehavior.AllowGet);
+        }
+
+        [AuthorizeExam]
+        public ActionResult Agreement(string finCode)
+        {
+            var candidate = CandidateDALC.GetCandidateByFin(finCode, 0);
+
+            var candidateViewModel = new CandidateViewModel();
+            candidateViewModel.FirstName = candidate.FirstName;
+            candidateViewModel.LastName = candidate.LastName;
+            candidateViewModel.MiddleName = candidate.MiddleName;
+            candidateViewModel.FinCode = candidate.FinCode;
+            candidateViewModel.TicketId = candidate.TicketID;
+            return View(candidateViewModel);
+        }
+
+        [AuthorizeController]
+        public ActionResult Monitor()
+        {
+            var exams = TicketDALC.GetExams();
+            return View(exams);
+        }
+
+        [AuthorizeController]
+        public ActionResult _Monitor(string dateRange)
+        {
+            return View("_Monitor", TicketDALC.GetExams(dateRange));
         }
 
         [HttpPost]
@@ -193,6 +213,9 @@ namespace Exam.Controllers
             var subCategories = ExamDALC.GetCategories().Where(row => row.Item3 == id).ToList();
             return Json(new { data = subCategories }, JsonRequestBehavior.AllowGet);
         }
+
+        [HttpPost]
+        public void SetVariant(string ticketDetailId, string variant) => ExamDALC.SetVariant(ticketDetailId, variant);
 
         private ExamDomainModel MaptoExamDomainModel(ExamViewModel viewModel)
         {
@@ -367,12 +390,12 @@ namespace Exam.Controllers
             return PartialView("_PivotGridPartial", model);
         }
 
-        public ActionResult GridPartial(string prof)
+        public ActionResult GridPartial(string path)
         {
-            var model = new Exam.ProfQuesCount().V_GET_PROF_LIMITS.Where(m => m.Path.Contains(prof));
-            TempData["Prof"] = prof;
+            var model = new Exam.ProfQuesCount().V_GET_PROF_LIMITS.Where(m => m.Path.Contains(path)).ToList();
+            TempData["Prof"] = path;
             //var model = db.V_GET_PROF_LIMITS.Where(m => m.PARENT_ID == profId).ToList();
-            return PartialView("_PivotGridPartial", model.ToList());
+            return PartialView("_PivotGridPartial", model);
         }
     }
 }

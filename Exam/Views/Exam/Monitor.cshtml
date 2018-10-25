@@ -1,0 +1,218 @@
+﻿@{
+    Layout = null;
+}
+@model List<Exam.DomainModels.ExamMonitor>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Exam Monitor Live</title>
+    <meta name="description" content="Live Exam Monitor and Test Maker Software,SpeedExam.Net" />
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico" />
+    @*<link href="css/exammomitor.css" rel="stylesheet" type="text/css" />*@
+
+    <link href="~/Content/custom/css/bootstrap.min.css" rel="stylesheet" />
+
+    <link href="~/Content/Theme/css/daterangepicker.css" rel="stylesheet" />
+    <link href="~/Content/Theme/css/bootstrap-clockpicker.min.css" rel="stylesheet" />
+
+    <link href="~/Content/custom/css/examMonitor.css" rel="stylesheet" />
+    <link href="~/Content/custom/css/FontAwesome.css" rel="stylesheet" />
+    @*<link href="css/font-awesome.css" rel="stylesheet" type="text/css" />*@
+    <script src="~/Scripts/custom/Jquery.js"></script>
+
+    @*<script src="js/jquery-1.10.1.min.js" type="text/javascript"></script>*@
+    <!--<script src="js/jquery-mo.js" type="text/javascript"></script>-->
+    @*<script src="~/Scripts/custom/em.js"></script>*@
+    <script src="~/Scripts/custom/monitorTest.js"></script>
+    @*<script src="js/em.js" type="text/javascript"></script>*@
+    <script src="~/Scripts/custom/moment.js"></script>
+    @*<script src="js/moment.js" type="text/javascript"></script>*@
+    <script type="text/javascript">
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+        ga('create', 'UA-15507217-4', 'auto');
+        ga('send', 'pageview');
+
+    </script>
+
+</head>
+<body>
+    <div>
+        <div class="header">
+            <div class="header_inner">
+                <div class="pull-left head_left">
+                    <span class="fa fa-desktop"></span>
+                    <span class="left_div">
+                        <span class="bigtext">Exam Monitor</span>
+                        <span class="smalltext">Seçdiyiniz tarix aralığındakı imtahanlar <label class="label_live">Live</label></span>
+                    </span>
+                </div>
+                <span class="pageindex hidden">1</span>
+                <div class="pull-right head_right">
+                    <span class="pull-right">
+                        <a href="@Url.Action("Index","Candidate")"><span class="fa fa-home"></span></a>
+                    </span>
+                    <span class="pull-right datetimebox hidden-xs">
+                        <span class="time">
+                            <!--<asp:Label ID="lblToday" runat="server"></asp:Label>-->
+                            <span id="lblToday"></span>
+                            <span id="clock"></span>
+                        </span>
+                        <span class="timezone">
+                            <!--<asp:Label ID="lbltimezone" runat="server"></asp:Label>-->
+                            <span>(GMT+04:00) Baku</span>
+                        </span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div id="mainbox" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="col-lg-2 col-md-2 col-sm-2 hidden-xs paddingreduce">
+                <div class="col-lg-12 col-md-12 col-sm-12 hidden-xs">
+                    <div id="leftdatetimebox"></div>
+                </div>
+            </div>
+            <div id="divbox" class="col-lg-6 col-md-6 col-sm-10 col-xs-12 paddingreduce">
+                <div id="divisionbox" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    @Html.Partial("_Monitor", Model)
+                </div>
+                <div id="blankbox" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 paddingreduce"></div>
+            </div>
+            <div id="rightbox" class="col-lg-4 col-md-4 hidden-sm hidden-xs">
+                <div id="loadpagesize" class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="col-lg-12 col-md-12 col-sm-12 loadpagesizeinner">
+
+                        <div class="btn btn-default" id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc;">
+                            <i class="fa fa-calendar"></i>&nbsp;
+                            <span></span> <i class="fa fa-caret-down"></i>
+                        </div>
+
+                        <script type="text/javascript">
+                            $(function () {
+
+                                var start = moment();
+                                var end = moment();
+
+                                function cb(start, end) {
+                                    $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+                                }
+
+                                $('#reportrange').daterangepicker({
+                                    startDate: start,
+                                    endDate: end,
+                                    ranges: {
+                                        'Bu gün': [moment(), moment()],
+                                        'Dünən': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                                        'Son 7 gün': [moment().subtract(6, 'days'), moment()],
+                                        'Son 30 gün': [moment().subtract(29, 'days'), moment()],
+                                        'Bu ay': [moment().startOf('month'), moment().endOf('month')],
+                                        'Keçən ay': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                                    }
+                                }, cb);
+
+                                cb(start, end);
+                            });
+                        </script>
+
+                    </div>
+                </div>
+
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div id="examtype" class="col-lg-12 col-md-12 col-sm-12">
+                        <label class="col-lg-3 col-md-3 col-sm-3 active">
+                            <input type="radio" class="hidden" value="loadall" name="examtype" checked="checked" />
+                            <span class="bigtext" id="totalcount">@Model.Count</span>
+                            <span class="smalltext">Cəm</span>
+                        </label>
+                        <label class="col-lg-3 col-md-3 col-sm-3">
+                            <input type="radio" class="hidden" value="loadcontinue" name="examtype" />
+                            <span class="bigtext" id="takingcount">@Model.Where(m => !string.IsNullOrEmpty(m.BeginTime) && string.IsNullOrEmpty(m.EndTime) && m.ApprStatus == 1).ToList().Count</span>
+                            <span class="smalltext"><span class="pull-left">Davam edir</span> <span class="pull-left info_point taking"></span></span>
+                        </label>
+                        <label class="col-lg-3 col-md-3 col-sm-3">
+                            <input type="radio" class="hidden" value="loadcomplete" name="examtype" />
+                            <span class="bigtext" id="completecount">@Model.Where(m => !string.IsNullOrEmpty(m.BeginTime) && !string.IsNullOrEmpty(m.EndTime) && m.ApprStatus == 1).ToList().Count</span>
+                            <span class="smalltext"><span class="pull-left">Bitib</span> <span class="pull-left info_point finished"></span></span>
+                        </label>
+                        <label class="col-lg-3 col-md-3 col-sm-3">
+                            <input type="radio" class="hidden" value="loaddroped" name="examtype" />
+                            <span class="bigtext" id="dropptedcount">@Model.Where(m => m.ApprStatus == 0).ToList().Count</span>
+                            <span class="smalltext"><span class="pull-left">Təsdiqlənməyənlər</span> <span class="pull-left info_point dropped"></span></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div style="position:absolute;top:150px;">
+                    <div class="col-md-3 col-xs-3 col-lg-3">
+                        <input class="form-control" id="single-input" value="" placeholder="" disabled="disabled" />
+                    </div>
+                    <button type="button" id="check-minutes" class="btn btn-default">Interval təyin et</button>
+                </div>
+
+                <div style="height:600px;">
+
+                </div>
+
+                @*<div class="col-lg-12 col-md-12 col-sm-12 recentactivitybox">
+                        <span class="showheading col-lg-12 col-md-12 col-sm-12">Recent Activity</span>
+                        <div class="col-lg-12 col-md-12 col-sm-12 paddingreduce" id="logtable"></div>
+                    </div>*@
+                <div class="col-lg-12 col-md-12 col-sm-12 callinfobox">
+                    <ul class="callinfo">
+                        <li>İmtahanlar seçdiyiniz intervala uyğun yenilənək. @*<span id="countdown"></span>*@  <a href="#" id="refresh">İndi yenilə</a></li>
+                        @*<li>Please see exam monitor help video. <a href="#">click here</a></li>*@
+                    </ul>
+                    <a href="@Url.Action("Index","Candidate")" class="btn_popup btn_createaccount"><span class="fa fa-long-arrow-left"></span>&nbsp;&nbsp;back to home</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="finish_main_popup">
+        <div class="finish_overlay"></div>
+        <div class="finish_popup col-lg-6 col-md-6 col-sm-8 col-sm-12 col-lg-offset-3 col-md-offset-3 col-sm-offset-2">
+            <div class="finish_popup_inner col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="finish_popup_header">Exam Monitor</div>
+                <span class="big_text">Thank you for watching demo</span>
+                <div class="text-center buttonbox">
+                    <a href="pricing.html" class="btn_popup btn_createaccount">Create New Account</a><span class="hidden-xs">&nbsp;&nbsp;</span><span class="hidden-xs">&nbsp;&nbsp;</span>
+                    <a href="online-exam-software.html" class="btn_popup btn_taketour">Take a Tour</a>
+                </div>
+                <div class="text-center">
+                    <a href="#" class="restart_demo">Re-start Exam Monitor Demo</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="finish_alert col-lg-4 col-md-6 col-sm-6 col-sm-12 hidden-xs col-lg-offset-4 col-md-offset-3 col-sm-offset-3">
+            <div class="finish_alert_inner col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="finish_popup_header">No data filtration available in demo version.</div>
+                <div>
+                    <span>You can see filtered data on this click in real version.</span>
+                </div>
+                <div class="text-center">
+                    <a href="#" class="close_popup btn_popup btn_createaccount">Ok</a>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+    <script src="~/Scripts/theme/date-range-picker/moment.min.js"></script>
+    <script src="~/Scripts/theme/date-range-picker/jquery.min.js"></script>
+    <script src="~/Scripts/theme/date-range-picker/daterangepicker.min.js"></script>
+
+    <script src="~/Scripts/js/bootstrap.min.js"></script>
+    <script src="~/Scripts/js/bootstrap-clockpicker.min.js"></script>
+</body>
+</html>

@@ -26,7 +26,10 @@ function CreateSelectBox() {
 
     $(document).on('change', '.select', function () {
         var value = $(this).find(':selected').val().split('/');
+
         var parent = value[0];
+        var grandpa = value[2];
+        grandpa = parseInt(value[1]) === 0 ? '' : grandpa + ' >> ';
         var id = parseInt($(this).closest('div').attr('id'));
         var divId = 0;
 
@@ -58,7 +61,7 @@ function CreateSelectBox() {
                     select.append($("<option></option>"));
                     var optionsCount = 0;
                     $.each(response.profs, function (index, data) {
-                        select.append($("<option></option>").attr("value", data.Item1 + '/' + data.Item3).text(data.Item2));
+                        select.append($("<option></option>").attr("value", data.Item1 + '/' + data.Item3 + '/' + data.Item4).text(data.Item2));
                         optionsCount++;
                     });
 
@@ -121,10 +124,12 @@ function CreateSelectBox() {
             });
         }
         console.log($(this).find(':selected').text());
+        //var parentId = $.isNumeric(grandpa) ? grandpa : 0;
+        //console.log(parentId + '--parent');
         $.ajax({
             type: 'GET',
             url: '/Exam/GridPartial',
-            data: { prof: $(this).find(':selected').text() },
+            data: { path: grandpa + $(this).find(':selected').text() },
             success: function (response) {
                 $('#Grid').html(response);
             }
@@ -174,7 +179,7 @@ function CreateSelectBox() {
                         console.log(response.data);
                     },
                     error: function () {
-                        showErrorNotification('Error occured.');
+                        showErrorNotification('Xəta baş verdi, yenidən cəhd edin.');
                     }
                 });
             } else {
@@ -203,7 +208,7 @@ function CreateSelectBox() {
 function ConvertToSelectize() {
     $('select').selectize({
         create: true,
-        placeholder: '~~Select option~~',
+        placeholder: '~~Seç~~',
         sortField: 'text',
         render: {
             option_create: function (data, escape) {
@@ -226,7 +231,7 @@ function Save() {
         count = parseInt($('#count').val());
         console.log(count < limit);
         if (count < limit) {
-            showErrorNotification('Limit greater than count.');
+            showErrorNotification('Limit, ümüumi saydan böyükdür.');
         }
         else if (limit === 0 || count === 0) {
             showErrorNotification('Sual və minimum düzgün  cavab sayı 0 ola bilməz.');
@@ -255,20 +260,33 @@ function Save() {
 
             subId = $('#subId').find(':selected').val();
             parentId = $('#parentCategory').find(':selected').val();
-            if ($.isNumeric(parentId) && array.length !== 0) {
+            console.log(array.length);
+            if (($.isNumeric(parentId) || parentId.length > 1) && array.length !== 0) {
                 $.ajax({
                     type: 'POST',
                     url: '/Exam/AddQuesLimit',
                     data: { count: count, limit: limit, subId: subId, parentId: parentId, array: array },
                     success: function (response) {
+                        console.log(response);
+                        var counter = 0;
                         if (response.Item1) {
-                            showSuccessNotification('Operation successfully executed.');
+                            showSuccessNotification('Əməliyyat uğurla yerinə yetirildi.');
+                            $('.parent .modifyDepartment').each(function (i) {
+                                console.log(i);
+                                counter++;
+                            });
+                            if (counter < array.length - 1) {
+                                $('#select' + counter).change();
+                            } else {
+                                $('#select' + (array.length - 1)).change();
+                            }
+                            //console.log(counter);
                         } else {
                             showErrorNotification(response.Item2);
                         }
                     },
                     error: function () {
-                        showErrorNotification('Error occured. Check your fields.');
+                        showErrorNotification('Xəta baş verdi, giriş verilənlərini yoxlayın.');
                     }
                 });
             }
@@ -354,16 +372,16 @@ function modifyDepartment() {
                                 } else {
                                     $('#select' + (divId - 1)).change();
                                 }
-                                showSuccessNotification('Operation successfully executed.');
+                                showSuccessNotification('Əməliyyat uğurla yerinə yetirildi.');
                                 depart = null;
                                 departId = null;
                                 departText = null;
                             } else {
-                                showErrorNotification('Error occured.1');
+                                showErrorNotification('Xəta başverdi, yenidən cəhd edin.');
                             }
                         },
                         error: function () {
-                            showErrorNotification('Error occured.2');
+                            showErrorNotification('Xəta baş verdi.');
                         }
                     });
                     //console.log($('#select1').html());
@@ -439,7 +457,7 @@ function modifyCategory() {
                                 //category[0].selectize.clearCache();
                                 //category[0].selectize.destroy();
                                 if (selectId === 'subId') {
-                                    showSuccessNotification('Operation successfully executed.');
+                                    showSuccessNotification('Əməliyyat uğurla yerinə yetirildi.');
                                     console.log(categoryVal);
                                     $('#parentCategory').change();
 
@@ -453,11 +471,11 @@ function modifyCategory() {
                                 categoryId = null;
                                 categoryText = null;
                             } else {
-                                showErrorNotification('Error occured.1');
+                                showErrorNotification('Xəta baş verdi, yenidən cəhd edin.');
                             }
                         },
                         error: function () {
-                            showErrorNotification('Error occured.2');
+                            showErrorNotification('Xəta baş verdi, yenidən cəhd edin.');
                         }
                     });
                     //console.log($('#select1').html());
@@ -514,7 +532,7 @@ function deleteCategory() {
                 success: function (response) {
                     if (response) {
                         if (selectId === 'subId') {
-                            showSuccessNotification('Operation successfully executed.');
+                            showSuccessNotification('Əməliyyat uğurla yerinə yetirildi.');
                             $('#confirmModal').modal('hide');
                             $('#parentCategory').change();
 
@@ -523,11 +541,11 @@ function deleteCategory() {
                             window.location.reload();
                         }
                     } else {
-                        showErrorNotification('Error occured.');
+                        showErrorNotification('Xəta baş verdi, yenidən cəhd edin.');
                     }
                 },
                 error: function () {
-                    showErrorNotification('Error');
+                    showErrorNotification('Xəta baş verdi, yenidən cəhd edin');
                 }
             });
         }
@@ -568,11 +586,11 @@ function deleteDepartment() {
                             showSuccessNotification('Operation executed successfully.');
                         }
                     } else {
-                        showErrorNotification('Error occured.');
+                        showErrorNotification('Xəta baş verdi, yenidən cəhd edin.');
                     }
                 },
                 error: function () {
-                    showErrorNotification('Error');
+                    showErrorNotification('Xəta baş verdi, yenidən cəhd edin');
                 }
             });
         }

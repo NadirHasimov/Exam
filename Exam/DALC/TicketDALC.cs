@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 using System.Web;
 
 namespace Exam.DALC
@@ -101,6 +103,14 @@ namespace Exam.DALC
 
         public static void UpdateTicketFinish(int ticketId)
         {
+            string ip = string.IsNullOrEmpty(HttpContext.Current.Request.ServerVariables["HTTP_X_FORWARDED_FOR"])
+                   ? HttpContext.Current.Request.UserHostAddress
+                   : HttpContext.Current.Request.ServerVariables["HTTP_X_FORWARDED_FOR"];
+            if (string.IsNullOrEmpty(ip) || ip.Trim() == "::1")
+            { // still can't decide or is LAN
+                var lan = Dns.GetHostEntry(Dns.GetHostName()).AddressList.FirstOrDefault(r => r.AddressFamily == AddressFamily.InterNetwork);
+                ip = lan == null ? string.Empty : lan.ToString();
+            }
             using (SqlConnection con = new SqlConnection(AppConfig.ConnectionString))
             {
                 con.Open();
@@ -108,6 +118,7 @@ namespace Exam.DALC
                 {
                     cmd.CommandType = CommandType.Text;
                     cmd.Parameters.AddWithValue("@ticket_id", ticketId);
+                    cmd.Parameters.AddWithValue("@ip", ip);
                     cmd.ExecuteNonQuery();
                 }
             }
@@ -148,6 +159,57 @@ namespace Exam.DALC
                 }
             }
             return apprvStatus;
+        }
+
+        public static List<ExamMonitor> GetExams(string dateRange = "")
+        {
+            List<ExamMonitor> exams = new List<ExamMonitor>();
+            DateTime date1, date2;
+            if (!String.IsNullOrEmpty(dateRange))
+            {
+                date1 = DateTime.Parse(dateRange.Split('-')[0].ToString());
+                date2 = DateTime.Parse(dateRange.Split('-')[1].ToString());
+            }
+            else
+            {
+                date1 = DateTime.Now.Date;
+                date2 = DateTime.Now.Date;
+            }
+            using (SqlConnection con = new SqlConnection(AppConfig.ConnectionString))
+            {
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand(SqlQueries.Ticket.getExams, con))
+                {
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Parameters.AddWithValue("@date1", date1);
+                    cmd.Parameters.AddWithValue("@date2", date2);
+                    var reader = cmd.ExecuteReader();
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            exams.Add(new ExamMonitor
+                            {
+                                TicketId = int.Parse(reader["TICKET_ID"].ToString()),
+                                ApprStatus = int.Parse(reader["APPR_STATUS"].ToString()),
+                                Firstname = reader["NAME"].ToString(),
+                                Lastname = reader["SURNAME"].ToString(),
+                                Profession = reader["PROF"].ToString(),
+                                BeginTime = reader["BEGIN_TIME"].ToString(),
+                                EndTime = reader["END_TIME"].ToString(),
+                                Fin_code = reader["FIN_CODE"].ToString(),
+                                Finish = int.Parse(reader["FINISH"].ToString()),
+                                IP = reader["IP_ADDRSS"].ToString(),
+                                Date = DateTime.Parse(reader["DATE"].ToString()),
+                                Time = DateTime.Parse(reader["Time"].ToString()),
+                                AnsweredQuestionCount = int.Parse(reader["ANSWERED_QUES_COUNT"].ToString()),
+                                QuestionCount = int.Parse(reader["QUES_COUNT"].ToString())
+                            });
+                        }
+                    }
+                    return exams;
+                }
+            }
         }
     }
 }

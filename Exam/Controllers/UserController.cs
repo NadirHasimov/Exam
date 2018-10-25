@@ -14,6 +14,16 @@ namespace Exam.Controllers
         // GET: User
         public ActionResult SignIn()
         {
+            string urlReferer;
+            if (Request.UrlReferrer != null)
+            {
+                urlReferer = Request.UrlReferrer.LocalPath;
+                if (urlReferer.Contains("/Exam/Agreement"))
+                {
+                    string finCode = HttpUtility.ParseQueryString(Request.UrlReferrer.Query)["finCode"];
+                    UserDALC.AddLog(HttpContext, true, "Razı deyiləm", finCode);
+                }
+            }
             FormsAuthentication.SignOut();
             return View();
         }
@@ -59,7 +69,7 @@ namespace Exam.Controllers
                 FormsAuthentication.SetAuthCookie(finCode, false);
             }
             UserDALC.AddLog(HttpContext, result, result ? "Success" : "Error");
-            return Json(new { login_status = login_status, redirect_url = Url.Action("Index", "Exam"), JsonRequestBehavior.AllowGet });
+            return Json(new { login_status = login_status, redirect_url = Url.Action("Agreement", "Exam", new { finCode = finCode }), JsonRequestBehavior.AllowGet });
         }
 
         public ActionResult test()

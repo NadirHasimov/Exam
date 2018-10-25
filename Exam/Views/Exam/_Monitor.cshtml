@@ -1,0 +1,125 @@
+﻿@using System.Globalization
+@model List<Exam.DomainModels.ExamMonitor>
+@{
+    Layout = null;
+}
+@foreach (var item in Model)
+{
+    string time = !String.IsNullOrEmpty(item.BeginTime) ? DateTime.Parse(item.BeginTime).ToString("H:mm") : item.Time.ToString("H:mm");
+    if (item.ApprStatus == 0)
+    {
+        <div class="division col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding:0px; border:solid 0px black;">
+            <div class="showdiv col-lg-7 col-md-7 col-sm-10 col-xs-11" style="padding:0px; border-left:solid 4px #fc6e59;  border-top:none; border-bottom:none;">
+                <div class="inner-div col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <span class="droptedarrow"></span>
+                    <div class="circle" style="border-color:#fc6e59">
+                        <span style="color:#fc6e59;" class="fa"></span>
+                    </div>
+                    <div class="datetime hidden-xs">
+                        <span class="date">@item.Date.ToString("MMM") @item.Date.Day @item.Date.Year</span>
+                        <span class="time">@time</span>
+                    </div><span class="location hidden">Azərbaycan, Bakı</span>
+                    <span class="result hidden">0</span>
+                    <span class="ipaddress hidden">@item.IP</span>
+                    <div class="infobox col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding:0px;">
+                        <span class="student_info col-lg-7 col-md-7 col-sm-7 col-xs-7">
+                            <span class="candidatename">@item.Firstname   @item.Lastname</span>
+                            <span class="examname">@item.Profession</span>
+                        </span><span class="hidden">
+                            <span class="examstatus">Təsdiqlənməyib</span>
+                            <span class="divvalue hidden">0</span>
+                        </span>
+                        <span class="progress_box text-right col-lg-5 col-md-5 col-sm-5 col-xs-5 attemp pull-right">
+                            <span class="pull-left">Cəhdlər</span><span class="pull-right"><span class="totalattemp">@item.AnsweredQuestionCount</span> / <span class="totalque">@item.QuestionCount</span></span>
+                            <span style="margin-top:2px;" class="progressmore"><span style="width:11%;" class="innerprogressmore"></span></span>
+                        </span>
+                    </div>
+                </div>
+                <div class="moreinfobox col-lg-12 col-md-12 col-sm-12 col-xs-12 moreclose" style="padding:0px;">
+                    <span class="moreloading"><img src="../images/159.gif" alt="Loading" /> </span>
+                    <span id="moreinfobox"></span>
+                </div>
+            </div>
+        </div>
+
+    }
+    else if (item.ApprStatus == 1 && !string.IsNullOrEmpty(item.EndTime))
+    {
+        <div class="divisionbox col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding:0px; border:solid 0px red;">
+            <div class="division col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding:0px; border:solid 0px black;">
+                <div class="showdiv col-lg-7 col-md-7 col-sm-10 col-xs-11" style="padding: 0px; border-left: 4px solid rgb(141, 191, 103); border-top: none; border-bottom: none; margin-top: 0px;">
+                    <div class="inner-div col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <span class="completearrow"></span>
+                        <div class="circle" style="border-color:#8dbf67">
+                            <span style="color:#8dbf67;" class="fa"></span>
+                        </div>
+                        <div class="datetime hidden-xs">
+                            <span class="date">@item.Date.ToString("MMM") @item.Date.Day @item.Date.Year</span>
+                            <span class="time">@time</span>
+                        </div>
+                        <span class="location hidden">Azərbaycan, Bakı</span>
+                        <span class="result hidden">66</span>
+                        <span class="ipaddress hidden">@item.IP</span>
+                        <div class="infobox col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding:0px;">
+                            <span class="student_info col-lg-7 col-md-7 col-sm-7 col-xs-7">
+                                <span class="candidatename">@item.Firstname  @item.Lastname</span>
+                                <span class="examname">@item.Profession</span>
+                            </span>
+                            <span class="hidden">
+                                <span class="examstatus complete">Bitib</span>
+                                <span class="divvalue hidden">0</span>
+                            </span>
+                            <span class="progress_box text-right col-lg-5 col-md-5 col-sm-5 col-xs-5 attemp pull-right">
+                                <span class="pull-left">Cəhdlər</span>
+                                <span class="pull-right">
+                                    <span class="totalattemp">@item.AnsweredQuestionCount</span> / <span class="totalque">@item.QuestionCount</span>
+                                </span>
+                                <span style="margin-top:2px;" class="progressmore">
+                                    <span style="width:99%;" class="innerprogressmore"></span>
+                                </span>
+                            </span>
+                        </div>
+                    </div><div class="moreinfobox col-lg-12 col-md-12 col-sm-12 col-xs-12 moreclose" style="padding:0px;"><span class="moreloading"><img src="../images/159.gif" alt="Loading" /> </span><span id="moreinfobox"></span></div>
+                </div>
+            </div>
+        </div>
+    }
+    else if (item.ApprStatus == 1 && string.IsNullOrEmpty(item.EndTime) && !string.IsNullOrEmpty(item.BeginTime))
+    {
+        <div class="division col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding:0px; border:solid 0px black;">
+            <div class="showdiv running col-lg-7 col-md-7 col-sm-10 col-xs-11" style="padding:0px; border-left:solid 4px #fccb5f;  border-top:none; border-bottom:none;">
+                <div class="inner-div col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <span class="takearrow"></span>
+                    <div class="circle" style="border-color:#fccb5f"><img src="../images/714.GIF" alt="Loading" /></div>
+                    <div class="datetime hidden-xs">
+                        <span class="date">@item.Date.ToString("MMM") @item.Date.Day @item.Date.Year</span>
+                        <span class="time">@time</span>
+                    </div>
+                    <span class="location hidden">Azərbaycan, Bakı</span>
+                    <span class="result hidden">0</span><span class="ipaddress hidden">141.0.9.154</span>
+                    <div class="infobox col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding:0px;">
+                        <span class="student_info col-lg-7 col-md-7 col-sm-7 col-xs-7">
+                            <span class="candidatename">@item.Firstname @item.Lastname</span>
+                            <span class="examname">@item.Profession</span>
+                        </span>
+                        <span class="hidden">
+                            <span class="examstatus taking">Davam edir</span>
+                            <span class="divvalue hidden">0</span>
+                        </span>
+                        <span class="progress_box text-right col-lg-5 col-md-5 col-sm-5 col-xs-5 attemp pull-right">
+                            <span class="pull-left">Cəhdlər</span>
+                            <span class="pull-right">
+                                <span class="totalattemp">@item.AnsweredQuestionCount</span> / <span class="totalque">@item.QuestionCount</span>
+                            </span>
+                            <span style="margin-top:2px;" class="progressmore"><span style="width: 22%;" class="innerprogressmore"></span></span>
+                        </span>
+                    </div>
+                </div>
+                <div class="moreinfobox col-lg-12 col-md-12 col-sm-12 col-xs-12 moreclose" style="padding:0px;">
+                    <span class="moreloading"><img src="../images/159.gif" alt="Loading" /> </span>
+                    <span id="moreinfobox"></span>
+                </div>
+            </div>
+        </div>
+    }
+}

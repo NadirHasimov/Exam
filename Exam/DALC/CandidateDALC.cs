@@ -38,7 +38,7 @@ namespace Exam.DALC
                         model.FinCode = reader["FIN_CODE"].ToString();
                         model.Mobile = reader["MOBILE"].ToString();
                         model.LocalCandidateStatus = bool.Parse(reader["LOCAL_CAND_S"].ToString());
-                        model.ExamProfessionId = int.Parse(reader["EXAM_PROFESSION_ID"].ToString());
+                        model.ExamProfessionId = int.Parse(reader["EXAM_PROFESSION_ID"].ToString() ?? "0");
                         model.ExamDate = DateTime.Parse(reader["DATE"].ToString());
                         model.ExamTime = reader["TIME"].ToString();
                     }
@@ -77,6 +77,7 @@ namespace Exam.DALC
                 using (SqlCommand cmd = new SqlCommand("sp_create_ticket", con))
                 {
                     string username = HttpContext.Current.User.Identity.Name;
+
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@username", username.Contains("@") ? username : username + "@ady.az");
                     cmd.Parameters.AddWithValue("@fin_Code", model.FinCode);

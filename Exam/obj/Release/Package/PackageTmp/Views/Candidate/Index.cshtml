@@ -6,7 +6,7 @@
     @*<link rel="stylesheet" href="~/assets/js/select2/select2-bootstrap.css" />
         <link rel="stylesheet" href="~/assets/js/select2/select2.css" />*@
     @*<link href="~/Content/Theme/css/dataTables.jqueryui.css" rel="stylesheet" />*@
-    <link href="~/Content/custom/css/candidateIndex.css" rel="stylesheet" />
+    <link href="~/Content/custom/css/candidateIndex.css?v=1.6" rel="stylesheet" />
     <style>
         .modalCenter {
             top: 50% !important;
@@ -29,11 +29,11 @@
     @*<script src="~/Scripts/theme/jquery.dataTables.min.js"></script>*@
     @*<script src="~/assets/js/jquery.dataTables.min.js"></script>*@
     @*<script src="~/Scripts/theme/dataTables.jqueryui.js"></script>*@
-    <script src="~/Scripts/custom/candidateIndex.js"></script>
+    <script src="~/Scripts/custom/candidateIndex.js?v=1.6"></script>
 }
 
 <hr />
-<h2>Namizərd</h2>
+<h2>Namizəd</h2>
 <br />
 
 <hr />
@@ -70,11 +70,12 @@
                 <button type="button" class="close" data-dismiss="modal">
                     x
                 </button>
-                <h3 class="modal-title">Bilet və namizərd yarat</h3>
+                <h3 class="modal-title">Bilet və Namizəd yarat</h3>
             </div>
             <div class="modal-body">
                 <form id="rootwizard" class="form-wizard validate">
-
+                    <input type="text" name="ID" id="ID" hidden />
+                    <input hidden type="text" value="0" id="TicketId" name="TicketId" />
                     <div class="steps-progress">
                         <div class="progress-indicator"></div>
                     </div>
@@ -112,12 +113,11 @@
                                     <div class="input-group-addon">
                                         <i class="entypo-search"></i>
                                     </div>
-                                    <input type="text" class="form-control" value="6666666" name="finCode" id="finCode" data-validate="required,minlength[7],maxlength[7]" data-message-minlength="Minlength 7" data-message-maxlength="Maxlength 7" placeholder="FIN kod" />
+                                    <input type="text" class="form-control" value="" name="finCode" id="finCode" data-validate="required,minlength[7],maxlength[7]" data-message-minlength="Minlength 7" data-message-maxlength="Maxlength 7" placeholder="FIN kod" />
                                 </div>
                             </div>
                         </div>
                         <div class="tab-pane" id="tab2">
-                            <input type="text" name="ID" id="ID" hidden />
                             <div class="row align-center">
                                 <div class="col-md-3">
                                     <div class="form-group">
@@ -171,7 +171,7 @@
                                 </div>
                                 <div class="col-md-2">
                                     <div class="form-group">
-                                        <label><input type="checkbox" id="local_candidate" value="1" />  Lokal namizərd</label>
+                                        <label><input type="checkbox" id="local_candidate" value="1" />  Lokal Namizəd</label>
                                     </div>
                                 </div>
 
@@ -305,7 +305,7 @@
 
                                 <div class="col-md-2">
                                     <div class="form-group">
-                                        <label><input type="checkbox" id="local_candidate_clone" value="1" />  Lokal namizərd</label>
+                                        <label><input type="checkbox" id="local_candidate_clone" value="1" />  Lokal Namizəd</label>
                                     </div>
                                 </div>
 
@@ -425,6 +425,7 @@
                 <th>İxtisas</th>
                 <th>Tarix</th>
                 <th>Saat</th>
+                <th>Əməliyyat</th>
                 <th>Status</th>
             </tr>
             <tr>
@@ -436,6 +437,7 @@
                 <th>İxtisas</th>
                 <th>Tarix</th>
                 <th>Saat</th>
+                <th>Əməliyyat</th>
                 <th>Status</th>
             </tr>
         </thead>
@@ -443,7 +445,7 @@
             @foreach (var candidate in Model.Candidates)
             {
                 <tr class="tr">
-                    <td width="2%"><input name="ids[]" class="chk" type="checkbox" value="@candidate.ID" /></td>
+                    <td width="2%"><input name="ids[]" class="chk" type="checkbox" value="@candidate.TicketId" /></td>
                     <td>@candidate.FinCode</td>
                     <td>@candidate.FirstName</td>
                     <td>@candidate.LastName</td>
@@ -451,6 +453,12 @@
                     <td>@candidate.Profession</td>
                     <td>@candidate.ExamDate.ToShortDateString()</td>
                     <td>@candidate.ExamTime.ToString()</td>
+                    <td>
+                        <a href="#" data-finCode="@candidate.FinCode" data-TicketId="@candidate.TicketId" data-apprStatus="@candidate.Status" class="cand-edit btn btn-info icon btn-icon icon-left">
+                            <i class="entypo-pencil"></i>
+                            Dəyişdir
+                        </a>
+                    </td>
                     <td>
                         @if (candidate.Status.Equals("0"))
                         {

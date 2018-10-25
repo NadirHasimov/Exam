@@ -1,4 +1,5 @@
 ﻿var SubId = "";
+
 $(document).ready(function () {
     GetSubCategories();
     CreateDataTable();
@@ -9,13 +10,15 @@ $(document).ready(function () {
     Edit();
     CatchCustomTirggers();
     displayOperationResult();
-    ValidateQuestions();
+    ValidateQuestion();
 });
 
 function CatchCustomTirggers() {
     $(document).on("sub", function () {
         console.log(SubId);
-        $("#subCategoryId").val(SubId);
+        if (SubId) {
+            $("#subCategoryId").val(SubId);
+        }
     });
 }
 
@@ -25,27 +28,32 @@ function GetSubCategories() {
         console.log(id);
         if (parseInt(id) === 14) {
             console.log(55);
+            var firstValue = "";
             $.ajax({
                 type: 'GET',
                 url: '/Candidate/GetProfessions',
                 success: function (data) {
                     $('#subCategoryId').empty();
-                    $('#subCategoryId').append('<option></option>');
+                    //$('#subCategoryId').append('<option></option>');
                     $.each(data, function (i, w) {
                         console.log(w);
+                        firstValue = i === 0 ? w.Item1 : firstValue;
                         $('#subCategoryId').append('<option value="' + w.Item1 + '">' + w.Item2 + '</option>');
                     });
                     $('#subCategoryId').select2({
                         placeholder: '--Vəzifə seç--'
                     });
-                    if (SubId !== 0) {
+                    if (SubId) {
                         $('#subCategoryId').select2('val', SubId);
+                    } else {
+                        $('#subCategoryId').select2('val', firstValue);
                     }
                     //$(document).trigger("sub");
                 }
             });
         }
         else {
+            firstValue = '';
             $('#subCategoryId').select2('destroy');
             $('#subCategoryId option').remove();
             $.ajax({
@@ -56,12 +64,16 @@ function GetSubCategories() {
                     $('#subCategoryId').empty();
                     $.each(data, function (i, w) {
                         $.each(w, function (j, e) {
+                            firstValue = j === 0 ? e.Item1 : firstValue;
+                            console.log(e.Item1 + '  ' + e.Item2);
                             $('#subCategoryId').append('<option value="' + e.Item1 + '">' + e.Item2 + '</option>');
                         });
                     });
+                    $('#subCategoryId').val(firstValue);
                     $(document).trigger("sub");
                 }
             });
+            console.log(firstValue);
         }
     });
 }
@@ -214,6 +226,7 @@ function View() {
                 $('#vc').removeAttr('src');
                 $('#vd').removeAttr('src');
                 $('#ve').removeAttr('src');
+                $('#ques_text').html('');
                 $.each(response.question, function (i, w) {
                     console.log(w);
                     if (w.QuestionText.length > 0 && i === 0) {
@@ -261,7 +274,7 @@ function View() {
                 console.log($('#question-table').scrollTop());
             },
             error: function () {
-                showErrorNotification('Error occured.');
+                showErrorNotification('Xəta baş verdi, yenidən cəhd edin');
             }
         });
     });
@@ -282,7 +295,7 @@ function ApproveQuestions() {
             data: { ids: ids },
             success: function (response) {
                 if (response === null) {
-                    showInfoNotification("Doesn't change any question's state");
+                    showInfoNotification("Sual dəyişdirilmədi.");
                 } else {
                     $('#ques_container').html(response);
                     CreateDataTable();
@@ -315,6 +328,7 @@ function Edit() {
             success: function (response) {
                 console.log(response);
                 $('#insert-ques input:not(:radio)').val('');
+
                 $.each(response.question, function (i, w) {
                     if (w.IsCorrectAnswer) {
                         correctVariant = w.Variant;
@@ -326,7 +340,7 @@ function Edit() {
                     }
                     if (w.QuestionText.length > 0 && i === 0) {
                         $('#QuestionText').val(w.QuestionText);
-                        console.log(w.ParentId);
+                        console.log(w.ParentId + 'Parent id');
                         $('#parentCategoryId').val(w.ParentId).change();
                         $('#quesLabelText').html('Sual №' + w.ID + ' || Kateqoriya: ' + w.Category);
                     }
@@ -394,32 +408,34 @@ function Edit() {
 function displayOperationResult() {
     result = window.location.hash;
     if (result === '#successI') {
-        showSuccessNotification('Question added.');
+        showSuccessNotification('Sual əlavə edildi.');
     }
     else if (result === '#successE') {
-        showSuccessNotification('Question edited.');
+        showSuccessNotification('Sual dəyişdirildi.');
     } else if (result === 'success') {
-        showSuccessNotification('Operation successfully executed.');
+        showSuccessNotification('Əməliyyat uğurla yerinə yetirildi.');
     }
     else if (result === '#error') {
-        showErrorNotification('Error occured. Try again.');
+        showErrorNotification('Xəta baş verdi, yenidən cəhd edin.');
     }
     window.location.hash = '';
 }
 
-function ValidateQuestions() {
+function ValidateQuestion() {
     var textarea, state = true;
 
 
     $('#appr_form').submit(function (e) {
-        state = $('#QuestionText').val().length > 0 || $('#QuestionImage').get(0).files.length > 0;
+        var questionImageSource = $('#iq').attr('src');
+        console.log(questionImageSource);
+        state = $('#QuestionText').val().length > 0 || $('#QuestionImage').get(0).files.length > 0 || questionImageSource.indexOf('images') > 0;
         console.log(state);
         if (!state) {
             e.preventDefault();
             $('#QuestionText').addClass('input-validation-error');
             //$(window).scrollTop(0);
             $('html, body').animate({ scrollTop: 10 }, 500);
-            showErrorNotification('Question text or image must be inserted.');
+            showErrorNotification('Sualın mətni və ya şəkili mütləq daxil edilməlidir.');
         }
         else {
             $('textarea.variant').each(function (i) {
@@ -431,8 +447,9 @@ function ValidateQuestions() {
                     if (i === j) {
                         var fileLength = $(this).get(0).files.length;
                         var textAreaLength = textarea.val().length;
+
                         if (parseInt(textAreaLength) === 0 && (parseInt(fileLength) === 0)) {
-                            showErrorNotification('Answer text or image must be filled.');
+                            showErrorNotification('Cavablarda mətn və ya şəkildən biri daxil edilməlidir.');
                             state = false;
                             e.preventDefault();
                         }
@@ -462,7 +479,9 @@ function ValidateQuestions() {
     });
 
     $('#QuestionText').keypress(function () {
-        if ($('#QuestionText').val().length + 1 > 0 || $('#QuestionImage').get(0).files.length > 0) {
+        var questionImageSource = $('#iq').attr('src');
+        if ($('#QuestionText').val().length + 1 > 0 || $('#QuestionImage').get(0).files.length > 0
+            || questionImageSource.indexOf('images') > 0) {
             $('#QuestionText').removeClass('input-validation-error');
         } else {
             $('#QuestionText').addClass('input-validation-error');
@@ -470,7 +489,8 @@ function ValidateQuestions() {
     });
 
     $('#QuestionText').focusout(function () {
-        if ($('#QuestionImage').get(0).files.length > 0) {
+        var questionImageSource = $('#iq').attr('src');
+        if ($('#QuestionImage').get(0).files.length > 0 || questionImageSource.indexOf('images') > 0) {
             $('#QuestionText').removeClass('input-validation-error');
         } else {
             if ($('#QuestionText').val().length === 0) {
@@ -480,7 +500,8 @@ function ValidateQuestions() {
     });
 
     $('#QuestionImage').change(function () {
-        if ($('#QuestionImage').get(0).files.length > 0) {
+        var questionImageSource = $('#iq').attr('src');
+        if ($('#QuestionImage').get(0).files.length > 0 || questionImageSource.indexOf('images') > 0) {
             $('#QuestionText').removeClass('input-validation-error');
         } else {
             if ($('#QuestionText').val().length <= 0) {
@@ -501,8 +522,11 @@ function ValidateQuestions() {
         variant.change(function () {
             $('.vti').each(function (j) {
                 if (i === j) {
+
                     var variantImage = $(this);
-                    if (variant.val().length === 0 && variantImage.get(0).files.length === 0) {
+                    var variantImagePreview = $(this).closest('div').parent().find('img').attr('src');
+                    console.log();
+                    if (variant.val().length === 0 && variantImage.get(0).files.length === 0 && variantImagePreview.indexOf('images') < 0) {
                         variant.addClass('input-validation-error');
                     }
                     else {
@@ -515,7 +539,8 @@ function ValidateQuestions() {
             $('.vti').each(function (j) {
                 if (i === j) {
                     var variantImage = $(this);
-                    if (variant.val().length === 0 && variantImage.get(0).files.length === 0) {
+                    var variantImagePreview = $(this).closest('div').parent().find('img').attr('src');
+                    if (variant.val().length === 0 && variantImage.get(0).files.length === 0 && variantImagePreview.indexOf('images') < 0) {
                         variant.addClass('input-validation-error');
                     }
                     else {
@@ -528,7 +553,9 @@ function ValidateQuestions() {
             $('.vti').each(function (j) {
                 if (i === j) {
                     var variantImage = $(this);
-                    if (variant.val().length === 0 && variantImage.get(0).files.length === 0) {
+                    var variantImagePreview = $(this).closest('div').parent().find('img').attr('src');
+                    console.log(variantImagePreview.indexOf('images') > 0);
+                    if (variant.val().length === 0 && variantImage.get(0).files.length === 0 && variantImagePreview.indexOf('images') < 0) {
                         variant.addClass('input-validation-error');
                     }
                     else {
@@ -541,11 +568,12 @@ function ValidateQuestions() {
 
     $('.vti').each(function (i) {
         var variantImage = $(this);
+        var variantImagePreview = $(this).closest('div').parent().find('img').attr('src');
         variantImage.change(function () {
             $('.variant').each(function (j) {
                 if (i === j) {
                     console.log($(this).val());
-                    if ($(this).val().length === 0 && variantImage.get(0).files.length === 0) {
+                    if ($(this).val().length === 0 && variantImage.get(0).files.length === 0 && variantImagePreview.indexOf('images') < 0) {
                         $(this).addClass('input-validation-error');
                     } else $(this).removeClass('input-validation-error');
                 }

@@ -9,13 +9,15 @@ $(document).ready(function () {
     Edit();
     CatchCustomTirggers();
     displayOperationResult();
-    ValidateQuestions();
+    ValidateQuestion();
 });
 
 function CatchCustomTirggers() {
     $(document).on("sub", function () {
         console.log(SubId);
-        $("#subCategoryId").val(SubId);
+        if (SubId) {
+            $("#subCategoryId").val(SubId);
+        }
     });
 }
 
@@ -25,27 +27,32 @@ function GetSubCategories() {
         console.log(id);
         if (parseInt(id) === 14) {
             console.log(55);
+            var firstValue = "";
             $.ajax({
                 type: 'GET',
                 url: '/Candidate/GetProfessions',
                 success: function (data) {
                     $('#subCategoryId').empty();
-                    $('#subCategoryId').append('<option></option>');
+                    //$('#subCategoryId').append('<option></option>');
                     $.each(data, function (i, w) {
                         console.log(w);
+                        firstValue = i === 0 ? w.Item1 : firstValue;
                         $('#subCategoryId').append('<option value="' + w.Item1 + '">' + w.Item2 + '</option>');
                     });
                     $('#subCategoryId').select2({
                         placeholder: '--Vəzifə seç--'
                     });
-                    if (SubId !== 0) {
+                    if (SubId) {
                         $('#subCategoryId').select2('val', SubId);
+                    } else {
+                        $('#subCategoryId').select2('val', firstValue);
                     }
                     //$(document).trigger("sub");
                 }
             });
         }
         else {
+            firstValue = '';
             $('#subCategoryId').select2('destroy');
             $('#subCategoryId option').remove();
             $.ajax({
@@ -56,12 +63,16 @@ function GetSubCategories() {
                     $('#subCategoryId').empty();
                     $.each(data, function (i, w) {
                         $.each(w, function (j, e) {
+                            firstValue = j === 0 ? e.Item1 : firstValue;
+                            console.log(e.Item1 + '  ' + e.Item2);
                             $('#subCategoryId').append('<option value="' + e.Item1 + '">' + e.Item2 + '</option>');
                         });
                     });
+                    $('#subCategoryId').val(firstValue);
                     $(document).trigger("sub");
                 }
             });
+            console.log(firstValue);
         }
     });
 }
@@ -208,12 +219,13 @@ function View() {
             url: $(this).attr('href'),
             success: function (response) {
                 console.log(response);
-                $('#qi').attr('src', '');
-                $('#v_a').attr('src', '');
-                $('#vb').attr('src', '');
-                $('#vc').attr('src', '');
-                $('#vd').attr('src', '');
-                $('#ve').attr('src', '');
+                $('#qi').removeAttr('src');
+                $('#v_a').removeAttr('src');
+                $('#vb').removeAttr('src');
+                $('#vc').removeAttr('src');
+                $('#vd').removeAttr('src');
+                $('#ve').removeAttr('src');
+                $('#ques_text').html('');
                 $.each(response.question, function (i, w) {
                     console.log(w);
                     if (w.QuestionText.length > 0 && i === 0) {
@@ -243,7 +255,7 @@ function View() {
                         }
                     }
                     if (w.Variant === 'D') {
-                        $('#Dfield').html('<label style="font-weight:bold;"><input type="radio" ' + (w.IsCorrectAnswer === true ? 'checked' : '') + '  name="prewVaraiant" /> D)</label> ' + w.AnswerText);
+                        $('#Dfield').html('<label style="font-weight:   bold;"><input type="radio" ' + (w.IsCorrectAnswer === true ? 'checked' : '') + '  name="prewVaraiant" /> D)</label> ' + w.AnswerText);
                         if (w.AnswerImageUrl.length > 0) {
                             $('#vd').attr('src', w.AnswerImageUrl);
                         }
@@ -315,6 +327,7 @@ function Edit() {
             success: function (response) {
                 console.log(response);
                 $('#insert-ques input:not(:radio)').val('');
+
                 $.each(response.question, function (i, w) {
                     if (w.IsCorrectAnswer) {
                         correctVariant = w.Variant;
@@ -326,9 +339,9 @@ function Edit() {
                     }
                     if (w.QuestionText.length > 0 && i === 0) {
                         $('#QuestionText').val(w.QuestionText);
-                        console.log(w.ParentId);
+                        console.log(w.ParentId + 'Parent id');
                         $('#parentCategoryId').val(w.ParentId).change();
-                        $('#quesLabelText').html('Sual №' + w.ID);
+                        $('#quesLabelText').html('Sual №' + w.ID + ' || Kateqoriya: ' + w.Category);
                     }
                     if (w.QuestionImageUrl.length > 0 && i === 0) {
                         $('#iq').attr('src', w.QuestionImageUrl);
@@ -407,12 +420,14 @@ function displayOperationResult() {
     window.location.hash = '';
 }
 
-function ValidateQuestions() {
+function ValidateQuestion() {
     var textarea, state = true;
 
 
     $('#appr_form').submit(function (e) {
-        state = $('#QuestionText').val().length > 0 || $('#QuestionImage').get(0).files.length > 0;
+        var questionImageSource = $('#iq').attr('src');
+        console.log(questionImageSource);
+        state = $('#QuestionText').val().length > 0 || $('#QuestionImage').get(0).files.length > 0 || questionImageSource.indexOf('images') > 0;
         console.log(state);
         if (!state) {
             e.preventDefault();
@@ -431,6 +446,7 @@ function ValidateQuestions() {
                     if (i === j) {
                         var fileLength = $(this).get(0).files.length;
                         var textAreaLength = textarea.val().length;
+
                         if (parseInt(textAreaLength) === 0 && (parseInt(fileLength) === 0)) {
                             showErrorNotification('Answer text or image must be filled.');
                             state = false;
@@ -462,7 +478,9 @@ function ValidateQuestions() {
     });
 
     $('#QuestionText').keypress(function () {
-        if ($('#QuestionText').val().length + 1 > 0 || $('#QuestionImage').get(0).files.length > 0) {
+        var questionImageSource = $('#iq').attr('src');
+        if ($('#QuestionText').val().length + 1 > 0 || $('#QuestionImage').get(0).files.length > 0
+            || questionImageSource.indexOf('images') > 0) {
             $('#QuestionText').removeClass('input-validation-error');
         } else {
             $('#QuestionText').addClass('input-validation-error');
@@ -470,7 +488,8 @@ function ValidateQuestions() {
     });
 
     $('#QuestionText').focusout(function () {
-        if ($('#QuestionImage').get(0).files.length > 0) {
+        var questionImageSource = $('#iq').attr('src');
+        if ($('#QuestionImage').get(0).files.length > 0 || questionImageSource.indexOf('images') > 0) {
             $('#QuestionText').removeClass('input-validation-error');
         } else {
             if ($('#QuestionText').val().length === 0) {
@@ -480,7 +499,8 @@ function ValidateQuestions() {
     });
 
     $('#QuestionImage').change(function () {
-        if ($('#QuestionImage').get(0).files.length > 0) {
+        var questionImageSource = $('#iq').attr('src');
+        if ($('#QuestionImage').get(0).files.length > 0 || questionImageSource.indexOf('images') > 0) {
             $('#QuestionText').removeClass('input-validation-error');
         } else {
             if ($('#QuestionText').val().length <= 0) {
@@ -501,8 +521,11 @@ function ValidateQuestions() {
         variant.change(function () {
             $('.vti').each(function (j) {
                 if (i === j) {
+
                     var variantImage = $(this);
-                    if (variant.val().length === 0 && variantImage.get(0).files.length === 0) {
+                    var variantImagePreview = $(this).closest('div').parent().find('img').attr('src');
+                    console.log();
+                    if (variant.val().length === 0 && variantImage.get(0).files.length === 0 && variantImagePreview.indexOf('images') < 0) {
                         variant.addClass('input-validation-error');
                     }
                     else {
@@ -515,7 +538,8 @@ function ValidateQuestions() {
             $('.vti').each(function (j) {
                 if (i === j) {
                     var variantImage = $(this);
-                    if (variant.val().length === 0 && variantImage.get(0).files.length === 0) {
+                    var variantImagePreview = $(this).closest('div').parent().find('img').attr('src');
+                    if (variant.val().length === 0 && variantImage.get(0).files.length === 0 && variantImagePreview.indexOf('images') < 0) {
                         variant.addClass('input-validation-error');
                     }
                     else {
@@ -528,7 +552,9 @@ function ValidateQuestions() {
             $('.vti').each(function (j) {
                 if (i === j) {
                     var variantImage = $(this);
-                    if (variant.val().length === 0 && variantImage.get(0).files.length === 0) {
+                    var variantImagePreview = $(this).closest('div').parent().find('img').attr('src');
+                    console.log(variantImagePreview.indexOf('images') > 0);
+                    if (variant.val().length === 0 && variantImage.get(0).files.length === 0 && variantImagePreview.indexOf('images') < 0) {
                         variant.addClass('input-validation-error');
                     }
                     else {
@@ -541,11 +567,12 @@ function ValidateQuestions() {
 
     $('.vti').each(function (i) {
         var variantImage = $(this);
+        var variantImagePreview = $(this).closest('div').parent().find('img').attr('src');
         variantImage.change(function () {
             $('.variant').each(function (j) {
                 if (i === j) {
                     console.log($(this).val());
-                    if ($(this).val().length === 0 && variantImage.get(0).files.length === 0) {
+                    if ($(this).val().length === 0 && variantImage.get(0).files.length === 0 && variantImagePreview.indexOf('images') < 0) {
                         $(this).addClass('input-validation-error');
                     } else $(this).removeClass('input-validation-error');
                 }

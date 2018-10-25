@@ -187,9 +187,9 @@ namespace Exam.DALC
             }
         }
 
-        public static List<Tuple<int, int>> GetResult(int ticketId)
+        public static List<Tuple<string, string, string, string>> GetResult(int ticketId)
         {
-            List<Tuple<int, int>> result = new List<Tuple<int, int>>();
+            List<Tuple<string, string, string, string>> result = new List<Tuple<string, string, string, string>>();
             using (SqlConnection con = new SqlConnection(AppConfig.ConnectionString))
             {
                 con.Open();
@@ -202,9 +202,8 @@ namespace Exam.DALC
                     {
                         while (reader.Read())
                         {
-                            result.Add(new Tuple<int, int>(
-                                int.Parse(reader["QUES_ID"].ToString()),
-                                int.Parse(reader["STATUS"].ToString())
+                            result.Add(new Tuple<string, string, string, string>(
+                                reader["CATEGORY"].ToString(), reader["CORRECT"].ToString(), reader["WRONG"].ToString(), reader["BLANKED"].ToString()
                             ));
                         }
                     }
@@ -213,9 +212,9 @@ namespace Exam.DALC
             return result;
         }
 
-        public static List<Tuple<int, string, int>> GetProfs(int parent = 0)
+        public static List<Tuple<int, string, int, string>> GetProfs(int parent = 0)
         {
-            var profs = new List<Tuple<int, string, int>>();
+            var profs = new List<Tuple<int, string, int, string>>();
             using (SqlConnection con = new SqlConnection(AppConfig.ConnectionString))
             {
                 con.Open();
@@ -228,10 +227,11 @@ namespace Exam.DALC
                     {
                         while (reader.Read())
                         {
-                            profs.Add(new Tuple<int, string, int>
+                            profs.Add(new Tuple<int, string, int, string>
                                 (int.Parse(reader["ID"].ToString()),
                                 reader["NAME"].ToString(),
-                                int.Parse(reader["PARENT_ID"].ToString())
+                                int.Parse(reader["PARENT_ID"].ToString()),
+                                reader["PARENT_NAME"].ToString()
                                 ));
                         }
                     }
@@ -382,5 +382,20 @@ namespace Exam.DALC
             }
         }
 
+        public static void SetVariant(string ticketDetailId, string variant)
+        {
+            using (SqlConnection con = new SqlConnection(AppConfig.ConnectionString))
+            {
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand(SqlQueries.Exam.setVariant, con))
+                {
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Parameters.AddWithValue("@ticket_detail_id", ticketDetailId);
+                    cmd.Parameters.AddWithValue("@variant", variant);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+
+        }
     }
 }

@@ -1237,9 +1237,12 @@
     <Content Include="assets\less\font-icons\font-awesome\css\font-awesome.min.css" />
     <Content Include="assets\less\font-icons\font-awesome\fonts\fontawesome-webfont.svg" />
     <Content Include="assets\less\index.html" />
+    <Content Include="Content\custom\css\bootstrap.min.css" />
     <Content Include="Content\custom\css\common.css" />
     <Content Include="Content\custom\css\candidateIndex.css" />
     <Content Include="Content\custom\css\examIndex.css" />
+    <Content Include="Content\custom\css\examMonitor.css" />
+    <Content Include="Content\custom\css\FontAwesome.css" />
     <Content Include="Content\custom\css\signIn.css" />
     <Content Include="Content\Selectize\css\selectize.bootstrap2.css" />
     <Content Include="Content\Selectize\css\selectize.bootstrap3.css" />
@@ -1250,12 +1253,15 @@
     <Content Include="Content\Selectize\js\selectize.min.js" />
     <Content Include="Content\Selectize\js\standalone\selectize.js" />
     <Content Include="Content\Selectize\js\standalone\selectize.min.js" />
+    <Content Include="Content\Theme\css\bootstrap-clockpicker.css" />
+    <Content Include="Content\Theme\css\bootstrap-clockpicker.min.css" />
     <Content Include="Content\Theme\css\bootstrap-datetimepicker.css" />
     <Content Include="Content\Theme\css\bootstrap-datetimepicker.min.css" />
     <Content Include="Content\Theme\css\bootstrap-theme.css" />
     <Content Include="Content\Theme\css\bootstrap-theme.min.css" />
     <Content Include="Content\Theme\css\bootstrap.min.css" />
     <Content Include="Content\Theme\css\dataTables.jqueryui.css" />
+    <Content Include="Content\Theme\css\daterangepicker.css" />
     <Content Include="Content\Theme\css\select2-bootstrap.css" />
     <Content Include="Content\Theme\css\select2.css" />
     <Content Include="Content\Theme\css\select2.min.css" />
@@ -1275,6 +1281,9 @@
     <Content Include="Content\Theme\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\Theme\images\loader-1.gif" />
     <Content Include="Content\Theme\images\loader-2.gif" />
+    <Content Include="fonts\font-awesome\css\font-awesome.css" />
+    <Content Include="fonts\font-awesome\css\font-awesome.min.css" />
+    <Content Include="fonts\font-awesome\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Selectize\less\plugins\drag_drop.less" />
@@ -1307,15 +1316,25 @@
     <Content Include="Content\Theme\css\neon-core.css" />
     <Content Include="Content\Theme\css\neon-forms.css" />
     <Content Include="Content\Theme\css\neon-theme.css" />
+    <Content Include="images\159.gif" />
+    <Content Include="images\714.GIF" />
+    <Content Include="images\background.png" />
     <Content Include="images\double-tick.png" />
     <Content Include="images\logo.png" />
     <Content Include="Scripts\custom\candidateIndex.js" />
+    <Content Include="Scripts\custom\em.js" />
     <Content Include="Scripts\custom\examIndex.js" />
     <Content Include="Scripts\custom\examInset.js" />
+    <Content Include="Scripts\custom\Jquery.js" />
+    <Content Include="Scripts\custom\moment.js" />
+    <Content Include="Scripts\custom\monitorTest.js" />
     <Content Include="Scripts\custom\questionLimit.js" />
+    <Content Include="Scripts\js\bootstrap-clockpicker.js" />
+    <Content Include="Scripts\js\bootstrap-clockpicker.min.js" />
     <Content Include="Scripts\js\bootstrap-datepicker.js" />
     <Content Include="Scripts\js\bootstrap-switch.min.js" />
     <Content Include="Scripts\js\bootstrap.js" />
+    <Content Include="Scripts\js\bootstrap.min.js" />
     <Content Include="Scripts\js\joinable.js" />
     <Content Include="Scripts\js\jquery-ui-1.10.3.minimal.min.js" />
     <Content Include="Scripts\js\jquery.inputmask.bundle.min.js" />
@@ -1329,6 +1348,9 @@
     <Content Include="Scripts\js\neon-demo.js" />
     <Content Include="Scripts\js\resizeable.js" />
     <Content Include="Scripts\theme\bootstrap.js" />
+    <Content Include="Scripts\theme\date-range-picker\daterangepicker.min.js" />
+    <Content Include="Scripts\theme\date-range-picker\jquery.min.js" />
+    <Content Include="Scripts\theme\date-range-picker\moment.min.js" />
     <Content Include="Scripts\theme\joinable.js" />
     <Content Include="Scripts\theme\jquery.bootstrap.wizard.min.js" />
     <Content Include="Scripts\theme\neon-api.js" />
@@ -1425,6 +1447,7 @@
   <ItemGroup>
     <Compile Include="AppConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Content Include="Content\custom\css\agreement.css" />
     <Compile Include="Controllers\CandidateController.cs" />
     <Compile Include="Controllers\ExamController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -1436,6 +1459,7 @@
     <Compile Include="DALC\UserDALC.cs" />
     <Compile Include="DomainModels\CandidateModel.cs" />
     <Compile Include="DomainModels\ExamDomainModel.cs" />
+    <Compile Include="DomainModels\ExamMonitor.cs" />
     <Compile Include="DomainModels\QuestionModel.cs" />
     <Compile Include="DomainModels\UserModel.cs" />
     <Compile Include="Global.asax.cs">
@@ -1667,6 +1691,10 @@
     <Content Include="assets\less\skins\red.less" />
     <Content Include="assets\less\skins\white.less" />
     <Content Include="assets\less\skins\yellow.less" />
+    <Content Include="fonts\font-awesome\fontawesome-webfont.eot" />
+    <Content Include="fonts\font-awesome\fontawesome-webfont.ttf" />
+    <Content Include="fonts\font-awesome\fontawesome-webfont.woff" />
+    <Content Include="fonts\font-awesome\FontAwesome.otf" />
     <None Include="packages.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
@@ -1684,6 +1712,9 @@
     <Content Include="Views\Exam\_PivotGridPartial.cshtml" />
     <Content Include="Views\Exam\ExportPartial.cshtml" />
     <Content Include="Views\Exam\Export.cshtml" />
+    <Content Include="Views\Exam\Agreement.cshtml" />
+    <Content Include="Views\Exam\Monitor.cshtml" />
+    <Content Include="Views\Exam\_Monitor.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

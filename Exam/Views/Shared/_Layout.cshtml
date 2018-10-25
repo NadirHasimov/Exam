@@ -43,8 +43,6 @@
         new Script { ExtensionSuite = ExtensionSuite.Editors },
         new Script { ExtensionSuite = ExtensionSuite.PivotGrid }
     )
-
-
 </head>
 <body class="page-body skin-white">
     @{
@@ -94,7 +92,11 @@
             @RenderBody()
         </div>
     </div>
-
+    <script>
+        window.onbeforeunload = function () {
+            return "You have made changes on this page that you have not yet confirmed. If you navigate away from this page you will lose your unsaved changes";
+        };
+    </script>
     <script src="~/assets/js/gsap/main-gsap.js"></script>
     <script src="~/assets/js/jquery-ui/js/jquery-ui-1.10.3.minimal.min.js"></script>
     <script src="~/assets/js/bootstrap.js"></script>
@@ -117,6 +119,7 @@
 
     <script src="~/Scripts/custom/common.js"></script>
     <script src="~/Scripts/theme/toastr.js"></script>
+
     @*<script src="~/Scripts/theme/TweenMax.min.js"></script>*@
 </body>
 </html>

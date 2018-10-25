@@ -7,8 +7,10 @@ $(document).ready(function () {
     CreateTimer();
     ViewPicture();
     Feedback();
+    SetVariant();
+    //ViewLater();
+    //$('#agreement_modal').modal('show').appendTo('body');
 });
-
 //function CallbackFunction(event) {
 //    if (window.event) {
 //        if (window.event.clientX < 40 && window.event.clientY < 0) {
@@ -46,16 +48,32 @@ function CreateDataTable() {
     });
 }
 function ViewPicture() {
-    $('.ap').click(function () {
+    console.log('View Picture');
+    $('body').on('click', '.ap', function () {
         var src = $(this).attr('src');
+        console.log(src);
         $('#picture').attr('src', src);
         $('#pic').modal('show').appendTo('body');
     });
-    $('.qp').click(function () {
+
+    $('body').on('click', '.qp', function () {
         var src = $(this).attr('src');
+        console.log(src);
         $('#picture').attr('src', src);
         $('#pic').modal('show').appendTo('body');
     });
+    //$('.ap').on('click',function () {
+    //    var src = $(this).attr('src');
+    //    console.log(src);
+    //    $('#picture').attr('src', src);
+    //    $('#pic').modal('show').appendTo('body');
+    //});
+    //$('.qp').on('click', function () {
+    //    var src = $(this).attr('src');
+    //    console.log(src);
+    //    $('#picture').attr('src', src);
+    //    $('#pic').modal('show').appendTo('body');
+    //});
 }
 function Finish() {
     var answer = {
@@ -93,11 +111,12 @@ function Finish() {
             url: '/Exam/Finish',
             data: { answers: answers, TicketId: ticketId, Time: $('#timer').html() },
             success: function (response) {
-                console.log(1);
                 if (response) {
-                    $('#tbl_result tbody tr').append('<td>' + response.trueAnswerCount + '</td>');
-                    $('#tbl_result tbody tr').append('<td>' + response.falseAnswerCount + '</td>');
-                    $('#tbl_result tbody tr').append('<td>' + response.blankedAnswerCount + '</td>');
+                    console.log(response);
+                    $.each(response.result, function (i, data) {
+                        console.log(data.Item1);
+                        $('#tbl_result tbody').append('<tr>' + '<td>' + data.Item1 + '</td>' + '<td>' + data.Item2 + '</td>' + '<td>' + data.Item3 + '</td>' + '<td>' + data.Item4 + '</td>' + '</tr>');
+                    });
                     $('#resultModal').modal('show').appendTo('body');
                 } else {
                     showInfoNotification('Error');
@@ -109,7 +128,6 @@ function Finish() {
         });
     });
     $('#ok').click(function () {
-        //$.cookie('.ASPXAUTH', null, { path: '/' });
         $.removeCookie('.ASPXAUTH', { path: '/' });
         window.location.replace('../User/SignIn');
     });
@@ -123,12 +141,13 @@ var questions = [];
 function ViewList() {
     var answer = {
         id: "",
-        variant: ""
+        variant: "",
+        helpStatus: ""
     };
     var counter = 0, index, inner = 0;
     var answers = [];
     var a = 0, b = 0;
-    var s = null, v = null, t = null, o = null, lt = null, l = null;
+    var s = null, v = null, t = null, o = null, lt = null, l = null, helpStatus = null;
     $('#viewList').click(function () {
         a = 0;
         b = 0;
@@ -139,6 +158,8 @@ function ViewList() {
             t = $(this).find('input[name = "variant"]:checked').val();
             s = t == null ? s : t;
 
+            helpStatus = parseInt(helpStatus) === 1 ? helpStatus : $(this).find('.view-later').length;
+            console.log('helpStatus: ' + helpStatus);
             lt = $(this).find('label.order').html();
             l = lt == null ? l : lt;
             //console.log(lt + '  ' + l);
@@ -148,25 +169,31 @@ function ViewList() {
                 //console.log(s + '  ' + l);
                 question.index = l;
                 question.variant = s;
+                question.helpStatus = helpStatus;
                 questions.push(question);
                 question = {};
                 s = null;
                 lt = null;
+                helpStatus = null;
             }
         });
         $.each(questions, function (i, w) {
-            console.log(w.variant + '  ' + w.index);
+            console.log(w.variant + '  ' + w.index + '  ' + w.helpStatus);
         });
         if (parseInt($('#tblState').val()) === 0) {
 
             $('.list td').each(function (i) {
                 ht = $(this);
                 index = parseInt($(this).html());
-
                 $.each(questions, function (i, w) {
+                    console.log(index === parseInt(w.index));
                     if (index === parseInt(w.index)) {
-                        $(ht).html('<a href="#" class="ques underline" style="color:blue;text-decoration: underline;">' + w.index + ' <label style="color:red;">' + w.variant + '</label></a>');
-                        console.log(w.index + ' ' + w.variant + ' ' + index);
+                        var helpStatusHtml = '';
+                        if (parseInt(w.helpStatus) === 1) {
+                            helpStatusHtml = '<i class="entypo-help-circled" title="Sonra baxaram" style="font-size:large;color:mediumblue"></i>';
+                        }
+                        $(ht).html('<a href="#" class="ques underline" style="color:blue;text-decoration: underline;">' + w.index + ' <label style="color:red;">' + w.variant + '</label></a>' + helpStatusHtml + '');
+                        console.log(w.index + ' ' + w.variant + '  ' + w.helpStatus);
                     }
                 });
 
@@ -195,7 +222,11 @@ function ViewList() {
                 console.log(index);
                 $.each(questions, function (i, w) {
                     if (index === parseInt(w.index)) {
-                        $(ht).html('<a href="#" class="ques" style="color:blue;text-decoration: underline;">' + w.index + ' <label style="color:red;">' + w.variant + '</label></a>');
+                        var helpStatusHtml = '';
+                        if (parseInt(w.helpStatus) === 1) {
+                            helpStatusHtml = '<i class="entypo-help-circled" title="Sonra baxaram" style="font-size:large;color:mediumblue"></i>';
+                        }
+                        $(ht).html('<a href="#" class="ques underline" style="color:blue;text-decoration: underline;">' + w.index + ' <label style="color:red;">' + w.variant + '</label></a>' + helpStatusHtml + '');
                         console.log(w.index + ' ' + w.variant + ' ' + index);
                     }
                 });
@@ -266,8 +297,16 @@ function CreateTimer() {
         }, 1000);
     });
 
+    var counter = 2;
     $('#show').click(function () {
-        $('#timer').show();
+        if (counter % 2 === 0) {
+            $(this).html('Vaxtı göstər');
+        } else {
+            $(this).html('Vaxtı gizlət');
+        }
+        $('#timer').toggle(300);
+        console.log(counter + '   ' + (counter % 2));
+        counter++;
     });
 
     $('#hide').click(function () {
@@ -312,5 +351,25 @@ function Feedback() {
             }
         });
         console.log();
+    });
+}
+
+//function ViewLater() {
+//    $('.entypo-help-circled').on('click', function () {
+//        $(this).parent().toggleClass('view-later');
+//    });
+//}
+$(document).on('click', '.entypo-help-circled', function () {
+    $(this).parent().toggleClass('view-later');
+
+});
+
+function SetVariant() {
+    $(document).on('change', 'input[type=radio][name=variant]', function () {
+        $.ajax({
+            type: 'POST',
+            url: '/Exam/SetVariant',
+            data: { ticketDetailId: $('input[name=TicketDetailId]').val(), variant: $(this).val() }
+        });
     });
 }

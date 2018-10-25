@@ -86,3 +86,43 @@
 #feedback {
     font-size: medium;
 }
+
+.full-screen {
+    cursor: zoom-in;
+}
+
+.agreement_text {
+    background: #4CAF50;
+    color: white;
+    padding: 15px;
+    /*width: 50%;*/
+    height: 300px;
+    overflow: scroll;
+    border: 1px solid #ccc;
+}
+
+#viewList {
+    position: absolute;
+    right: 42%;
+    top: 30px;
+}
+
+.timer_config {
+    position: absolute;
+    right: 12%;
+    top: 40px;
+}
+
+#question_wrapper {
+    margin-top: 2%;
+}
+
+#timer {
+    position: absolute;
+    right: 5%;
+    top: 40px;
+}
+
+.view-later {
+    color: mediumblue;
+}

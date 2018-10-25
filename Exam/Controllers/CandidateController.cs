@@ -46,6 +46,7 @@ namespace Exam.Controllers
 
         public ActionResult ApproveTickets(int[] ids, int type, string desc)
         {
+
             bool result = TicketDALC.ApproveTickets(ids, type, desc);
             return Json(result, JsonRequestBehavior.AllowGet);
         }

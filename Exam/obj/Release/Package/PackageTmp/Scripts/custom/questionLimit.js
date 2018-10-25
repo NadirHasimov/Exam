@@ -26,7 +26,10 @@ function CreateSelectBox() {
 
     $(document).on('change', '.select', function () {
         var value = $(this).find(':selected').val().split('/');
+
         var parent = value[0];
+        var grandpa = value[2];
+        grandpa = parseInt(value[1]) === 0 ? '' : grandpa + ' >> ';
         var id = parseInt($(this).closest('div').attr('id'));
         var divId = 0;
 
@@ -58,7 +61,7 @@ function CreateSelectBox() {
                     select.append($("<option></option>"));
                     var optionsCount = 0;
                     $.each(response.profs, function (index, data) {
-                        select.append($("<option></option>").attr("value", data.Item1 + '/' + data.Item3).text(data.Item2));
+                        select.append($("<option></option>").attr("value", data.Item1 + '/' + data.Item3 + '/' + data.Item4).text(data.Item2));
                         optionsCount++;
                     });
 
@@ -121,10 +124,12 @@ function CreateSelectBox() {
             });
         }
         console.log($(this).find(':selected').text());
+        //var parentId = $.isNumeric(grandpa) ? grandpa : 0;
+        //console.log(parentId + '--parent');
         $.ajax({
             type: 'GET',
             url: '/Exam/GridPartial',
-            data: { prof: $(this).find(':selected').text() },
+            data: { path: grandpa + $(this).find(':selected').text() },
             success: function (response) {
                 $('#Grid').html(response);
             }
@@ -255,14 +260,27 @@ function Save() {
 
             subId = $('#subId').find(':selected').val();
             parentId = $('#parentCategory').find(':selected').val();
-            if ($.isNumeric(parentId) && array.length !== 0) {
+            console.log(array.length);
+            if (($.isNumeric(parentId) || parentId.length > 1) && array.length !== 0) {
                 $.ajax({
                     type: 'POST',
                     url: '/Exam/AddQuesLimit',
                     data: { count: count, limit: limit, subId: subId, parentId: parentId, array: array },
                     success: function (response) {
+                        console.log(response);
+                        var counter = 0;
                         if (response.Item1) {
                             showSuccessNotification('Operation successfully executed.');
+                            $('.parent .modifyDepartment').each(function (i) {
+                                console.log(i);
+                                counter++;
+                            });
+                            if (counter < array.length - 1) {
+                                $('#select' + counter).change();
+                            } else {
+                                $('#select' + (array.length - 1)).change();
+                            }
+                            //console.log(counter);
                         } else {
                             showErrorNotification(response.Item2);
                         }

@@ -16,7 +16,8 @@ namespace Exam.DALC
 
             public const string addLog = @"DECLARE @user_id nvarchar(100), @operation_type INT,@user_type INT
 
-                                           IF(CHARINDEX('Exam/Index',@action)>0)
+                                           IF(CHARINDEX('Exam/Index',@action)>0 OR CHARINDEX('Exam/Agreement',@action)>0 or CHARINDEX('Exam/GetFeedback',@action)>0 
+                                           or CHARINDEX('Exam/Feedback',@action)>0 or CHARINDEX('Exam/Finish',@action)>0 or CHARINDEX('Exam/SetVariant',@action)>0)
                                            BEGIN
                                            	SET @user_type=1
                                            END
@@ -50,8 +51,7 @@ namespace Exam.DALC
                                            VALUES
                                            (
                                            	@ip,@browser,@user_type,@user_id,@description,@success_status,
-                                           	@operation_type,@action
-                                            )";
+                                           	@operation_type,@action)";
 
         }
         public static class Role
@@ -72,21 +72,23 @@ namespace Exam.DALC
 
         public static class Candidate
         {
-            public const string getCandidateByFin = @"SELECT c.*,d.NAME PROFESSION,t.PROFESSION_ID EXAM_PROFESSION_ID,t.TIME,t.DATE 
+            public const string getCandidateByFin = @"SELECT TOP 1 c.*,d.NAME PROFESSION,CASE WHEN t.PROFESSION_ID IS NULL THEN 0 ELSE t.PROFESSION_ID END EXAM_PROFESSION_ID,
+													  CASE WHEN t.TIME IS NULL THEN '11:15' ELSE t.TIME END TIME,
+													  CASE WHEN t.DATE IS NULL THEN GETDATE() ELSE t.DATE END DATE
 													  FROM CANDIDATE c
                                                       INNER JOIN DEPARTMENT d
-                                                      ON c.PROFESSION_ID=d.ID
+                                                      ON (c.PROFESSION_ID=d.ID OR c.PROFESSION_ID=0)
 													  LEFT JOIN TICKET t 
 													  ON T.CAND_ID=c.ID
                                                       WHERE c.ACTIVE=1 AND c.FIN_CODE=@fin_code AND (t.ID=@ticket_id OR @ticket_id=0)";
             public const string getProfessions = @"WITH CTE AS (
                                                    	SELECT ID,PARENT_ID, [NAME], CAST([NAME] AS nvarchar(255))[Path] FROM DEPARTMENT
-                                                   	WHERE PARENT_ID=0
+                                                   	WHERE PARENT_ID=0 AND ACTIVE=1
                                                    	UNION ALL
                                                    	SELECT 
                                                    	 d.ID,d.PARENT_ID,d.NAME,CAST(C.[Path]+' >> '+D.NAME AS NVARCHAR(255))[Path]
                                                    	 FROM DEPARTMENT d
-                                                   	 INNER JOIN CTE C ON C.ID=d.PARENT_ID 
+                                                   	 INNER JOIN CTE C ON C.ID=d.PARENT_ID and d.ACTIVE=1
                                                    )
                                                    SELECT * FROM CTE WHERE ID NOT IN (SELECT PARENT_ID FROM DEPARTMENT)";
 
@@ -112,17 +114,31 @@ namespace Exam.DALC
             public const string getList = @"SELECT ID,FIN_CODE,[NAME],SURNAME,FATHER_NAME,B_DATE 
                                             FROM CANDIDATE WHERE ACTIVE=1";
 
-            public const string getResult = @"SELECT a.QUES_ID ,
-                                              CASE
-                                              	  WHEN T.TICKET_ANSWER IS NULL THEN '2'
-                                              	  WHEN t.TICKET_ANSWER=a.QUES_VARIANT THEN '1'
-                                              	  ELSE 0 
-                                              END [STATUS]
+            public const string getResult = @"select Name CATEGORY,[0] WRONG,[1] CORRECT,case when [2] is null then 0 else [2] end BLANKED from(
+                                              select [NAME],[STATUS],count(*) [COUNT] FROM (
+                                              SELECT c.NAME,
+                                                      CASE
+                                                      	  WHEN T.TICKET_ANSWER IS NULL THEN '2'
+                                                      	  WHEN t.TICKET_ANSWER=a.QUES_VARIANT THEN '1'
+                                                      	  ELSE 0 
+                                                      END [STATUS]
                                               FROM TICKET_DETAIL t
                                               INNER JOIN QUES_ANSWER a
                                               ON t.QUES_ID=a.QUES_ID
-                                              WHERE t.TICKET_ID=@ticket_id and a.TRUE_ANSWER=1
-                                              ORDER BY t.QUES_ID";
+                                              inner join QUESTION q
+                                              on q.ID=t.QUES_ID
+                                              inner join CATEGORY c
+                                              on c.ID=q.SUB_CATEGORY_ID
+                                                      WHERE t.TICKET_ID=@ticket_id and a.TRUE_ANSWER=1) as SUB
+                                              GROUP BY NAME,STATUS
+                                              ) as SourceTable
+                                              PIVOT
+                                              (
+                                              	MAX([COUNT])
+                                              	FOR [STATUS] IN ([0],[1],[2])
+                                              ) as PivotTable
+                                              UPDATE TICKET SET END_TIME=GETDATE() WHERE ID=@ticket_id
+";
 
         }
 
@@ -136,7 +152,7 @@ namespace Exam.DALC
                                         --WHERE t.APPR_STATUS";
 
             public const string approve = @"UPDATE TICKET SET APPR_STATUS=@type,DESCRIPTION=@desc
-                                            WHERE ID IN (SELECT [Value] FROM @ids) and FINISH=0";
+                                            WHERE ID IN (SELECT [Value] FROM @ids) AND FINISH=0 AND [DATE]>= CAST(GETDATE() AS DATE)";
 
             public const string getCandQuestions = @"SELECT d.ID,t.ID TICKET_ID,t.REMAINDER_TIME,d.QUES_ID, d.QUES_ORDER_NO,q.QUES_TEXT,q.QUES_IMAGE_URL,a.QUES_VARIANT,a.ANSWER_TEXT,a.ANSWER_IMAGE 
                                                      FROM TICKET t 
@@ -160,15 +176,30 @@ namespace Exam.DALC
 
                                           -- IF (@@ROWCOUNT=@COUNT)
                                            -- BEGIN 
-                                           	    UPDATE TICKET SET FINISH=1,REMAINDER_TIME=@minute
+                                           	    UPDATE TICKET SET FINISH=1,REMAINDER_TIME=@minute,END_TIME=GETDATE()
                                            	    WHERE ID=@ticket_id
                                             --END";
 
-            public const string updateFinish = @"UPDATE t set FINISH=1
+            public const string updateFinish = @"UPDATE t set FINISH=1,BEGIN_TIME=GETDATE(),IP_ADDRSS=@ip
                                                  from TICKET t
                                                  where t.ID=@ticket_id";
 
             public const string getApprvStatus = @"SELECT APPR_STATUS FROM TICKET WHERE ID=@ticket_id";
+
+            public const string getExams = @"SELECT t.ID TICKET_ID,t.APPR_STATUS,t.FINISH,t.BEGIN_TIME,t.END_TIME,t.IP_ADDRSS,t.DATE,
+                                             CONVERT(DATETIME, CONVERT(CHAR(8), CAST(GETDATE() as NVARCHAR), 112) 
+                                               + ' ' + CONVERT(CHAR(8), t.TIME, 108)) as Time,
+                                             		c.FIN_CODE,c.NAME,c.SURNAME,
+                                             		d.NAME PROF,			
+						                     (select Count(*) from TICKET_DETAIL where TICKET_ID=t.ID) as [QUES_COUNT],
+											 (select Count(*) from TICKET_DETAIL 
+											 where TICKET_ID=t.ID and TICKET_ANSWER is not null) as [ANSWERED_QUES_COUNT],t.ID 
+                                             FROM TICKET t
+                                             INNER JOIN CANDIDATE c
+                                             ON t.CAND_ID=c.ID
+                                             INNER JOIN DEPARTMENT d 
+                                             ON t.PROFESSION_ID=d.ID
+											 WHERE DATE>=CAST(@date1 as DATE) AND DATE<=CAST(@date2 as DATE) AND t.APPR_STATUS<>2";
         }
         public static class Exam
         {
@@ -184,16 +215,22 @@ namespace Exam.DALC
 	                                             INNER JOIN [USER] u
 	                                             ON q.USER_ID=u.ID";
 
-            public const string getQuestion = @"SELECT q.ID,q.ACTIVE,c1.NAME +' / '+c.NAME CATEGORY,CASE  WHEN  Q.SUB_CATEGORY_ID=14 THEN q.PROFESSION_ID ELSE q.SUB_CATEGORY_ID END SUB_CATEGORY_ID,
+            public const string getQuestion = @"SELECT q.ID,q.ACTIVE, CASE WHEN c1.NAME IS NULL THEN c.NAME 
+												ELSE c1.NAME END+' / '+c.NAME CATEGORY,
+
+												CASE  WHEN  Q.SUB_CATEGORY_ID=14 THEN q.PROFESSION_ID
+												ELSE q.SUB_CATEGORY_ID END SUB_CATEGORY_ID,
+
 						                        CASE WHEN c.PARENT_ID=0 THEN q.SUB_CATEGORY_ID
 						                        ELSE c.PARENT_ID END PARENT_ID,
+
 						                        q.QUES_TEXT,q.QUES_IMAGE_URL,a.ANSWER_TEXT,
                                                 a.ANSWER_IMAGE,a.QUES_VARIANT,a.TRUE_ANSWER 
                                                 FROM QUESTION q 
-                                                INNER JOIN QUES_ANSWER a
+                                                LEFT JOIN QUES_ANSWER a
                                                 ON q.ID=a.QUES_ID
-						                        INNER JOIN CATEGORY c ON c.ID=q.SUB_CATEGORY_ID
-												INNER JOIN CATEGORY c1 ON c1.ID=c.PARENT_ID
+						                        LEFT JOIN CATEGORY c ON c.ID=q.SUB_CATEGORY_ID 
+												LEFT JOIN CATEGORY c1 ON c1.ID=c.PARENT_ID 
                                                 WHERE q.ID=@ID";
 
             public const string approveQuestions = @"UPDATE QUESTION SET ACTIVE=1 WHERE ID IN (SELECT [Value] FROM @ids)";
@@ -201,7 +238,10 @@ namespace Exam.DALC
             public const string updateQuestion = @"";
 
 
-            public const string getProfsByParent = @"SELECT ID,NAME,PARENT_ID FROM DEPARTMENT WHERE PARENT_ID=@parent_id and ACTIVE=1";
+            public const string getProfsByParent = @"SELECT d1.ID,d1.NAME,d1.PARENT_ID,case when d2.NAME is null then ' ' else d2.NAME end PARENT_NAME  FROM DEPARTMENT d1 
+                                                     LEFT JOIN DEPARTMENT d2 
+                                                     ON d1.PARENT_ID=d2.ID
+                                                     WHERE d1.ACTIVE=1 AND d1.PARENT_ID=@parent_id";
 
             public const string feedback = @"UPDATE TICKET_DETAIL SET FEED_BACK=@text WHERE ID=@id";
 
@@ -254,6 +294,9 @@ namespace Exam.DALC
 
             public const string deleteCategory = @"UPDATE CATEGORY SET [ACTIVE]=0 WHERE ID=@id";
 
+            public const string setVariant = @"UPDATE TICKET_DETAIL SET 
+                                               ANSWER_TIME=GETDATE(),TICKET_ANSWER=@variant 
+                                               WHERE ID=@ticket_detail_id";
 
         }
     }

@@ -1,0 +1,146 @@
+﻿@model Exam.Models.CandidateViewModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Agreement</title>
+
+    <link href="~/Content/theme/font-icons/entypo/css/entypo.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="~/assets/js/jquery-ui/css/no-theme/jquery-ui-1.10.3.custom.min.css">
+    <link rel="stylesheet" href="~/assets/css/font-icons/entypo/css/entypo.css">
+    <link rel="stylesheet" href="~/http://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic">
+    <link rel="stylesheet" href="~/assets/css/bootstrap.css">
+    <link rel="stylesheet" href="~/assets/css/neon-core.css">
+    <link rel="stylesheet" href="~/assets/css/neon-theme.css">
+    <link rel="stylesheet" href="~/assets/css/neon-forms.css">
+    <link rel="stylesheet" href="~/assets/css/custom.css">
+    <link rel="stylesheet" href="~/assets/css/skins/white.css">
+    <link href="~/Content/custom/css/agreement.css" rel="stylesheet" />
+    <link href="~/Content/Theme/css/dataTables.jqueryui.css" rel="stylesheet" />
+
+    <link href="~/Content/custom/css/common.css" rel="stylesheet" />
+    <style>
+        /*.page-container {
+            text-align: center;
+        }*/
+    </style>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+
+    <script src="~/Scripts/theme/jquery.validate.min.js"></script>
+    <script src="~/Scripts/theme/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Scripts/theme/jquery-ui/jquery-ui.min.js"></script>
+</head>
+<body class="page-body">
+    <div class="page-container">
+        <div class="col-md-6 col-md-offset-2" style="margin-top:10%;">
+            <div class="panel panel-default panel-shadow" data-collapsed="0">
+                <!-- to apply shadow add class "panel-shadow" -->
+                <!-- panel head -->
+                <div class="panel-heading">
+                    <div class="panel-title" style="margin-left:15px;"><h3>Təsdiq</h3></div>
+
+                    @*<div class="panel-options" style="margin-right:15px;">
+                            <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                        </div>*@
+                </div>
+
+                <!-- panel body -->
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label">Ad</label>
+                                    <input class="form-control" disabled name="Firstname" value="@Model.FirstName" id="Firstname" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label">Soyad</label>
+                                    <input class="form-control" disabled name="Lastname" value="@Model.LastName" id="Firstname" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label">Ata adı</label>
+                                    <input class="form-control" name="Middlename" value="@Model.MiddleName" disabled id="Middlename" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <div class="agreement_text">
+                                    This text is really long and the height of its container is only 100 pixels. Therefore, a scrollbar is added to help the reader to scroll the content. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum. Typi non habent claritatem insitam; est usus legentis in iis qui facit eorum claritatem.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @using (Html.BeginForm("Index", "Exam", FormMethod.Get))
+                    {
+                        <div class="row" style="margin-left:15px;margin-right:15px;">
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-success icon btn-icon icon-left col-md-12" style="font-size:xx-large;">
+                                    <i class="entypo-check" style="font-size:xx-large"></i>
+                                    Razıyam
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-left:15px;margin-right:15px;">
+                            <div class="form-group">
+                                <a href="@Url.Action("SignIn","User")" class="btn btn-danger icon btn-icon icon-left col-md-12" style="font-size:xx-large;">
+                                    <i class="entypo-cancel" style="font-size:xx-large"></i>
+                                    Razı deyiləm
+                                </a>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <!-- panel footer -->
+                <div class="panel-footer">
+                    <div class="row">
+                        @*<div class="form-group">
+                                <div class="col-md-2">
+                                    <a href="@Url.Action("_ApproveQuestions","Exam")" id="appr_btn" class="btn btn-success icon btn-icon">
+                                        <i class="entypo-check"></i>
+                                        Approve
+                                    </a>
+                                </div>
+                            </div>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/assets/js/gsap/main-gsap.js"></script>
+    <script src="~/assets/js/jquery-ui/js/jquery-ui-1.10.3.minimal.min.js"></script>
+    <script src="~/assets/js/bootstrap.js"></script>
+    <script src="~/assets/js/joinable.js"></script>
+    <script src="~/assets/js/resizeable.js"></script>
+    <script src="~/assets/js/neon-api.js"></script>
+    <script src="~/assets/js/neon-chat.js"></script>
+    <script src="~/assets/js/neon-custom.js"></script>
+    <script src="~/assets/js/neon-demo.js"></script>
+    <script src="~/Scripts/theme/jquery.cookie.js"></script>
+    <script src="~/Scripts/theme/jquery.dataTables.min.js"></script>
+    @*<script src="~/assets/js/jquery.dataTables.min.js"></script>*@
+    <script src="~/Scripts/theme/dataTables.jqueryui.js"></script>
+
+    <script src="~/Scripts/custom/common.js"></script>
+
+    <script src="~/Scripts/theme/toastr.js"></script>
+    <script src="~/Scripts/theme/TweenMax.min.js"></script>
+
+</body>
+</html>

@@ -6,7 +6,7 @@
     @*<link rel="stylesheet" href="~/assets/js/select2/select2-bootstrap.css" />
         <link rel="stylesheet" href="~/assets/js/select2/select2.css" />*@
     @*<link href="~/Content/Theme/css/dataTables.jqueryui.css" rel="stylesheet" />*@
-    <link href="~/Content/custom/css/candidateIndex.css" rel="stylesheet" />
+    <link href="~/Content/custom/css/candidateIndex.css?v=1.6" rel="stylesheet" />
     <style>
         .modalCenter {
             top: 50% !important;
@@ -29,7 +29,7 @@
     @*<script src="~/Scripts/theme/jquery.dataTables.min.js"></script>*@
     @*<script src="~/assets/js/jquery.dataTables.min.js"></script>*@
     @*<script src="~/Scripts/theme/dataTables.jqueryui.js"></script>*@
-    <script src="~/Scripts/custom/candidateIndex.js"></script>
+    <script src="~/Scripts/custom/candidateIndex.js?v=1.6"></script>
 }
 
 <hr />
@@ -74,7 +74,8 @@
             </div>
             <div class="modal-body">
                 <form id="rootwizard" class="form-wizard validate">
-
+                    <input type="text" name="ID" id="ID" hidden />
+                    <input hidden type="text" value="0" id="TicketId" name="TicketId" />
                     <div class="steps-progress">
                         <div class="progress-indicator"></div>
                     </div>
@@ -112,13 +113,11 @@
                                     <div class="input-group-addon">
                                         <i class="entypo-search"></i>
                                     </div>
-                                    <input type="text" class="form-control" value="6666666" name="finCode" id="finCode" data-validate="required,minlength[7],maxlength[7]" data-message-minlength="Minlength 7" data-message-maxlength="Maxlength 7" placeholder="FIN kod" />
+                                    <input type="text" class="form-control" value="" name="finCode" id="finCode" data-validate="required,minlength[7],maxlength[7]" data-message-minlength="Minlength 7" data-message-maxlength="Maxlength 7" placeholder="FIN kod" />
                                 </div>
                             </div>
                         </div>
                         <div class="tab-pane" id="tab2">
-                            <input hidden type="text" value="0" id="TicketId" name="TicketId" />
-                            <input type="text" name="ID" id="ID" hidden />
                             <div class="row align-center">
                                 <div class="col-md-3">
                                     <div class="form-group">
@@ -241,7 +240,7 @@
                                         <div class="form-group">
                                             <label class="control-label" for="clock">Saat</label>
                                             <div class="input-group">
-                                                <input type="text" id="clock" name="clock" class="form-control timepicker" data-template="dropdown" data-validate="required" data-format="" data-show-seconds="true" data-default-time="11:25 AM" data-show-meridian="true" data-minute-step="5" data-second-step="5">
+                                                <input type="text" id="clock" name="clock" class="form-control timepicker" data-template="dropdown" data-validate="required" data-format="" data-show-seconds="true" data-default-time="@DateTime.Now.ToString("h:mm t")" data-show-meridian="true" data-minute-step="5" data-second-step="5">
                                                 <div class="input-group-addon">
                                                     <a href="#"><i class="entypo-clock"></i></a>
                                                 </div>
@@ -338,7 +337,6 @@
                                         <select name="FamilyStatusClone" class="form-control" id="FamilyStatusIdClone">
                                             <option value="1">Evli</option>
                                             <option value="2" selected>Subay</option>
-                                            <option value="3">Boşanmış</option>
                                         </select>
                                     </div>
                                 </div>
@@ -446,7 +444,7 @@
             @foreach (var candidate in Model.Candidates)
             {
                 <tr class="tr">
-                    <td width="2%"><input name="ids[]" class="chk" type="checkbox" value="@candidate.ID" /></td>
+                    <td width="2%"><input name="ids[]" class="chk" type="checkbox" value="@candidate.TicketId" /></td>
                     <td>@candidate.FinCode</td>
                     <td>@candidate.FirstName</td>
                     <td>@candidate.LastName</td>
